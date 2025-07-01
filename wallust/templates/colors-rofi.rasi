@@ -1,0 +1,10 @@
+* {
+    /* base shades */
+    bg0:            {{background}};
+    bg1:            {{color0}};
+    fg0:            {{foreground}};
+
+    /* highlight accents */
+    accent-color:   {{color4}};   /* pick a nice saturated tone */
+    urgent-color:   {{color3}};   /* something attention-grabbing */
+}

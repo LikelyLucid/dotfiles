@@ -1,0 +1,154 @@
+@import url("./colors-wallust.css");
+
+* {
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+window#waybar {
+  font-family: "JetBrains Mono Nerd Font";
+  background-color: transparent;
+  border-bottom: 0px;
+  color: @foreground;
+  transition-property: background-color;
+  transition-duration: 0.5s;
+}
+
+window#waybar.hidden {
+  opacity: 0.2;
+}
+
+window#waybar.empty #window {
+  background-color: transparent;
+}
+
+.modules-right {
+  margin: 10px 10px 0 0;
+}
+.modules-center {
+  margin: 10px 0 0 0;
+}
+.modules-left {
+  margin: 10px 0 0 10px;
+}
+
+button {
+  border: none;
+}
+
+#workspaces {
+  background-color: @color0;
+}
+
+#workspaces button {
+  padding: 0 5px;
+  background-color: transparent;
+  color: @foreground;
+  border-radius: 0;
+}
+
+#workspaces button:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+#workspaces button:last-child {
+  border-radius: 0 5px 5px 0;
+}
+
+#workspaces button:hover {
+  color: @color3;
+}
+
+#workspaces button.focused {
+  background-color: @color8;
+}
+
+#workspaces button.urgent {
+  background-color: @color5;
+}
+
+#idle_inhibitor,
+#cava,
+#scratchpad,
+#mode,
+#window,
+#clock,
+#battery,
+#backlight,
+#wireplumber,
+#tray,
+#mpris,
+#load {
+  padding: 0 10px;
+  background-color: @color0;
+  color: @foreground;
+}
+
+#mode {
+  background-color: @color2;
+  color: @color0;
+}
+
+.modules-left > widget:first-child > #workspaces {
+  margin-left: 0;
+}
+
+.modules-right > widget:last-child > #workspaces {
+  margin-right: 0;
+}
+
+#cava {
+  padding: 0 5px;
+}
+
+#battery.charging,
+#battery.plugged {
+  background-color: @color3;
+  color: @color0;
+}
+
+@keyframes blink {
+  to {
+    background-color: @color0;
+    color: @foreground;
+  }
+}
+
+#battery.critical:not(.charging) {
+  background-color: @color1;
+  color: @foreground;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: steps(12);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+label:focus {
+  background-color: #000000;
+}
+
+#wireplumber.muted {
+  background-color: @color4;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+}
+
+#mpris.playing {
+  background-color: @color3;
+  color: @color0;
+}
+
+#tray menu {
+  font-family: sans-serif;
+}
+
+#scratchpad.empty {
+  background: transparent;
+}

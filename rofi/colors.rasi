@@ -1,0 +1,10 @@
+* {
+    /* base shades */
+    bg0:            #232524;
+    bg1:            #484A4A;
+    fg0:            #E4E6E9;
+
+    /* highlight accents */
+    accent-color:   #72787F;   /* pick a nice saturated tone */
+    urgent-color:   #7B7066;   /* something attention-grabbing */
+}

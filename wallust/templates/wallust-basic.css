@@ -1,0 +1,37 @@
+/*───────────────────────────────────────────────────────────────────────────────
+  colors-wallust.template.css  –  Wallust template for Obsidian
+  -----------------------------------------------------------------------------
+  ▸ Save this file anywhere Wallust can see it (e.g.  ~/.config/wallust/templates/ )
+  ▸ Point to it in  wallust.toml  →  [output."~/.obsidian/snippets/colors-wallust.css"]
+        template = "colors-wallust.template.css"
+  ▸ Then run  wallust -O   (or let the daemon regenerate on wallpaper change).
+
+  The placeholders {{background}}, {{foreground}}, {{color0}} … {{color15}}
+  are replaced by Wallust with the palette extracted from your wallpaper.
+───────────────────────────────────────────────────────────────────────────────*/
+
+:root {
+  /* core colours */
+  --background: {{background}};
+  --foreground: {{foreground}};
+  --cursor    : {{cursor}};
+
+  /* 16‑colour palette */
+  --color0 : {{color0}};  /* usually black / darkest shade   */
+  --color1 : {{color1}};
+  --color2 : {{color2}};
+  --color3 : {{color3}};
+  --color4 : {{color4}};
+  --color5 : {{color5}};
+  --color6 : {{color6}};
+  --color7 : {{color7}};
+  --color8 : {{color8}};  /* bright black / mid grey         */
+  --color9 : {{color9}};
+  --color10: {{color10}};
+  --color11: {{color11}};
+  --color12: {{color12}};
+  --color13: {{color13}};
+  --color14: {{color14}};
+  --color15: {{color15}};  /* bright white / lightest shade   */
+}
+

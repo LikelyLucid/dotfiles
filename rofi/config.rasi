@@ -1,0 +1,103 @@
+@import "./colors.rasi"   /* Wallust colours */
+
+
+/* ──────────────────────────────────────────────
+   “Squared-Clean” — minimal dark Rofi theme
+   Colours come from Wallust; fallback values
+   ensure it never breaks even if the import fails
+   ────────────────────────────────────────────── */
+
+* {
+    /* ---------- FALLBACKS ---------- */
+    bg0: #232524;
+    bg1: #484A4A;
+    fg0: #E4E6E9;
+    accent-color: #72787F;
+    urgent-color: #7B7066;
+
+    /* ---------- GLOBALS ------------ */
+    font: "JetBrains Mono 12";
+    // background-color: transparent;   /* window itself gets colour below */
+    text-color: @bg0;
+
+    margin: 0;
+    padding: 0;
+    spacing: 0;
+}
+
+/* ---------- WINDOW ---------- */
+window {
+    location: center;
+    width:   480;
+
+    background-color: @bg0;                /* main panel */
+    // border: 2px solid @accent-color;       /* subtle outline */
+    border-radius: 6px;                    /* softer edges */
+    padding: 6px;                          /* breathing room */
+}
+
+
+/* --- Input bar ------------------------------------------------------------ */
+inputbar {
+    spacing:          6px;
+    padding:          8px 12px;
+    background-color: @bg1;
+    border-radius:    4px;
+}
+
+/* ► Make the typed text light                                 */
+entry      { text-color: @fg0; }
+
+/* prompt keeps its accent colour                               */
+prompt     { text-color: @accent-color; }
+
+/* --- Message textbox (rofi -e) ------------------------------------------- */
+textbox {
+    padding:          8px 12px;
+    background-color: @bg1;
+    border-radius:    4px;
+
+    /* ► Ensure message text is also light                         */
+    text-color:       @fg0;
+}
+
+/* ---------- LISTVIEW ---------- */
+listview {
+    padding: 4px 0;
+    lines:   10;       /* a little taller */
+    columns: 1;
+    fixed-height: false;
+}
+
+/* ---------- ELEMENTS (rows) ---------- */
+element {
+    padding: 6px 10px;
+    spacing: 8px;
+    border-radius: 4px;  /* rounded selection */
+}
+
+/* ---- Normal rows ---- */
+element normal normal   { background-color: transparent; text-color: @fg0; }
+element normal urgent   { background-color: transparent; text-color: @urgent-color; }
+element normal active   { background-color: transparent; text-color: @accent-color; }
+
+/* ---- Alternate rows (every 2nd) ---- */
+element alternate normal  { background-color: @bg1; text-color: @fg0; }
+element alternate urgent  { background-color: @bg1; text-color: @urgent-color; }
+element alternate active  { background-color: @bg1; text-color: @accent-color; }
+
+/* ---- Selected row ---- */
+element selected {
+    text-color: @bg0;
+}
+element selected normal,
+element selected active {
+    background-color: @accent-color;
+}
+element selected urgent {
+    background-color: @urgent-color;
+}
+
+/* ---------- ICONS & TEXT ---------- */
+element-icon { size: 0.85em; }   /* slightly larger for clarity */
+element-text { text-color: inherit; }
