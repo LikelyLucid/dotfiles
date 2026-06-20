@@ -48,5 +48,6 @@ palette = "dark"
 obsidian = { template = 'wallust-basic.css', target = '~/Documents/Vault/.obsidian/snippets/wallust-basic.css' }
 waybar = { template = 'colors-wallust.css', target = '~/dotfiles/waybar/colors-wallust.css' }
 kitty = { template = 'kitty.conf', target = '~/dotfiles/kitty/colors.conf' }
+ghostty = { template = 'ghostty.conf', target = '~/.config/ghostty/colors.conf' }
 neovim = { template = 'colors_neopywal.vim', target = "~/.cache/wal/colors-wal.vim" }
 rofi = { template = 'colors-rofi.rasi', target = '~/dotfiles/rofi/colors.rasi' }
