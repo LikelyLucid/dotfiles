@@ -52,3 +52,4 @@ ghostty = { template = 'ghostty.conf', target = '~/.config/ghostty/colors.conf' 
 neovim = { template = 'colors_neopywal.vim', target = "~/.cache/wal/colors-wal.vim" }
 rofi = { template = 'colors-rofi.rasi', target = '~/dotfiles/rofi/colors.rasi' }
 nemo = { template = 'nemo.css', target = '~/.config/gtk-3.0/nemo.css' }
+swaync = { template = 'swaync.css', target = '~/.config/swaync/style.css' }

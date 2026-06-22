@@ -1,0 +1,117 @@
+/* SwayNC - Wallust Generated Theme */
+
+/* ── Notification ── */
+.notification {
+    background: {{background}};
+    color: {{foreground}};
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 4px 0;
+    border: 1px solid {{color1}};
+}
+
+.notification:hover {
+    background: {{color0}};
+}
+
+/* ── Notification close button ── */
+.notification-close {
+    background: {{color1}};
+    color: {{foreground}};
+    border-radius: 50%;
+    padding: 4px;
+    margin: 0;
+}
+
+.notification-close:hover {
+    background: {{color3}};
+}
+
+/* ── Summary / Title ── */
+.summary {
+    font-weight: bold;
+    color: {{foreground}};
+}
+
+/* ── Body text ── */
+.body {
+    color: {{color7}};
+}
+
+/* ── Time ── */
+.time {
+    color: {{color5}};
+    font-size: 0.85em;
+}
+
+/* ── Control center ── */
+.control-center {
+    background: {{color0}};
+    border-radius: 12px;
+    border: 1px solid {{color1}};
+    padding: 8px;
+}
+
+/* ── Widget title ── */
+.widget-title {
+    color: {{foreground}};
+    font-weight: bold;
+    padding: 8px;
+    background: {{color1}};
+    border-radius: 8px;
+    margin-bottom: 4px;
+}
+
+/* ── Volume / brightness widgets ── */
+.widget-volume,
+.widget-brightness {
+    background: {{background}};
+    border-radius: 8px;
+    padding: 8px;
+    margin: 2px 0;
+}
+
+/* ── Slider ── */
+scale trough {
+    background: {{color1}};
+    border-radius: 4px;
+    min-height: 6px;
+}
+
+scale slider {
+    background: {{color4}};
+    border-radius: 50%;
+    min-width: 16px;
+    min-height: 16px;
+}
+
+/* ── Do Not Disturb toggle ── */
+.dnd-toggle {
+    background: {{background}};
+    color: {{foreground}};
+    border-radius: 8px;
+    padding: 8px;
+    border: 1px solid {{color1}};
+}
+
+.dnd-toggle:checked {
+    background: {{color4}};
+}
+
+/* ── Notification actions ── */
+.notification-action {
+    background: {{color1}};
+    color: {{foreground}};
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin: 2px;
+}
+
+.notification-action:hover {
+    background: {{color2}};
+}
+
+/* ── Image in notification ── */
+.notification-image {
+    border-radius: 8px;
+}
