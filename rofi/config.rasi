@@ -1,14 +1,11 @@
-@import "./colors.rasi"   /* Wallust colours */
-
-
 /* ──────────────────────────────────────────────
-   “Squared-Clean” — minimal dark Rofi theme
+   "Squared-Clean" — minimal dark Rofi theme
    Colours come from Wallust; fallback values
    ensure it never breaks even if the import fails
    ────────────────────────────────────────────── */
 
 * {
-    /* ---------- FALLBACKS ---------- */
+    /* ---------- FALLBACKS (overridden by wallust below) ---------- */
     bg0: #232524;
     bg1: #484A4A;
     fg0: #E4E6E9;
@@ -101,3 +98,5 @@ element selected urgent {
 /* ---------- ICONS & TEXT ---------- */
 element-icon { size: 0.85em; }   /* slightly larger for clarity */
 element-text { text-color: inherit; }
+
+@import "./colors.rasi"   /* Wallust colours — imported last so they override fallbacks */

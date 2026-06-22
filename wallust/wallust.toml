@@ -28,12 +28,12 @@ palette = "dark"
 # Ensures a "readable contrast" (OPTIONAL, disabled by default)
 # Should only be enabled when you notice an unreadable contrast frequently happening
 # with your images. The reference color for the contrast is the background color.
-#check_contrast = true
+check_contrast = true
 
 # Color saturation, between [1% and 100%] (OPTIONAL, disabled by default)
 # usually something higher than 50 increases the saturation and below
 # decreases it (on a scheme with strong and vivid colors)
-#saturation = 35
+saturation = 60
 
 # Alpha value for templating, by default 100 (no other use whatsoever)
 #alpha = 100
@@ -51,3 +51,4 @@ kitty = { template = 'kitty.conf', target = '~/dotfiles/kitty/colors.conf' }
 ghostty = { template = 'ghostty.conf', target = '~/.config/ghostty/colors.conf' }
 neovim = { template = 'colors_neopywal.vim', target = "~/.cache/wal/colors-wal.vim" }
 rofi = { template = 'colors-rofi.rasi', target = '~/dotfiles/rofi/colors.rasi' }
+nemo = { template = 'nemo.css', target = '~/.config/gtk-3.0/nemo.css' }
