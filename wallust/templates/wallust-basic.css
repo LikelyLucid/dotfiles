@@ -28,6 +28,12 @@ body.theme-light {
   --interactive-hover: color-mix(in srgb, var(--wallust-accent) 18%, var(--wallust-bg-alt));
   --interactive-accent: var(--wallust-accent);
   --interactive-accent-hover: var(--wallust-accent-2);
+  --color-accent: {{color4}};
+  --color-accent-1: {{color4}};
+  --color-accent-2: {{color4}};
+  --accent-h: 224;
+  --accent-s: 24%;
+  --accent-l: 52%;
 
   --titlebar-background: var(--wallust-bg);
   --titlebar-background-focused: var(--wallust-bg);
