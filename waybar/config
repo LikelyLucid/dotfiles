@@ -10,8 +10,8 @@
     "modules-left": [
         "hyprland/workspaces",
         "cpu",
-        "hyprland/window",
-        "custom/cava"
+        "custom/cava",
+        "hyprland/window"
     ],
     "modules-center": [
         "clock"
