@@ -33,7 +33,8 @@ check_contrast = true
 # Color saturation, between [1% and 100%] (OPTIONAL, disabled by default)
 # usually something higher than 50 increases the saturation and below
 # decreases it (on a scheme with strong and vivid colors)
-saturation = 60
+# Keep monochrome wallpapers monochrome instead of pushing blue/green accents.
+# saturation = 60
 
 # Alpha value for templating, by default 100 (no other use whatsoever)
 #alpha = 100
@@ -49,7 +50,15 @@ obsidian = { template = 'wallust-basic.css', target = '~/Documents/Vault/.obsidi
 waybar = { template = 'colors-wallust.css', target = '~/dotfiles/waybar/colors-wallust.css' }
 kitty = { template = 'kitty.conf', target = '~/dotfiles/kitty/colors.conf' }
 ghostty = { template = 'ghostty.conf', target = '~/.config/ghostty/colors.conf' }
-neovim = { template = 'colors_neopywal.vim', target = "~/.cache/wal/colors-wal.vim" }
+neovim_vim = { template = 'colors_neopywal.vim', target = '~/.cache/wal/colors-wal.vim' }
+neovim_lua = { template = 'nvim.lua', target = '~/.cache/wal/wallust.nvim.lua' }
 rofi = { template = 'colors-rofi.rasi', target = '~/dotfiles/rofi/colors.rasi' }
 nemo = { template = 'nemo.css', target = '~/.config/gtk-3.0/nemo.css' }
 swaync = { template = 'swaync.css', target = '~/.config/swaync/style.css' }
+hyprland = { template = 'hyprland-colors.conf', target = '~/.config/hypr/wallust-colors.conf' }
+hyprlock = { template = 'hyprlock-colors.conf', target = '~/.config/hypr/wallust-hyprlock.conf' }
+tmux = { template = 'tmux.conf', target = '~/.config/tmux/wallust.conf' }
+spotify_player = { template = 'spotify-player-theme.toml', target = '~/dotfiles/spotify-player/theme.toml' }
+flameshot = { template = 'flameshot.ini', target = '~/dotfiles/flameshot/flameshot.ini' }
+gtk3 = { template = 'gtk-colors.css', target = '~/.config/gtk-3.0/colors.css' }
+gtk4 = { template = 'gtk-colors.css', target = '~/.config/gtk-4.0/colors.css' }

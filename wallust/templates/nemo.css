@@ -11,12 +11,12 @@
 }
 
 .nemo-window .sidebar .view:selected {
-    background-color: {{color4}};
+    background-color: {{color7}};
     color: {{background}};
 }
 
 .nemo-window .sidebar .view:hover {
-    background-color: {{color2}};
+    background-color: {{color8}};
 }
 
 .nemo-window .view {
@@ -25,18 +25,18 @@
 }
 
 .nemo-window .view:selected {
-    background-color: {{color4}};
+    background-color: {{color7}};
     color: {{background}};
 }
 
 .nemo-window .view:hover {
-    background-color: {{color2}};
+    background-color: {{color8}};
 }
 
 .nemo-window .primary-toolbar {
     background-color: {{color0}};
     color: {{foreground}};
-    border-bottom: 1px solid {{color1}};
+    border-bottom: 1px solid {{color8}};
 }
 
 .nemo-window .primary-toolbar button {
@@ -46,12 +46,12 @@
 }
 
 .nemo-window .primary-toolbar button:hover {
-    background-color: {{color2}};
-    border-color: {{color1}};
+    background-color: {{color8}};
+    border-color: {{color8}};
 }
 
 .nemo-window .primary-toolbar button:checked {
-    background-color: {{color4}};
+    background-color: {{color7}};
     color: {{background}};
 }
 
@@ -62,21 +62,21 @@
 }
 
 .nemo-window .path-bar button:hover {
-    background-color: {{color2}};
-    border-color: {{color1}};
+    background-color: {{color8}};
+    border-color: {{color8}};
 }
 
 .nemo-window .path-bar button:checked {
-    background-color: {{color4}};
+    background-color: {{color7}};
     color: {{background}};
 }
 
 .nemo-window .nemo-cluebar {
     background-color: {{color0}};
     color: {{foreground}};
-    border-top: 1px solid {{color1}};
+    border-top: 1px solid {{color8}};
 }
 
 .nemo-window .nemo-inactive-pane .view {
-    background-color: {{color1}};
+    background-color: {{color8}};
 }

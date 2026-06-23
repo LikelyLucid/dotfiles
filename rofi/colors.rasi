@@ -5,6 +5,6 @@
     fg0:            #E8EAEB;
 
     /* highlight accents */
-    accent-color:   #366E8F;   /* pick a nice saturated tone */
-    urgent-color:   #2C7373;   /* something attention-grabbing */
+    accent-color:   #D6D9DB;
+    urgent-color:   #969899;
 }

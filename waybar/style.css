@@ -23,13 +23,13 @@ window#waybar.empty #window {
 }
 
 .modules-right {
-  margin: 10px 10px 0 0;
+  margin: 6px 20px 0 0;
 }
 .modules-center {
-  margin: 10px 0 0 0;
+  margin: 6px 0 0 0;
 }
 .modules-left {
-  margin: 10px 0 0 10px;
+  margin: 6px 0 0 20px;
 }
 
 button {
@@ -60,25 +60,31 @@ button {
 }
 
 #workspaces button.focused {
-  background-color: @color8;
+  background-color: @color3;
 }
 
 #workspaces button.urgent {
   background-color: @color5;
 }
 
-#idle_inhibitor,
+#custom-caffinate,
 #cava,
+#custom-cava,
 #scratchpad,
 #mode,
 #window,
 #clock,
 #battery,
+#custom-battery,
 #backlight,
 #wireplumber,
 #tray,
 #mpris,
-#load {
+#custom-uptime,
+#custom-cputemp,
+#cpu,
+#memory,
+#temperature {
   padding: 0 10px;
   background-color: @color0;
   color: @foreground;
@@ -97,8 +103,14 @@ button {
   margin-right: 0;
 }
 
-#cava {
+#cava,
+#custom-cava {
   padding: 0 5px;
+}
+
+#custom-caffinate {
+  padding: 0 4px;
+  min-width: 20px;
 }
 
 #battery.charging,
@@ -125,7 +137,7 @@ button {
 }
 
 label:focus {
-  background-color: #000000;
+  background-color: @background;
 }
 
 #wireplumber.muted {
@@ -138,6 +150,11 @@ label:focus {
 
 #tray > .needs-attention {
   -gtk-icon-effect: highlight;
+}
+
+#mpris.stopped {
+  padding: 0;
+  background-color: transparent;
 }
 
 #mpris.playing {

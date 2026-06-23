@@ -5,6 +5,6 @@
     fg0:            {{foreground}};
 
     /* highlight accents */
-    accent-color:   {{color4}};   /* pick a nice saturated tone */
-    urgent-color:   {{color3}};   /* something attention-grabbing */
+    accent-color:   {{color7}};
+    urgent-color:   {{color8}};
 }

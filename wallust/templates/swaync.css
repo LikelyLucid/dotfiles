@@ -1,117 +1,116 @@
-/* SwayNC - Wallust Generated Theme */
+/* SwayNC - Wallust */
 
-/* ── Notification ── */
-.notification {
-    background: {{background}};
-    color: {{foreground}};
-    border-radius: 12px;
-    padding: 12px 16px;
-    margin: 4px 0;
-    border: 1px solid {{color1}};
+@define-color bg {{background}};
+@define-color bg2 {{color0}};
+@define-color fg {{foreground}};
+@define-color muted {{color8}};
+@define-color accent {{color7}};
+@define-color accent2 {{color8}};
+@define-color urgent {{color8}};
+
+notificationwindow,
+blankwindow {
+  background: transparent;
 }
 
-.notification:hover {
-    background: {{color0}};
-}
-
-/* ── Notification close button ── */
-.notification-close {
-    background: {{color1}};
-    color: {{foreground}};
-    border-radius: 50%;
-    padding: 4px;
-    margin: 0;
-}
-
-.notification-close:hover {
-    background: {{color3}};
-}
-
-/* ── Summary / Title ── */
-.summary {
-    font-weight: bold;
-    color: {{foreground}};
-}
-
-/* ── Body text ── */
-.body {
-    color: {{color7}};
-}
-
-/* ── Time ── */
-.time {
-    color: {{color5}};
-    font-size: 0.85em;
-}
-
-/* ── Control center ── */
 .control-center {
-    background: {{color0}};
-    border-radius: 12px;
-    border: 1px solid {{color1}};
-    padding: 8px;
+  background: alpha(@bg, 0.92);
+  color: @fg;
+  border: 1px solid @accent;
+  border-radius: 12px;
+  padding: 8px;
 }
 
-/* ── Widget title ── */
-.widget-title {
-    color: {{foreground}};
-    font-weight: bold;
-    padding: 8px;
-    background: {{color1}};
-    border-radius: 8px;
-    margin-bottom: 4px;
+.notification-row {
+  background: transparent;
+  outline: none;
 }
 
-/* ── Volume / brightness widgets ── */
+.notification-row .notification-background {
+  padding: 6px 12px;
+}
+
+.notification-row .notification-background .notification {
+  background: alpha(@bg, 0.92);
+  color: @fg;
+  border: 1px solid @accent;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px alpha(@bg2, 0.45);
+}
+
+.notification-row .notification-background .notification .notification-default-action,
+.notification-row .notification-background .notification .notification-default-action .notification-content {
+  background: transparent;
+  color: @fg;
+  border-radius: 12px;
+}
+
+.notification-row .notification-background .notification .notification-default-action:hover {
+  background: alpha(@accent, 0.18);
+}
+
+.summary {
+  color: @fg;
+  font-weight: bold;
+}
+
+.body {
+  color: @fg;
+}
+
+.time {
+  color: @muted;
+}
+
+.close-button {
+  background: alpha(@accent, 0.25);
+  color: @fg;
+  border: none;
+  border-radius: 999px;
+}
+
+.close-button:hover {
+  background: @urgent;
+}
+
+.notification-action > button {
+  background: alpha(@accent, 0.25);
+  color: @fg;
+  border: 1px solid @accent;
+  border-radius: 8px;
+}
+
+.notification-action > button:hover {
+  background: @accent;
+  color: @bg;
+}
+
+.widget-title,
+.widget-dnd,
 .widget-volume,
-.widget-brightness {
-    background: {{background}};
-    border-radius: 8px;
-    padding: 8px;
-    margin: 2px 0;
+.widget-backlight,
+.widget-mpris,
+.widget-buttons-grid,
+.widget-menubar,
+.widget-inhibitors,
+.widget-notifications {
+  background: alpha(@bg2, 0.75);
+  color: @fg;
+  border-radius: 10px;
+  padding: 8px;
+  margin: 4px;
 }
 
-/* ── Slider ── */
+switch:checked,
+scale highlight {
+  background: @accent;
+}
+
 scale trough {
-    background: {{color1}};
-    border-radius: 4px;
-    min-height: 6px;
+  background: alpha(@muted, 0.35);
+  border-radius: 999px;
 }
 
-scale slider {
-    background: {{color4}};
-    border-radius: 50%;
-    min-width: 16px;
-    min-height: 16px;
-}
-
-/* ── Do Not Disturb toggle ── */
-.dnd-toggle {
-    background: {{background}};
-    color: {{foreground}};
-    border-radius: 8px;
-    padding: 8px;
-    border: 1px solid {{color1}};
-}
-
-.dnd-toggle:checked {
-    background: {{color4}};
-}
-
-/* ── Notification actions ── */
-.notification-action {
-    background: {{color1}};
-    color: {{foreground}};
-    border-radius: 4px;
-    padding: 6px 12px;
-    margin: 2px;
-}
-
-.notification-action:hover {
-    background: {{color2}};
-}
-
-/* ── Image in notification ── */
-.notification-image {
-    border-radius: 8px;
+progressbar progress {
+  background: @accent2;
 }

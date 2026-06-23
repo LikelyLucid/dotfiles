@@ -39,10 +39,10 @@
     "interval": 1,
     "tooltip-format": "\n<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "calendar-weeks-pos": "right",
-    "today-format": "<span color='#7645AD'><b><u>{}</u></b></span>",
-    "format-calendar": "<span color='#aeaeae'><b>{}</b></span>",
-    "format-calendar-weeks": "<span color='#aeaeae'><b>W{:%V}</b></span>",
-    "format-calendar-weekdays": "<span color='#aeaeae'><b>{}</b></span>"
+    "today-format": "<b><u>{}</u></b>",
+    "format-calendar": "<b>{}</b>",
+    "format-calendar-weeks": "<b>W{:%V}</b>",
+    "format-calendar-weekdays": "<b>{}</b>"
   },
   "hyprland/language": {
     "format": "Lang: {long}",
@@ -328,7 +328,7 @@
       "on": "<U+F0C4> " 
     },
     "random-icons": {
-      "off": "<span color=\"#f53c3c\"><U+F074></span> ", 
+      "off": "<U+F074> ", 
       "on": "<U+F074> "
     },
     "repeat-icons": {

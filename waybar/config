@@ -9,21 +9,22 @@
     // Choose the order of the modules
     "modules-left": [
         "hyprland/workspaces",
-        "cava",
-        "hyprland/mode",
-        "hyprland/scratchpad"
+        "cpu",
+        "hyprland/window",
+        "custom/cava"
     ],
     "modules-center": [
-        "hyprland/window"
+        "clock"
     ],
     "modules-right": [
         "mpris",
-        "idle_inhibitor",
-        "load",
+        "custom/caffinate",
+        "memory",
+        "custom/cputemp",
+        "custom/uptime",
         "wireplumber",
         "backlight",
-        "clock",
-        "battery",
+        "custom/battery",
         "tray"
     ],
     // Modules configuration
@@ -48,43 +49,39 @@
         "max-length": 40,
         "all-outputs": true
     },
-    "cava": {
-	//        "cava_config": "$XDG_CONFIG_HOME/cava/cava.conf",
-	"framerate": 30,
-	"autosens": 1,
-	"bars": 14,
-	"lower_cutoff_freq": 50,
-	"higher_cutoff_freq": 10000,
-	"method": "pipewire",
-	"source": "auto",
-	"stereo": true,
-	"bar_delimiter": 0,
-	"noise_reduction": 0.77,
-	"input_delay": 2,
-        "hide_on_silence": true,
-	"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
-	"actions": {
-	    "on-click-right": "mode"
-	}
+    "custom/cava": {
+        "exec": "~/.config/waybar/cava-mpris.sh",
+        "format": "{}",
+        "hide-empty-text": true,
+        "tooltip": false
     },
     "mpris": {
  	"format": " {status_icon} {dynamic}",
+        "format-stopped": "",
+        "tooltip-format-stopped": "",
         "interval": 1,
         "dynamic-len": 40,
 	"status-icons": {
 		"playing": "▶",
 		"paused": "⏸",
-		"stopped": ""
+		"stopped": ""
 	},
 	"dynamic-order": ["title", "artist"],
-	"ignored-players": ["firefox"]
+	"ignored-players": ["firefox", "firefox-esr", "zen", "helium", "chromium", "google-chrome", "brave"]
     },
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
+    "custom/caffinate": {
+        "format": " {} ",
+        "exec": "if systemctl --user is-active hypridle &>/dev/null; then echo ''; else echo ''; fi",
+        "interval": 5,
+        "on-click": "~/.config/hypr/scripts/caffinate.sh",
+        "signal": 8,
+        "tooltip": true
+    },
+    "custom/uptime": {
+        "exec": "awk '{d=int($1/86400); h=int(($1%86400)/3600); m=int(($1%3600)/60); if (d>0) printf \"%dd %dh\", d, h; else if (h>0) printf \"%dh %dm\", h, m; else printf \"%dm\", m}' /proc/uptime",
+        "interval": 60,
+        "format": " {}",
+        "tooltip": true
     },
     "hyprland/mode": {
         "format": "{}"
@@ -104,44 +101,35 @@
         "format": " {}"
     },
     "clock": {
+        "format": " {:%H:%M}",
         // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
     },
     "cpu": {
-        "format": "{usage}% ",
-        "tooltip": false
+        "interval": 1,
+        "format": "{icon0}{icon1}{icon2}{icon3}{icon4}{icon5}{icon6}{icon7} {usage:>2}%",
+        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+        "tooltip": true
     },
     "memory": {
         "format": "{}% "
     },
-    "temperature": {
-        // "thermal-zone": 2,
-        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "critical-threshold": 80,
-        // "format-critical": "{temperatureC}°C {icon}",
-        "format": "{temperatureC}°C {icon}",
-        "format-icons": ["", "", ""]
+    "custom/cputemp": {
+        "exec": "for f in /sys/class/hwmon/hwmon*/temp*_input; do label=${f%_input}_label; name=${f%/temp*_input}/name; [ \"$(cat $name 2>/dev/null)\" = coretemp ] && [ \"$(cat $label 2>/dev/null)\" = 'Package id 0' ] && awk '{printf \" %d°C\", $1/1000}' $f && exit; done; awk '{printf \" %d°C\", $1/1000}' /sys/class/thermal/thermal_zone13/temp",
+        "interval": 5,
+        "tooltip": false
     },
     "backlight": {
         // "device": "acpi_video1",
         "format": "{icon} {percent}%",
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
-    "battery": {
-        "states": {
-            // "good": 95,
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{icon} {capacity}% | {time}",
-        "format-full": "{icon} {capacity}%",
-        "format-charging": " {capacity}%",
-        "format-plugged": " {capacity}%",
-        "format-alt": "{icon} {time}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
-        "format-icons": ["", "", "", "", ""]
+    "custom/battery": {
+        "exec": "cap=$(cat /sys/class/power_supply/BAT0/capacity); status=$(cat /sys/class/power_supply/BAT0/status); ac=$(cat /sys/class/power_supply/AC/online 2>/dev/null || echo 0); icon=; [ \"$cap\" -ge 80 ] && icon= || [ \"$cap\" -ge 60 ] && icon= || [ \"$cap\" -ge 40 ] && icon= || [ \"$cap\" -ge 20 ] && icon=; [ \"$status\" = Charging ] && icon=; [ \"$status\" = Full ] || { [ \"$status\" = 'Not charging' ] && [ \"$ac\" = 1 ]; } && icon=; echo \"$icon $cap%\"",
+        "interval": 10,
+        "tooltip": true,
+        "exec-tooltip": "printf 'Battery: '; cat /sys/class/power_supply/BAT0/status"
     },
     "wireplumber": {
         "scroll-step": 5, // %, can be a float
@@ -170,15 +158,13 @@
     // Choose the order of the modules
     "modules-left": [
         "hyprland/workspaces",
-        "hyprland/mode",
-        "hyprland/scratchpad"
+        "hyprland/window",
+        "hyprland/mode"
     ],
     "modules-center": [
         "clock"
     ],
-    "modules-right": [
-        "hyprland/window"
-    ],
+    "modules-right": [],
     "hyprland/workspaces": {
         "all-outputs": true,
         "warp-on-scroll": true,
