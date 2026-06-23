@@ -34,7 +34,7 @@ while true; do
     continue
   fi
 
-  cava -p "$cfg" 2>/dev/null | tr -d '\000' | perl -CS -pe 'tr/01234567/▁▂▃▄▅▆▇█/; $|=1' | while IFS= read -r line; do
+  cava -p "$cfg" 2>/dev/null | tr -d '\000' | awk 'BEGIN{b["0"]="▁";b["1"]="▂";b["2"]="▃";b["3"]="▄";b["4"]="▅";b["5"]="▆";b["6"]="▇";b["7"]="█"} {out=""; for(i=1;i<=length($0);i++) out=out b[substr($0,i,1)]; print out; fflush()}' | while IFS= read -r line; do
     has_music_player || break
     printf '%s\n' "$line"
   done
