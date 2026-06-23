@@ -1,37 +1,68 @@
-/*───────────────────────────────────────────────────────────────────────────────
-  colors-wallust.template.css  –  Wallust template for Obsidian
-  -----------------------------------------------------------------------------
-  ▸ Save this file anywhere Wallust can see it (e.g.  ~/.config/wallust/templates/ )
-  ▸ Point to it in  wallust.toml  →  [output."~/.obsidian/snippets/colors-wallust.css"]
-        template = "colors-wallust.template.css"
-  ▸ Then run  wallust -O   (or let the daemon regenerate on wallpaper change).
+/* Obsidian Wallust theme - auto-generated */
+body.theme-dark,
+body.theme-light {
+  --wallust-bg: {{background}};
+  --wallust-bg-alt: {{color0}};
+  --wallust-fg: {{foreground}};
+  --wallust-muted: {{color8}};
+  --wallust-accent: {{color4}};
+  --wallust-accent-2: {{color6}};
+  --wallust-warm: {{color3}};
 
-  The placeholders {{background}}, {{foreground}}, {{color0}} … {{color15}}
-  are replaced by Wallust with the palette extracted from your wallpaper.
-───────────────────────────────────────────────────────────────────────────────*/
+  --background-primary: var(--wallust-bg);
+  --background-primary-alt: var(--wallust-bg-alt);
+  --background-secondary: var(--wallust-bg-alt);
+  --background-secondary-alt: var(--wallust-bg);
+  --background-modifier-border: color-mix(in srgb, var(--wallust-muted) 45%, transparent);
+  --background-modifier-hover: color-mix(in srgb, var(--wallust-accent) 18%, transparent);
+  --background-modifier-active-hover: color-mix(in srgb, var(--wallust-accent) 28%, transparent);
 
-:root {
-  /* core colours */
-  --background: {{background}};
-  --foreground: {{foreground}};
-  --cursor    : {{cursor}};
+  --text-normal: var(--wallust-fg);
+  --text-muted: color-mix(in srgb, var(--wallust-fg) 70%, var(--wallust-muted));
+  --text-faint: var(--wallust-muted);
+  --text-accent: var(--wallust-accent-2);
+  --text-accent-hover: var(--wallust-warm);
+  --text-selection: color-mix(in srgb, var(--wallust-accent) 35%, transparent);
 
-  /* 16‑colour palette */
-  --color0 : {{color0}};  /* usually black / darkest shade   */
-  --color1 : {{color8}};
-  --color2 : {{color8}};
-  --color3 : {{color7}};
-  --color4 : {{color7}};
-  --color5 : {{color8}};
-  --color6 : {{color7}};
-  --color7 : {{color7}};
-  --color8 : {{color8}};  /* bright black / mid grey         */
-  --color9 : {{color8}};
-  --color10: {{color8}};
-  --color11: {{color7}};
-  --color12: {{color7}};
-  --color13: {{color8}};
-  --color14: {{color7}};
-  --color15: {{color15}};  /* bright white / lightest shade   */
+  --interactive-normal: var(--wallust-bg-alt);
+  --interactive-hover: color-mix(in srgb, var(--wallust-accent) 18%, var(--wallust-bg-alt));
+  --interactive-accent: var(--wallust-accent);
+  --interactive-accent-hover: var(--wallust-accent-2);
+
+  --titlebar-background: var(--wallust-bg);
+  --titlebar-background-focused: var(--wallust-bg);
+  --tab-container-background: var(--wallust-bg);
+  --tab-text-color-focused-active-current: var(--wallust-fg);
+  --nav-item-color-active: var(--wallust-fg);
+  --nav-item-background-active: color-mix(in srgb, var(--wallust-accent) 24%, transparent);
+
+  --h1-color: var(--wallust-accent-2);
+  --h2-color: var(--wallust-accent);
+  --h3-color: var(--wallust-warm);
+  --h4-color: var(--wallust-fg);
+  --link-color: var(--wallust-accent-2);
+  --link-color-hover: var(--wallust-warm);
+  --code-background: var(--wallust-bg-alt);
+  --code-normal: var(--wallust-fg);
 }
 
+.workspace,
+.workspace-ribbon,
+.mod-root .workspace-tab-header-container,
+.status-bar,
+.titlebar {
+  background-color: var(--wallust-bg) !important;
+}
+
+.markdown-source-view.mod-cm6 .cm-editor,
+.markdown-preview-view,
+.markdown-rendered {
+  color: var(--wallust-fg);
+}
+
+.markdown-rendered code,
+.cm-inline-code,
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock {
+  background: var(--wallust-bg-alt) !important;
+  color: var(--wallust-fg) !important;
+}
