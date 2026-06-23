@@ -3,66 +3,66 @@
 name = "wallust"
 
 [themes.palette]
-background = "#1E1F1D"
-foreground = "#E8EAEB"
-black = "#494B47"
-red = "#969899"
-green = "#969899"
-yellow = "#D6D9DB"
-blue = "#D6D9DB"
-magenta = "#969899"
-cyan = "#D6D9DB"
-white = "#D6D9DB"
-bright_black = "#969899"
-bright_red = "#969899"
-bright_green = "#969899"
-bright_yellow = "#D6D9DB"
-bright_blue = "#D6D9DB"
-bright_magenta = "#969899"
-bright_cyan = "#D6D9DB"
-bright_white = "#D6D9DB"
+background = "#00000B"
+foreground = "#DFE9F6"
+black = "#00000D"
+red = "#8C97A3"
+green = "#8C97A3"
+yellow = "#C9D8EA"
+blue = "#C9D8EA"
+magenta = "#8C97A3"
+cyan = "#C9D8EA"
+white = "#C9D8EA"
+bright_black = "#8C97A3"
+bright_red = "#8C97A3"
+bright_green = "#8C97A3"
+bright_yellow = "#C9D8EA"
+bright_blue = "#C9D8EA"
+bright_magenta = "#8C97A3"
+bright_cyan = "#C9D8EA"
+bright_white = "#C9D8EA"
 
 [themes.component_style.block_title]
-fg = "#D6D9DB"
+fg = "#C9D8EA"
 modifiers = ["Bold"]
 
 [themes.component_style.border]
-fg = "#D6D9DB"
+fg = "#C9D8EA"
 
 [themes.component_style.current_playing]
-fg = "#969899"
+fg = "#8C97A3"
 modifiers = ["Bold"]
 
 [themes.component_style.page_desc]
-fg = "#D6D9DB"
+fg = "#C9D8EA"
 modifiers = ["Bold"]
 
 [themes.component_style.playback_album]
-fg = "#D6D9DB"
+fg = "#C9D8EA"
 
 [themes.component_style.playback_artists]
-fg = "#D6D9DB"
+fg = "#C9D8EA"
 modifiers = ["Bold"]
 
 [themes.component_style.playback_metadata]
-fg = "#969899"
+fg = "#8C97A3"
 
 [themes.component_style.playback_progress_bar]
-fg = "#D6D9DB"
-bg = "#494B47"
+fg = "#C9D8EA"
+bg = "#00000D"
 
 [themes.component_style.playback_progress_bar_unfilled]
-fg = "#969899"
+fg = "#8C97A3"
 
 [themes.component_style.playback_track]
-fg = "#E8EAEB"
+fg = "#DFE9F6"
 modifiers = ["Bold"]
 
 [themes.component_style.selection]
-fg = "#1E1F1D"
-bg = "#D6D9DB"
+fg = "#00000B"
+bg = "#C9D8EA"
 modifiers = ["Bold"]
 
 [themes.component_style.table_header]
-fg = "#969899"
+fg = "#8C97A3"
 modifiers = ["Bold"]

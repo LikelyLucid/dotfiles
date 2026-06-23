@@ -12,7 +12,10 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "wallust",
+      colorscheme = function()
+        vim.o.termguicolors = false
+        vim.cmd.colorscheme("default")
+      end,
     },
   },
   {

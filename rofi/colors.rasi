@@ -1,10 +1,10 @@
 * {
     /* base shades */
-    bg0:            #1E1F1D;
-    bg1:            #494B47;
-    fg0:            #E8EAEB;
+    bg0:            #00000D;
+    bg1:            #00000B;
+    fg0:            #C9D8EA;
 
-    /* highlight accents */
-    accent-color:   #D6D9DB;
-    urgent-color:   #969899;
+    /* softer accents */
+    accent-color:   #6B779F;
+    urgent-color:   #5476C9;
 }

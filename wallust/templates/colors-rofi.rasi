@@ -1,10 +1,10 @@
 * {
     /* base shades */
-    bg0:            {{background}};
-    bg1:            {{color0}};
-    fg0:            {{foreground}};
+    bg0:            {{color0}};
+    bg1:            {{background}};
+    fg0:            {{color15}};
 
-    /* highlight accents */
-    accent-color:   {{color7}};
-    urgent-color:   {{color8}};
+    /* softer accents */
+    accent-color:   {{color4}};
+    urgent-color:   {{color3}};
 }

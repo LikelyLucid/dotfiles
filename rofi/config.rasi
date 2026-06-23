@@ -15,7 +15,7 @@
     /* ---------- GLOBALS ------------ */
     font: "JetBrains Mono 12";
     // background-color: transparent;   /* window itself gets colour below */
-    text-color: @bg0;
+    text-color: @fg0;
 
     margin: 0;
     padding: 0;
@@ -85,7 +85,7 @@ element alternate active  { background-color: @bg1; text-color: @accent-color; }
 
 /* ---- Selected row ---- */
 element selected {
-    text-color: @bg0;
+    text-color: @fg0;
 }
 element selected normal,
 element selected active {
