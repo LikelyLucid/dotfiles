@@ -116,7 +116,7 @@
         "format": "{}% "
     },
     "custom/cputemp": {
-        "exec": "for f in /sys/class/hwmon/hwmon*/temp*_input; do label=${f%_input}_label; name=${f%/temp*_input}/name; [ \"$(cat $name 2>/dev/null)\" = coretemp ] && [ \"$(cat $label 2>/dev/null)\" = 'Package id 0' ] && awk '{printf \" %d°C\", $1/1000}' $f && exit; done; awk '{printf \" %d°C\", $1/1000}' /sys/class/thermal/thermal_zone13/temp",
+        "exec": "for f in /sys/class/hwmon/hwmon*/temp*_input; do [ \"$(cat ${f%_input}_label 2>/dev/null)\" = CPU ] && [ \"$(cat ${f%/temp*_input}/name 2>/dev/null)\" = dell_ddv ] && awk '{printf \" %d°C\", \$1/1000}' \"$f\" && exit; done; echo  ??°C",
         "interval": 5,
         "tooltip": false
     },
