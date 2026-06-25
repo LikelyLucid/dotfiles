@@ -21,6 +21,7 @@
     "custom/clipboard",
     "group/blight",
     "idle_inhibitor",
+    "custom/dnd",
     "custom/colorpicker",
     "bluetooth",
     "group/audio",
@@ -177,6 +178,14 @@
       "activated": "󰾪",
       "deactivated": "󰅶"
     }
+  },
+  "custom/dnd": {
+    "format": "{}",
+    "interval": 1,
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/dnd.sh",
+    "on-click": "~/.config/waybar/scripts/dnd.sh toggle",
+    "tooltip": true
   },
   "custom/colorpicker": {
     "format": "{}",

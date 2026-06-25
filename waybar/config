@@ -10,7 +10,7 @@
     "modules-left": [
         "hyprland/workspaces",
         "cpu",
-        "custom/cava",
+        "cava",
         "hyprland/window"
     ],
     "modules-center": [
@@ -49,18 +49,30 @@
         "max-length": 40,
         "all-outputs": true
     },
-    "custom/cava": {
-        "exec": "~/.config/waybar/cava-mpris.sh",
-        "format": "{}",
-        "hide-empty-text": true,
-        "tooltip": false
+    "cava": {
+        "framerate": 35,
+        "autosens": 1,
+        "bars": 18,
+        "lower_cutoff_freq": 45,
+        "higher_cutoff_freq": 12000,
+        "method": "pipewire",
+        "source": "auto",
+        "stereo": true,
+        "bar_delimiter": 0,
+        "noise_reduction": 0.65,
+        "input_delay": 1,
+        "hide_on_silence": true,
+        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+        "actions": {
+            "on-click-right": "mode"
+        }
     },
     "mpris": {
  	"format": " {status_icon} {dynamic}",
         "format-stopped": "",
         "tooltip-format-stopped": "",
         "interval": 1,
-        "dynamic-len": 40,
+        "dynamic-len": 24,
 	"status-icons": {
 		"playing": "▶",
 		"paused": "⏸",
