@@ -133,9 +133,9 @@
     },
     "wireplumber": {
         "scroll-step": 5, // %, can be a float
-        "format": "{icon} {volume}%",
-        "format-bluetooth": "{icon} {volume}% ",
-        "format-bluetooth-muted": " {icon}",
+        "format": "{icon} {node_nick} {volume}%",
+        "format-bluetooth": "{icon} {node_nick} {volume}% ",
+        "format-bluetooth-muted": " {icon} {node_nick} ",
         "format-muted": "",
         "format-icons": {
             "headphone": "",
