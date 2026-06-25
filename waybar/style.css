@@ -61,6 +61,7 @@ button {
 
 #workspaces button.focused {
   background-color: @color3;
+  color: @color0;
 }
 
 #workspaces button.urgent {
@@ -142,6 +143,7 @@ label:focus {
 
 #wireplumber.muted {
   background-color: @color4;
+  color: @color0;
 }
 
 #tray > .passive {
