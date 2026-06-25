@@ -16,4 +16,8 @@ for o in json.load(sys.stdin):
   if p.get('media.class')=='Audio/Sink' and o['id']==$SINK:
     print(p.get('node.nick',p.get('node.description','?'))); break
 " 2>/dev/null)
-[ "$MUTED" = "1" ] && echo " $NICK" || echo " $NICK ${PCT}%"
+if [ "$MUTED" = "1" ]; then
+  echo "{\"text\": \" ${NICK}\", \"class\": \"muted\"}"
+else
+  echo "{\"text\": \" ${NICK} ${PCT}%\", \"class\": \"custom-audio\"}"
+fi
