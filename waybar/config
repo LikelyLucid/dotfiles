@@ -22,7 +22,7 @@
         "memory",
         "custom/cputemp",
         "custom/uptime",
-        "custom/audio",
+        "wireplumber",
         "backlight",
         "custom/battery",
         "tray"
@@ -131,12 +131,22 @@
         "tooltip": true,
         "exec-tooltip": "printf 'Battery: '; cat /sys/class/power_supply/BAT0/status"
     },
-    "custom/audio": {
-        "exec": "~/.config/waybar/scripts/audio.sh",
-        "interval": 1,
-        "return-type": "json",
-        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-        "on-click-right": "pavucontrol"
+    "wireplumber": {
+        "scroll-step": 5, // %, can be a float
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{icon} {volume}% ",
+        "format-bluetooth-muted": " {icon}",
+        "format-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     }
 },{
     "output": ["HDMI-A-1"],
