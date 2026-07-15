@@ -138,10 +138,10 @@
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
     "custom/battery": {
-        "exec": "cap=$(cat /sys/class/power_supply/BAT0/capacity); status=$(cat /sys/class/power_supply/BAT0/status); ac=$(cat /sys/class/power_supply/AC/online 2>/dev/null || echo 0); icon=; [ \"$cap\" -ge 80 ] && icon= || [ \"$cap\" -ge 60 ] && icon= || [ \"$cap\" -ge 40 ] && icon= || [ \"$cap\" -ge 20 ] && icon=; [ \"$status\" = Charging ] && icon=; [ \"$status\" = Full ] || { [ \"$status\" = 'Not charging' ] && [ \"$ac\" = 1 ]; } && icon=; echo \"$icon $cap%\"",
+        "exec": "~/.config/waybar/scripts/battery.sh",
         "interval": 10,
-        "tooltip": true,
-        "exec-tooltip": "printf 'Battery: '; cat /sys/class/power_supply/BAT0/status"
+        "return-type": "json",
+        "tooltip": true
     },
     "wireplumber": {
         "scroll-step": 5, // %, can be a float
