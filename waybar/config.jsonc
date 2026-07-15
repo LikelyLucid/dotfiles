@@ -312,7 +312,7 @@
     "tooltip": true,
     "format": "{capacity}% <span font='16px'>{icon}</span>",
     "format-time": "{H}h {M}min",
-    "tooltip": "{time}",
+    "tooltip-format": "{time}",
     "format-charging": "{capacity}% <span font='16px'>{icon}</span>",
     "format-plugged": "{capacity}% 󰠠",
     "format-alt": "{time} <span font='16px'>{icon}</span>",
