@@ -1,149 +1,159 @@
 @import url("./colors-wallust.css");
 
 * {
-  font-size: 14px;
-  border-radius: 5px;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrains Mono Nerd Font";
+  font-size: 13px;
+  font-weight: 600;
 }
 
 window#waybar {
-  font-family: "JetBrains Mono Nerd Font";
-  background-color: transparent;
-  border-bottom: 0px;
+  background: transparent;
   color: @foreground;
-  transition-property: background-color;
-  transition-duration: 0.5s;
 }
 
 window#waybar.hidden {
-  opacity: 0.2;
+  opacity: 0.25;
 }
 
 window#waybar.empty #window {
-  background-color: transparent;
+  background: transparent;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+  margin-top: 8px;
+}
+
+.modules-left {
+  margin-left: 20px;
 }
 
 .modules-right {
-  margin: 6px 20px 0 0;
+  margin-right: 20px;
 }
-.modules-center {
-  margin: 6px 0 0 0;
-}
-.modules-left {
-  margin: 6px 0 0 20px;
+
+.modules-left > widget > *,
+.modules-center > widget > *,
+.modules-right > widget > * {
+  min-height: 30px;
+  padding: 0 11px;
+  background-color: @color0;
+  color: @foreground;
+  border-radius: 6px;
+  transition: background-color 160ms ease, color 160ms ease;
 }
 
 button {
-  border: none;
+  min-height: 30px;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+button:hover {
+  background: @color8;
+  color: @foreground;
 }
 
 #workspaces {
-  background-color: @color0;
+  padding: 0 4px;
 }
 
 #workspaces button {
+  min-width: 26px;
   padding: 0 5px;
-  background-color: transparent;
-  color: @foreground;
-  border-radius: 0;
-}
-
-#workspaces button:first-child {
-  border-radius: 5px 0 0 5px;
-}
-
-#workspaces button:last-child {
-  border-radius: 0 5px 5px 0;
+  background: transparent;
+  color: @color8;
+  border-radius: 4px;
 }
 
 #workspaces button:hover {
-  color: @color3;
+  background: @background;
+  color: @foreground;
 }
 
+#workspaces button.active,
 #workspaces button.focused {
-  background-color: @color3;
+  background: @color3;
   color: @color0;
 }
 
 #workspaces button.urgent {
-  background-color: @color5;
-}
-
-#custom-caffinate,
-#cava,
-#custom-cava,
-#scratchpad,
-#mode,
-#window,
-#clock,
-#battery,
-#custom-battery,
-#backlight,
-#wireplumber,
-#tray,
-#mpris,
-#custom-uptime,
-#custom-cputemp,
-#cpu,
-#memory,
-#temperature {
-  padding: 0 10px;
-  background-color: @color0;
+  background: @color1;
   color: @foreground;
 }
 
-#mode {
-  background-color: @color2;
+#clock {
+  padding: 0 15px;
+  background: @color3;
+  color: @color0;
+  font-weight: 800;
+}
+
+#window {
+  color: @color7;
+  font-weight: 500;
+}
+
+#cava {
+  padding: 0 8px;
+  color: @color3;
+}
+
+#cpu {
+  color: @color7;
+}
+
+#mpris.playing {
+  background: @color3;
   color: @color0;
 }
 
-.modules-left > widget:first-child > #workspaces {
-  margin-left: 0;
+#mpris.paused {
+  color: @color8;
 }
 
-.modules-right > widget:last-child > #workspaces {
-  margin-right: 0;
-}
-
-#cava,
-#custom-cava {
-  padding: 0 5px;
+#mpris.stopped {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
 }
 
 #custom-caffinate {
-  padding: 0 4px;
   min-width: 20px;
+  padding: 0 6px;
 }
 
-#battery.charging,
-#battery.plugged {
-  background-color: @color3;
+#custom-caffinate:hover,
+#wireplumber:hover,
+#backlight:hover,
+#custom-battery:hover {
+  background: @color3;
   color: @color0;
-}
-
-@keyframes blink {
-  to {
-    background-color: @color0;
-    color: @foreground;
-  }
-}
-
-#battery.critical:not(.charging) {
-  background-color: @color1;
-  color: @foreground;
-  animation-name: blink;
-  animation-duration: 0.5s;
-  animation-timing-function: steps(12);
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-label:focus {
-  background-color: @background;
 }
 
 #wireplumber.muted {
-  background-color: @color4;
+  background: @color4;
   color: @color0;
+}
+
+#custom-battery.charging,
+#custom-battery.full,
+#custom-battery.not-charging {
+  background: @color3;
+  color: @color0;
+}
+
+#custom-battery.discharging {
+  color: @foreground;
+}
+
+#tray {
+  padding: 0 9px;
 }
 
 #tray > .passive {
@@ -154,20 +164,33 @@ label:focus {
   -gtk-icon-effect: highlight;
 }
 
-#mpris.stopped {
-  padding: 0;
-  background-color: transparent;
+#tray menu {
+  font-family: "JetBrains Mono Nerd Font";
+  background: @color0;
+  color: @foreground;
+  border: 1px solid @color8;
+  border-radius: 6px;
 }
 
-#mpris.playing {
-  background-color: @color3;
+#mode {
+  background: @color2;
   color: @color0;
 }
 
-#tray menu {
-  font-family: sans-serif;
+#scratchpad.empty {
+  min-width: 0;
+  padding: 0;
+  background: transparent;
 }
 
-#scratchpad.empty {
-  background: transparent;
+tooltip {
+  background: @color0;
+  color: @foreground;
+  border: 1px solid @color8;
+  border-radius: 6px;
+}
+
+tooltip label {
+  padding: 7px 9px;
+  color: @foreground;
 }

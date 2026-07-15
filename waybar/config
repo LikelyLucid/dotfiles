@@ -1,9 +1,9 @@
 // -*- mode: jsonc -*-
 [{
     // "output": ["DP-1", "eDP-2"],
-    // "layer": "top", // Waybar at top layer
-    // "position": "bottom", // Waybar position (top|bottom|left|right)
-    // "height": 24, // Waybar height (to be removed for auto height)
+    "layer": "top",
+    "position": "bottom",
+    "exclusive": true,
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
@@ -113,7 +113,7 @@
         "format": " {}"
     },
     "clock": {
-        "format": " {:%H:%M}",
+        "format": " {:%H:%M}",
         // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
@@ -163,9 +163,9 @@
     }
 },{
     "output": ["HDMI-A-1"],
-    // "layer": "top", // Waybar at top layer
-    // "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 24, // Waybar height (to be removed for auto height)
+    "layer": "top",
+    "position": "bottom",
+    "exclusive": true,
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
@@ -209,7 +209,7 @@
         "tooltip-format": "{app}: {title}"
     },
     "clock": {
-        // "timezone": "America/New_York",
+        "format": " {:%H:%M}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
     }
