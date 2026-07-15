@@ -315,7 +315,7 @@
     "tooltip": "{time}",
     "format-charging": "{capacity}% <span font='16px'>{icon}</span>",
     "format-plugged": "{capacity}% 󰠠",
-    // "format-alt": "{time} {icon}",
+    "format-alt": "{time} <span font='16px'>{icon}</span>",
     "format-icons": [
       "󰪞",
       "󰪟",
@@ -325,8 +325,7 @@
       "󰪣",
       "󰪤",
       "󰪥"
-    ],
-    "on-click": "~/.config/rofi/scripts/powermenu.sh"
+    ]
   },
   "mpd": {
     "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) <U+F001>",

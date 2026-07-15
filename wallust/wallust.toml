@@ -54,7 +54,7 @@ neovim_vim = { template = 'colors_neopywal.vim', target = '~/.cache/wal/colors-w
 neovim_lua = { template = 'nvim.lua', target = '~/.cache/wal/wallust.nvim.lua' }
 rofi = { template = 'colors-rofi.rasi', target = '~/dotfiles/rofi/colors.rasi' }
 nemo = { template = 'nemo.css', target = '~/.config/gtk-3.0/nemo.css' }
-swaync = { template = 'swaync.css', target = '~/.config/swaync/style.css' }
+swaync = { template = 'swaync.css.tmpl', target = '~/.config/swaync/style.css' }
 hyprland = { template = 'hyprland-colors.conf', target = '~/.config/hypr/wallust-colors.conf' }
 hyprlock = { template = 'hyprlock-colors.conf', target = '~/.config/hypr/wallust-hyprlock.conf' }
 tmux = { template = 'tmux.conf', target = '~/.config/tmux/wallust.conf' }
