@@ -1,216 +1,130 @@
 // -*- mode: jsonc -*-
-[{
-    // "output": ["DP-1", "eDP-2"],
+[
+  {
     "layer": "top",
     "position": "top",
     "exclusive": true,
-    // "width": 1280, // Waybar width
-    "spacing": 4, // Gaps between modules (4px)
-    // Choose the order of the modules
+    "height": 36,
+    "spacing": 6,
     "modules-left": [
-        "hyprland/workspaces",
-        "cpu",
-        "cava",
-        "hyprland/window"
+      "hyprland/workspaces",
+      "hyprland/window"
     ],
     "modules-center": [
-        "clock"
+      "clock"
     ],
     "modules-right": [
-        "mpris",
-        "custom/caffinate",
-        "memory",
-        "custom/cputemp",
-        "custom/uptime",
-        "wireplumber",
-        "backlight",
-        "custom/battery",
-        "tray"
+      "mpris",
+      "tray",
+      "network",
+      "bluetooth",
+      "wireplumber",
+      "backlight",
+      "custom/battery",
+      "custom/caffinate",
+      "custom/notifications"
     ],
-    // Modules configuration
     "hyprland/workspaces": {
-        "all-outputs": true,
-        "warp-on-scroll": false,
-        "enable-bar-scroll": true,
-        "disable-scroll-wraparound": true,
-        "format": "{icon}",
-        "format-icons": {
-            "1": "",
-            "2": "",
-            "3": "",
-            "4": "",
-            "5": "",
-            "9": "",
-            "10": ""
-        }
+      "all-outputs": true,
+      "disable-scroll-wraparound": true,
+      "format": "{icon}",
+      "format-icons": {
+        "1": "1",
+        "2": "2",
+        "3": "3",
+        "4": "4",
+        "5": "5",
+        "6": "6",
+        "urgent": "!",
+        "active": "●",
+        "default": "○"
+      }
     },
     "hyprland/window": {
-        "format": "{title}",
-        "max-length": 40,
-        "all-outputs": true
+      "format": "{title}",
+      "max-length": 44,
+      "separate-outputs": true,
+      "rewrite": {
+        "(.*) — Mozilla Firefox": "$1",
+        "(.*) - Chromium": "$1",
+        "(.*) - Helium": "$1"
+      }
     },
-    "cava": {
-        "framerate": 35,
-        "autosens": 1,
-        "bars": 18,
-        "lower_cutoff_freq": 45,
-        "higher_cutoff_freq": 12000,
-        "method": "pipewire",
-        "source": "auto",
-        "stereo": true,
-        "bar_delimiter": 0,
-        "noise_reduction": 0.65,
-        "input_delay": 1,
-        "hide_on_silence": true,
-        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
-        "actions": {
-            "on-click-right": "mode"
-        }
+    "clock": {
+      "format": "{:%H:%M}",
+      "format-alt": "{:%A, %d %B}",
+      "tooltip-format": "<big>{:%A, %d %B %Y}</big>\n<tt><small>{calendar}</small></tt>"
     },
     "mpris": {
- 	"format": " {status_icon} {dynamic}",
-        "format-stopped": "",
-        "tooltip-format-stopped": "",
-        "interval": 1,
-        "dynamic-len": 24,
-	"status-icons": {
-		"playing": "▶",
-		"paused": "⏸",
-		"stopped": ""
-	},
-	"dynamic-order": ["title", "artist"],
-	"ignored-players": ["firefox", "firefox-esr", "zen", "helium", "chromium", "google-chrome", "brave"]
-    },
-    "custom/caffinate": {
-        "format": " {} ",
-        "exec": "if systemctl --user is-active hypridle &>/dev/null; then echo ''; else echo ''; fi",
-        "interval": 5,
-        "on-click": "~/.config/hypr/scripts/caffinate.sh",
-        "signal": 8,
-        "tooltip": true
-    },
-    "custom/uptime": {
-        "exec": "awk '{d=int($1/86400); h=int(($1%86400)/3600); m=int(($1%3600)/60); if (d>0) printf \"%dd %dh\", d, h; else if (h>0) printf \"%dh %dm\", h, m; else printf \"%dm\", m}' /proc/uptime",
-        "interval": 60,
-        "format": " {}",
-        "tooltip": true
-    },
-    "hyprland/mode": {
-        "format": "{}"
-    },
-    "hyprland/scratchpad": {
-        "format": "{icon} {count}",
-        "show-empty": false,
-        "format-icons": ["", ""],
-        "tooltip": true,
-        "tooltip-format": "{app}: {title}"
+      "format": "{status_icon} {dynamic}",
+      "format-stopped": "",
+      "tooltip-format": "{player}: {artist} — {title}",
+      "dynamic-order": ["title", "artist"],
+      "dynamic-len": 28,
+      "status-icons": {
+        "playing": "󰐊",
+        "paused": "󰏤",
+        "stopped": ""
+      },
+      "ignored-players": ["firefox", "zen", "helium", "chromium"]
     },
     "tray": {
-        "icon-size": 14,
-        "spacing": 10
+      "icon-size": 15,
+      "spacing": 8
     },
-    "load": {
-        "format": " {}"
+    "network": {
+      "format-wifi": "󰖩",
+      "format-ethernet": "󰈀",
+      "format-disconnected": "󰖪",
+      "tooltip-format-wifi": "{essid}\n{signalStrength}% · {ipaddr}",
+      "tooltip-format-ethernet": "{ifname}\n{ipaddr}",
+      "tooltip-format-disconnected": "Network disconnected",
+      "on-click": "networkmanager_dmenu"
     },
-    "clock": {
-        "format": " {:%H:%M}",
-        // "timezone": "America/New_York",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
-    },
-    "cpu": {
-        "interval": 1,
-        "format": "{icon0}{icon1}{icon2}{icon3}{icon4}{icon5}{icon6}{icon7}{icon8}{icon9}{icon10}{icon11}{icon12}{icon13}{icon14}{icon15}{icon16}{icon17}{icon18}{icon19} {usage:>2}%",
-        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
-        "tooltip": true
-    },
-    "memory": {
-        "format": "{}% "
-    },
-    "custom/cputemp": {
-        "exec": "for f in /sys/class/hwmon/hwmon*/temp*_input; do [ \"$(cat ${f%_input}_label 2>/dev/null)\" = CPU ] && [ \"$(cat ${f%/temp*_input}/name 2>/dev/null)\" = dell_ddv ] && awk '{printf \" %d°C\", $1/1000}' \"$f\" && exit; done; echo  ??°C",
-        "interval": 5,
-        "tooltip": false
-    },
-    "backlight": {
-        // "device": "acpi_video1",
-        "format": "{icon} {percent}%",
-        "format-icons": ["", "", "", "", "", "", "", "", ""]
-    },
-    "custom/battery": {
-        "exec": "~/.config/waybar/scripts/battery.sh",
-        "interval": 10,
-        "return-type": "json",
-        "tooltip": true
+    "bluetooth": {
+      "format-on": "󰂯",
+      "format-off": "󰂲",
+      "format-disabled": "󰂲",
+      "format-connected": "󰂱",
+      "format-connected-battery": "󰂱 {device_battery_percentage}%",
+      "tooltip-format": "{controller_alias}: {num_connections} connected",
+      "tooltip-format-connected": "{device_enumerate}",
+      "tooltip-format-enumerate-connected": "{device_alias}",
+      "on-click": "rofi-bluetooth"
     },
     "wireplumber": {
-        "scroll-step": 5, // %, can be a float
-        "format": "{icon} {volume}%",
-        "format-bluetooth": "{icon} {volume}% ",
-        "format-bluetooth-muted": " {icon}",
-        "format-muted": "",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
-        },
-        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-        "on-click-right": "pavucontrol"
+      "scroll-step": 5,
+      "format": "{icon} {volume}%",
+      "format-bluetooth": "󰂰 {volume}%",
+      "format-muted": "󰝟",
+      "format-icons": ["󰕿", "󰖀", "󰕾"],
+      "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+      "on-click-right": "pavucontrol"
+    },
+    "backlight": {
+      "format": "󰃠 {percent}%",
+      "tooltip": false
+    },
+    "custom/battery": {
+      "exec": "~/.config/waybar/scripts/battery.sh",
+      "interval": 10,
+      "return-type": "json",
+      "tooltip": true
+    },
+    "custom/caffinate": {
+      "format": "{}",
+      "exec": "if systemctl --user is-active hypridle &>/dev/null; then echo '󰒲'; else echo '󰅶'; fi",
+      "interval": 5,
+      "on-click": "~/.config/hypr/scripts/caffinate.sh",
+      "tooltip-format": "Toggle idle inhibition"
+    },
+    "custom/notifications": {
+      "format": "{}",
+      "exec": "swaync-client -swb",
+      "return-type": "json",
+      "on-click": "swaync-client -t -sw",
+      "on-click-right": "swaync-client -d -sw",
+      "escape": true
     }
-},{
-    "output": ["HDMI-A-1"],
-    "layer": "top",
-    "position": "top",
-    "exclusive": true,
-    // "width": 1280, // Waybar width
-    "spacing": 4, // Gaps between modules (4px)
-    // Choose the order of the modules
-    "modules-left": [
-        "hyprland/workspaces",
-        "hyprland/window",
-        "hyprland/mode"
-    ],
-    "modules-center": [
-        "clock"
-    ],
-    "modules-right": [],
-    "hyprland/workspaces": {
-        "all-outputs": true,
-        "warp-on-scroll": true,
-        "enable-bar-scroll": true,
-        "format": "{icon}",
-        "format-icons": {
-            "1": "",
-            "2": "",
-            "3": "",
-            "4": "",
-            "5": "",
-            "9": "",
-            "10": ""
-        }
-    },
-    "hyprland/window": {
-        "format": "{title}",
-        "max-length": 40,
-        "all-outputs": true
-    },
-    "hyprland/mode": {
-        "format": "{}"
-    },
-    "hyprland/scratchpad": {
-        "format": "{icon} {count}",
-        "show-empty": false,
-        "format-icons": ["", ""],
-        "tooltip": true,
-        "tooltip-format": "{app}: {title}"
-    },
-    "clock": {
-        "format": " {:%H:%M}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
-    }
-}]
+  }
+]

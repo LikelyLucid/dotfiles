@@ -3,8 +3,7 @@
 * {
   min-height: 0;
   border: none;
-  border-radius: 0;
-  font-family: "JetBrains Mono Nerd Font";
+  font-family: "Inter", "JetBrains Mono Nerd Font";
   font-size: 12px;
   font-weight: 500;
 }
@@ -14,48 +13,40 @@ window#waybar {
   color: @foreground;
 }
 
-window#waybar.hidden {
-  opacity: 0.25;
-}
-
-window#waybar.empty #window {
-  background: transparent;
-}
-
 .modules-left,
 .modules-center,
 .modules-right {
-  margin-top: 6px;
-}
-
-.modules-left {
-  margin-left: 20px;
-}
-
-.modules-right {
-  margin-right: 20px;
+  margin: 7px 12px 0;
 }
 
 .modules-left > widget > *,
 .modules-center > widget > *,
 .modules-right > widget > * {
-  min-height: 26px;
-  padding: 0 8px;
-  background-color: @color0;
+  min-height: 27px;
+  padding: 0 9px;
+  background: alpha(@color0, 0.92);
   color: @foreground;
-  border-radius: 5px;
-  transition: background-color 160ms ease, color 160ms ease;
+  border: 1px solid alpha(@color8, 0.28);
+  border-radius: 7px;
+  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
 }
 
 button {
-  min-height: 26px;
+  min-height: 27px;
   box-shadow: none;
   text-shadow: none;
 }
 
-button:hover {
-  background: @color8;
-  color: @foreground;
+button:hover,
+#network:hover,
+#bluetooth:hover,
+#wireplumber:hover,
+#backlight:hover,
+#custom-battery:hover,
+#custom-caffinate:hover,
+#custom-notifications:hover {
+  background: alpha(@color8, 0.28);
+  border-color: alpha(@color7, 0.65);
 }
 
 #workspaces {
@@ -63,21 +54,17 @@ button:hover {
 }
 
 #workspaces button {
-  min-width: 22px;
-  padding: 0 3px;
+  min-width: 25px;
+  padding: 0 5px;
   background: transparent;
   color: @color8;
-  border-radius: 4px;
-}
-
-#workspaces button:hover {
-  background: @background;
-  color: @foreground;
+  border: none;
+  border-radius: 5px;
 }
 
 #workspaces button.active,
 #workspaces button.focused {
-  background: @color3;
+  background: @color7;
   color: @color0;
 }
 
@@ -86,30 +73,28 @@ button:hover {
   color: @foreground;
 }
 
-#clock {
-  padding: 0 12px;
-  background: @color3;
-  color: @color0;
-  font-weight: 800;
-}
-
 #window {
-  color: @color7;
-  font-weight: 500;
+  color: alpha(@foreground, 0.82);
 }
 
-#cava {
-  padding: 0 6px;
-  color: @color3;
+#window.empty {
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
 }
 
-#cpu {
-  color: @color7;
-}
-
-#mpris.playing {
-  background: @color3;
+#clock {
+  padding: 0 13px;
+  background: @color7;
   color: @color0;
+  border-color: @color7;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+#mpris {
+  color: alpha(@foreground, 0.88);
 }
 
 #mpris.paused {
@@ -119,75 +104,46 @@ button:hover {
 #mpris.stopped {
   min-width: 0;
   padding: 0;
-  margin: 0;
+  border: none;
   background: transparent;
 }
 
-#custom-caffinate {
-  min-width: 20px;
-  padding: 0 6px;
+#tray {
+  padding: 0 8px;
 }
 
-#custom-caffinate:hover,
-#wireplumber:hover,
-#backlight:hover,
-#custom-battery:hover {
-  background: @color3;
-  color: @color0;
+#wireplumber.muted,
+#network.disconnected,
+#custom-battery.warning {
+  color: @color8;
 }
 
-#wireplumber.muted {
-  background: @color4;
-  color: @color0;
+#custom-battery.critical,
+#custom-notifications.notification {
+  color: @color1;
+  border-color: alpha(@color1, 0.65);
 }
 
 #custom-battery.charging,
 #custom-battery.full,
 #custom-battery.not-charging {
-  background: @color3;
-  color: @color0;
+  color: @color7;
 }
 
-#custom-battery.discharging {
-  color: @foreground;
+#custom-caffinate {
+  min-width: 16px;
 }
 
-#tray {
-  padding: 0 7px;
+#custom-notifications {
+  min-width: 17px;
 }
 
-#tray > .passive {
-  -gtk-icon-effect: dim;
-}
-
-#tray > .needs-attention {
-  -gtk-icon-effect: highlight;
-}
-
-#tray menu {
-  font-family: "JetBrains Mono Nerd Font";
-  background: @color0;
-  color: @foreground;
-  border: 1px solid @color8;
-  border-radius: 6px;
-}
-
-#mode {
-  background: @color2;
-  color: @color0;
-}
-
-#scratchpad.empty {
-  min-width: 0;
-  padding: 0;
-  background: transparent;
-}
-
+#tray menu,
 tooltip {
-  background: @color0;
+  background: alpha(@color0, 0.97);
   color: @foreground;
-  border: 1px solid @color8;
-  border-radius: 6px;
+  border: 1px solid alpha(@color8, 0.55);
+  border-radius: 7px;
 }
 
 tooltip label {

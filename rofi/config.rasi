@@ -1,102 +1,96 @@
-/* ──────────────────────────────────────────────
-   "Squared-Clean" — minimal dark Rofi theme
-   Colours come from Wallust; fallback values
-   ensure it never breaks even if the import fails
-   ────────────────────────────────────────────── */
-
 * {
-    /* ---------- FALLBACKS (overridden by wallust below) ---------- */
-    bg0: #232524;
-    bg1: #484A4A;
-    fg0: #E4E6E9;
-    accent-color: #72787F;
-    urgent-color: #7B7066;
+    bg0: #101115;
+    bg1: #1b1d23;
+    fg0: #eef1f7;
+    accent-color: #8fa7d8;
+    urgent-color: #d98282;
 
-    /* ---------- GLOBALS ------------ */
-    font: "JetBrains Mono 12";
-    // background-color: transparent;   /* window itself gets colour below */
+    font: "Inter 12";
     text-color: @fg0;
-
     margin: 0;
     padding: 0;
     spacing: 0;
 }
 
-/* ---------- WINDOW ---------- */
 window {
     location: center;
-    width:   480;
-
-    background-color: @bg0;                /* main panel */
-    // border: 2px solid @accent-color;       /* subtle outline */
-    border-radius: 6px;                    /* softer edges */
-    padding: 6px;                          /* breathing room */
+    width: 560px;
+    background-color: @bg0;
+    border: 1px;
+    border-color: @accent-color;
+    border-radius: 10px;
+    padding: 10px;
 }
 
-
-/* --- Input bar ------------------------------------------------------------ */
-inputbar {
-    spacing:          6px;
-    padding:          8px 12px;
-    background-color: @bg1;
-    border-radius:    4px;
-}
-
-/* ► Make the typed text light                                 */
-entry      { text-color: @fg0; }
-
-/* prompt keeps its accent colour                               */
-prompt     { text-color: @accent-color; }
-
-/* --- Message textbox (rofi -e) ------------------------------------------- */
-textbox {
-    padding:          8px 12px;
-    background-color: @bg1;
-    border-radius:    4px;
-
-    /* ► Ensure message text is also light                         */
-    text-color:       @fg0;
-}
-
-/* ---------- LISTVIEW ---------- */
-listview {
-    padding: 4px 0;
-    lines:   10;       /* a little taller */
-    columns: 1;
-    fixed-height: false;
-}
-
-/* ---------- ELEMENTS (rows) ---------- */
-element {
-    padding: 6px 10px;
+mainbox {
     spacing: 8px;
-    border-radius: 4px;  /* rounded selection */
 }
 
-/* ---- Normal rows ---- */
-element normal normal   { background-color: transparent; text-color: @fg0; }
-element normal urgent   { background-color: transparent; text-color: @urgent-color; }
-element normal active   { background-color: transparent; text-color: @accent-color; }
+inputbar {
+    spacing: 9px;
+    padding: 11px 13px;
+    background-color: @bg1;
+    border-radius: 7px;
+}
 
-/* ---- Alternate rows (every 2nd) ---- */
-element alternate normal  { background-color: @bg1; text-color: @fg0; }
-element alternate urgent  { background-color: @bg1; text-color: @urgent-color; }
-element alternate active  { background-color: @bg1; text-color: @accent-color; }
+prompt {
+    text-color: @accent-color;
+}
 
-/* ---- Selected row ---- */
-element selected {
+entry {
+    placeholder: "Search applications and commands";
+    placeholder-color: @fg0;
     text-color: @fg0;
 }
-element selected normal,
-element selected active {
+
+message {
+    padding: 9px 12px;
+    background-color: @bg1;
+    border-radius: 7px;
+}
+
+textbox {
+    text-color: @fg0;
+}
+
+listview {
+    lines: 9;
+    columns: 1;
+    fixed-height: false;
+    scrollbar: false;
+    spacing: 3px;
+}
+
+element {
+    padding: 9px 11px;
+    spacing: 10px;
+    border-radius: 7px;
+}
+
+element normal.normal,
+element alternate.normal {
+    background-color: transparent;
+    text-color: @fg0;
+}
+
+element selected.normal,
+element selected.active {
     background-color: @accent-color;
-}
-element selected urgent {
-    background-color: @urgent-color;
+    text-color: @bg0;
 }
 
-/* ---------- ICONS & TEXT ---------- */
-element-icon { size: 0.85em; }   /* slightly larger for clarity */
-element-text { text-color: inherit; }
+element normal.urgent,
+element selected.urgent {
+    text-color: @urgent-color;
+}
 
-@import "./colors.rasi"   /* Wallust colours — imported last so they override fallbacks */
+element-icon {
+    size: 24px;
+}
+
+element-text {
+    vertical-align: 0.5;
+    text-color: inherit;
+}
+
+@import "./colors.rasi"
