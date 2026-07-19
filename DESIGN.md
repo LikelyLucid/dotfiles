@@ -78,8 +78,8 @@ Before committing a visual change:
 
 1. Regenerate the palette with the current wallpaper.
 2. Validate the application's configuration parser.
-3. Verify there are no literal color values outside generated files or Wallust
-   templates.
+3. Run `scripts/check-design-system.sh` to reject literal palette values and
+   typography drift in authored themes.
 4. Capture the live desktop with Grim and inspect spacing, contrast, clipping,
    and competing accents.
 5. Confirm keyboard focus and the reduced-motion path remain usable.
