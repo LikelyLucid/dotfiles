@@ -1,11 +1,12 @@
-* {
-    bg0: #101115;
-    bg1: #1b1d23;
-    fg0: #eef1f7;
-    accent-color: #8fa7d8;
-    urgent-color: #d98282;
+@import "./colors.rasi"
 
-    font: "Inter 12";
+configuration {
+    show-icons: true;
+    drun-display-format: "{name}";
+}
+
+* {
+    font: "JetBrains Mono Nerd Font 12";
     text-color: @fg0;
     margin: 0;
     padding: 0;
@@ -27,6 +28,7 @@ mainbox {
 }
 
 inputbar {
+    children: [ entry ];
     spacing: 9px;
     padding: 11px 13px;
     background-color: @bg1;
@@ -92,5 +94,3 @@ element-text {
     vertical-align: 0.5;
     text-color: inherit;
 }
-
-@import "./colors.rasi"
