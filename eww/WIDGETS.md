@@ -57,10 +57,9 @@ a bounded `--duration` fallback. Do not add `unfocus-close` or `onhoverlost`
 unless focus and pointer entry have been verified on every output; the Waybar
 launch path can otherwise close a new layer immediately after opening it.
 
-## Inactive system-widget previews
+## System-widget launchers
 
-The preview suite is intentionally **not wired into Waybar**. Open one module
-at a time for review with:
+Open one module directly with:
 
 ```bash
 ~/.config/eww/scripts/widget-preview.sh audio
@@ -75,8 +74,13 @@ Every preview uses the same dynamic monitor positioning and closes competing
 Eww previews. The shared state seam is `scripts/system-state.py <domain>` and
 the action seam is `scripts/system-action.sh <domain> <action> [value]`.
 
+Waybar now opens these launchers from audio, Wi-Fi, Bluetooth, backlight,
+battery, caffeine, and notifications. Workspace buttons retain their normal
+left-click switching behavior and open the workspace panel on right click.
+Existing secondary actions remain available on right click where applicable.
+
 - **Audio:** live volume and mute controls. When Nothing Headphone (1) is
-  connected, the slider targets its PulseAudio sink instead of the default sink
+  connected, the slider targets its PipeWire sink instead of the default sink
   and exposes battery, ANC/transparency, EQ, and spatial-audio controls.
 - **Bluetooth:** adapter power/scanning controls, paired-device status, direct
   connect/disconnect, and Blueman settings.

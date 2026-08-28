@@ -40,7 +40,7 @@ button {
 button:hover,
 #network:hover,
 #bluetooth:hover,
-#wireplumber:hover,
+#custom-audio:hover,
 #backlight:hover,
 #custom-battery:hover,
 #custom-caffinate:hover,
@@ -97,6 +97,22 @@ button:hover,
   color: alpha(@foreground, 0.88);
 }
 
+#custom-audio {
+  color: @foreground;
+}
+
+#custom-audio.anc {
+  color: @color6;
+}
+
+#custom-audio.transparency {
+  color: @color7;
+}
+
+#custom-audio.disconnected {
+  color: @foreground;
+}
+
 #mpris.paused {
   color: @color8;
 }
@@ -112,7 +128,6 @@ button:hover,
   padding: 0 8px;
 }
 
-#wireplumber.muted,
 #network.disconnected,
 #custom-battery.warning {
   color: @color8;
@@ -138,15 +153,24 @@ button:hover,
   min-width: 17px;
 }
 
-#tray menu,
-tooltip {
+#tray menu {
   background: alpha(@color0, 0.97);
   color: @foreground;
   border: 1px solid alpha(@color8, 0.55);
   border-radius: 7px;
 }
 
-tooltip label {
-  padding: 7px 9px;
+tooltip {
+  padding: 9px 11px;
+  background: alpha(@color0, 0.97);
   color: @foreground;
+  border: 1px solid alpha(@color8, 0.55);
+  border-radius: 9px;
+}
+
+tooltip label {
+  padding: 0;
+  color: @foreground;
+  font-family: "JetBrains Mono", "JetBrains Mono Nerd Font";
+  font-size: 11px;
 }

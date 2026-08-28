@@ -18,7 +18,7 @@
       "tray",
       "network",
       "bluetooth",
-      "wireplumber",
+      "custom/audio",
       "backlight",
       "custom/battery",
       "custom/caffinate",
@@ -27,6 +27,7 @@
     "hyprland/workspaces": {
       "all-outputs": true,
       "disable-scroll-wraparound": true,
+      "on-click-right": "~/.config/eww/scripts/widget-preview.sh workspaces",
       "format": "{icon}",
       "format-icons": {
         "1": "1",
@@ -56,6 +57,20 @@
       "tooltip": false,
       "on-click": "~/.config/eww/scripts/calendar-popup.sh"
     },
+    "custom/audio": {
+      "format": "{}",
+      "return-type": "json",
+      "exec": "~/.config/waybar/scripts/nothing-headphones.sh audio",
+      "interval": 2,
+      "signal": 8,
+      "exec-on-event": false,
+      "on-click": "~/.config/eww/scripts/widget-preview.sh audio",
+      "on-click-right": "~/.config/waybar/scripts/nothing-headphones.sh audio-settings",
+      "on-scroll-up": "~/.config/waybar/scripts/nothing-headphones.sh volume-up",
+      "on-scroll-down": "~/.config/waybar/scripts/nothing-headphones.sh volume-down",
+      "smooth-scrolling-threshold": 1,
+      "tooltip": true
+    },
     "mpris": {
       "format": "{status_icon} {dynamic}",
       "format-stopped": "",
@@ -81,7 +96,8 @@
       "tooltip-format-wifi": "{essid}\n{signalStrength}% · {ipaddr}",
       "tooltip-format-ethernet": "{ifname}\n{ipaddr}",
       "tooltip-format-disconnected": "Network disconnected",
-      "on-click": "networkmanager_dmenu"
+      "on-click": "~/.config/eww/scripts/widget-preview.sh wifi",
+      "on-click-right": "networkmanager_dmenu"
     },
     "bluetooth": {
       "format-on": "󰂯",
@@ -92,41 +108,35 @@
       "tooltip-format": "{controller_alias}: {num_connections} connected",
       "tooltip-format-connected": "{device_enumerate}",
       "tooltip-format-enumerate-connected": "{device_alias}",
-      "on-click": "rofi-bluetooth"
-    },
-    "wireplumber": {
-      "scroll-step": 5,
-      "format": "{icon} {volume}%",
-      "format-bluetooth": "󰂰 {volume}%",
-      "format-muted": "󰝟",
-      "format-icons": ["󰕿", "󰖀", "󰕾"],
-      "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-      "on-click-right": "pavucontrol"
+      "on-click": "~/.config/eww/scripts/widget-preview.sh bluetooth",
+      "on-click-right": "rofi-bluetooth"
     },
     "backlight": {
       "format": "󰃠 {percent}%",
-      "tooltip": false
+      "tooltip": false,
+      "on-click": "~/.config/eww/scripts/widget-preview.sh power"
     },
     "custom/battery": {
       "exec": "~/.config/waybar/scripts/battery.sh",
       "interval": 10,
       "return-type": "json",
       "tooltip": true,
-      "on-click": "power-profile-menu",
+      "on-click": "~/.config/eww/scripts/widget-preview.sh power",
       "on-click-right": "power-profile-details"
     },
     "custom/caffinate": {
       "format": "{}",
       "exec": "if systemctl --user is-active hypridle &>/dev/null; then echo '󰒲'; else echo '󰅶'; fi",
       "interval": 5,
-      "on-click": "~/.config/hypr/scripts/caffinate.sh",
+      "on-click": "~/.config/eww/scripts/widget-preview.sh power",
+      "on-click-right": "~/.config/hypr/scripts/caffinate.sh",
       "tooltip-format": "Toggle idle inhibition"
     },
     "custom/notifications": {
       "format": "{}",
       "exec": "swaync-client -swb",
       "return-type": "json",
-      "on-click": "swaync-client -t -sw",
+      "on-click": "~/.config/eww/scripts/widget-preview.sh notifications",
       "on-click-right": "swaync-client -d -sw",
       "escape": true
     }
