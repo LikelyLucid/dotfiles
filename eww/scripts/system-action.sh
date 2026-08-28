@@ -31,6 +31,25 @@ decode_hex() {
   python3 -c 'import sys; print(bytes.fromhex(sys.argv[1]).decode(), end="")' "$1"
 }
 
+refresh_widget_state() {
+  local provider variable payload config_dir
+  config_dir=${XDG_CONFIG_HOME:-$HOME/.config}/eww
+  case "$domain" in
+    audio) provider=audio; variable=audio_state ;;
+    bluetooth) provider=bluetooth; variable=bluetooth_state ;;
+    network) provider=network; variable=network_state ;;
+    workspaces) provider=workspaces; variable=workspace_state ;;
+    power) provider=power; variable=power_state ;;
+    notifications) provider=notifications; variable=notification_state ;;
+    *) return ;;
+  esac
+  payload=$("$config_dir/scripts/system-state.py" "$provider")
+  eww --force-wayland --config "$config_dir" update "$variable=$payload" >/dev/null 2>&1 || true
+  if [[ $domain == audio ]]; then
+    pkill -RTMIN+8 -x waybar 2>/dev/null || pkill -RTMIN+8 -x .waybar-wrapped 2>/dev/null || true
+  fi
+}
+
 case "$domain:$action" in
   audio:volume)
     value=${1:-0}
@@ -49,12 +68,15 @@ case "$domain:$action" in
     ;;
   audio:anc)
     nothing_cli anc "${1:-smart-1}" >/dev/null
+    rm -f "${XDG_RUNTIME_DIR:-/tmp}/nothing-headphones-status.json"
     ;;
   audio:eq)
     nothing_cli eq "${1:-balanced}" >/dev/null
+    rm -f "${XDG_RUNTIME_DIR:-/tmp}/nothing-headphones-status.json"
     ;;
   audio:spatial)
     nothing_cli spatial "${1:-off}" >/dev/null
+    rm -f "${XDG_RUNTIME_DIR:-/tmp}/nothing-headphones-status.json"
     ;;
 
   bluetooth:power)
@@ -105,7 +127,7 @@ case "$domain:$action" in
   workspaces:switch)
     workspace=${1:-}
     [[ $workspace =~ ^[0-9]+$|^[[:alnum:]_-]+$ ]] || exit 2
-    hyprctl dispatch workspace "$workspace" >/dev/null
+    hyprctl dispatch "hl.dsp.focus({ workspace = \"$workspace\" })" >/dev/null
     ;;
 
   power:brightness)
@@ -149,3 +171,5 @@ case "$domain:$action" in
     exit 2
     ;;
 esac
+
+refresh_widget_state

@@ -76,6 +76,9 @@ Open one module directly with:
 Every preview uses the same dynamic monitor positioning and closes competing
 Eww previews. The shared state seam is `scripts/system-state.py <domain>` and
 the action seam is `scripts/system-action.sh <domain> <action> [value]`.
+Successful actions push fresh provider data directly into Eww, so controls do
+not wait for their fallback polling interval. Nothing-headphone actions also
+invalidate the shared status cache before refreshing.
 The shared position helper clamps every popup inside its click monitor with a
 20px horizontal safety inset, including modules at either end of Waybar.
 
