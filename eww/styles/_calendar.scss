@@ -74,12 +74,17 @@ calendar.eww-calendar label:selected {
   border-bottom: 1px solid $ui-divider;
 }
 
+.calendar-event-main {
+  min-height: 24px;
+}
+
 .calendar-event:hover {
   background-color: $ui-surface-subtle;
   border-radius: $ui-radius-control;
 }
 
 .calendar-event-time {
+  min-width: 154px;
   color: $ui-accent;
   font-size: 10px;
   font-weight: 700;
@@ -93,4 +98,5 @@ calendar.eww-calendar label:selected {
 
 .calendar-event-meta {
   margin-top: 1px;
+  padding-left: 166px;
 }

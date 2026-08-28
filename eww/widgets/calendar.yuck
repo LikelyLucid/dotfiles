@@ -4,11 +4,11 @@
   `/home/lucid/.config/eww/scripts/calendar-state.py`)
 
 (defwidget calendar_event [event]
-  (box :class "calendar-event" :orientation "h" :spacing 12 :hexpand true
-    (label :class "calendar-event-time" :text {event.time} :width 112 :xalign 0.0)
-    (box :class "calendar-event-copy" :orientation "v" :space-evenly false :hexpand true
-      (label :class "calendar-event-title" :text {event.title} :limit-width 32 :xalign 0.0)
-      (label :class "ui-muted calendar-event-meta" :text {event.meta} :limit-width 32 :xalign 0.0 :visible {event.meta != ""}))))
+  (box :class "calendar-event" :orientation "v" :space-evenly false :hexpand true
+    (box :class "calendar-event-main" :orientation "h" :spacing 12 :space-evenly false :hexpand true
+      (label :class "calendar-event-time" :text {event.time} :xalign 0.0 :valign "center")
+      (label :class "calendar-event-title" :text {event.title} :limit-width 32 :xalign 0.0 :valign "center" :hexpand true))
+    (label :class "ui-muted calendar-event-meta" :text {event.meta} :limit-width 32 :xalign 0.0 :visible {event.meta != ""})))
 
 (defwidget calendar_popup_content []
   (box :class "ui-surface ui-popup calendar-popup" :orientation "v" :space-evenly false
