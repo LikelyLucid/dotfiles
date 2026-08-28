@@ -52,6 +52,7 @@ shell, header, action buttons, settings rows, status labels, scroll behavior,
 monitor selection, and Wallust styling are already provided.
 
 Waybar popups use one interaction contract: click the module to toggle its
-popup, and opening one popup closes related popups. Do not add `unfocus-close`
-unless focus acquisition has been verified on every output; the Waybar launch
-path can otherwise close a new layer before it receives focus.
+popup, and opening one popup closes related popups. Content popups may also use
+a bounded `--duration` fallback. Do not add `unfocus-close` or `onhoverlost`
+unless focus and pointer entry have been verified on every output; the Waybar
+launch path can otherwise close a new layer immediately after opening it.
