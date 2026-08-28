@@ -1,3 +1,4 @@
 (include "widgets/primitives.yuck")
 (include "widgets/calendar.yuck")
 (include "widgets/spotify.yuck")
+(include "widgets/system.yuck")

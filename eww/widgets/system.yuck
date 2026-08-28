@@ -1,0 +1,108 @@
+(defpoll audio_state :interval "5s" :initial "{\"volume\":0,\"muted\":false,\"icon\":\"󰕿\",\"nothing_connected\":false,\"device\":\"System output\",\"mode\":\"Speaker\",\"battery\":\"\",\"eq\":\"\",\"spatial\":\"\"}" `/home/lucid/.config/eww/scripts/system-state.py audio`)
+(defpoll bluetooth_state :interval "3s" :initial "{\"powered\":false,\"discovering\":false,\"connected_count\":0,\"devices\":[]}" `/home/lucid/.config/eww/scripts/system-state.py bluetooth`)
+(defpoll network_state :interval "5s" :initial "{\"enabled\":false,\"active\":\"\",\"networks\":[]}" `/home/lucid/.config/eww/scripts/system-state.py network`)
+(defpoll workspace_state :interval "2s" :initial "{\"active\":\"\",\"monitor\":\"\",\"workspaces\":[]}" `/home/lucid/.config/eww/scripts/system-state.py workspaces`)
+(defpoll power_state :interval "5s" :initial "{\"capacity\":0,\"status\":\"Unavailable\",\"brightness\":0,\"profile\":\"balanced\",\"idle_active\":true,\"icon\":\"󰁹\"}" `/home/lucid/.config/eww/scripts/system-state.py power`)
+(defpoll notification_state :interval "3s" :initial "{\"count\":0,\"dnd\":false,\"tooltip\":\"Notifications\"}" `/home/lucid/.config/eww/scripts/system-state.py notifications`)
+
+(defwidget system_data_row [icon title subtitle trailing command class]
+  (eventbox :class "ui-row" :onclick command
+    (box :class "ui-row-content system-data-row ${class}" :orientation "h" :spacing 10 :space-evenly false :hexpand true
+      (label :class "system-row-icon" :text icon :valign "center")
+      (box :orientation "v" :space-evenly false :hexpand true :valign "center"
+        (label :class "system-row-title" :text title :xalign 0.0)
+        (label :class "ui-muted system-row-subtitle" :text subtitle :xalign 0.0 :visible {subtitle != ""}))
+      (label :class "ui-meta" :text trailing :halign "end" :valign "center" :visible {trailing != ""}))))
+
+(defwidget system_slider [icon label value command]
+  (box :class "system-slider" :orientation "v" :space-evenly false
+    (box :orientation "h" :space-evenly false
+      (label :class "system-row-icon" :text icon)
+      (label :class "system-slider-label" :text label :xalign 0.0 :hexpand true)
+      (label :class "ui-meta" :text "${value}%" :halign "end"))
+    (scale :class "ui-scale" :round-digits 0 :min 0 :max 100 :value value :onchange command)))
+
+(defwidget audio_preview []
+  (box :class "ui-surface ui-popup system-popup" :orientation "v" :space-evenly false
+    (ui_header :eyebrow "AUDIO" :title {audio_state.device} :subtitle {audio_state.nothing_connected ? "Headphones connected" : "Default audio output"} :meta {audio_state.muted ? "MUTED" : "${audio_state.volume}%"})
+    (system_slider :icon {audio_state.icon} :label "Output volume" :value {audio_state.volume} :command "~/.config/eww/scripts/system-action.sh audio volume {}")
+    (box :class "ui-action-bar" :halign "center" :spacing 4 :space-evenly false
+      (ui_icon_action :icon {audio_state.muted ? "󰝟" : "󰕾"} :command "~/.config/eww/scripts/system-action.sh audio mute" :tooltip "Mute or unmute" :class {audio_state.muted ? "is-primary" : ""})
+      (ui_icon_action :icon "󰒓" :command "~/.config/eww/scripts/system-action.sh audio settings" :tooltip "Open audio settings" :class ""))
+    (box :visible {audio_state.nothing_connected} :orientation "v" :space-evenly false
+      (ui_section_header :title "NOTHING HEADPHONES" :meta {audio_state.battery})
+      (system_data_row :icon "󰋋" :title "Noise control" :subtitle {audio_state.mode} :trailing "ANC" :command "~/.config/eww/scripts/system-action.sh audio anc smart-1" :class "")
+      (system_data_row :icon "󰕾" :title "Transparency" :subtitle "Hear your surroundings" :trailing "Set" :command "~/.config/eww/scripts/system-action.sh audio anc transparency" :class "")
+      (system_data_row :icon "󰎇" :title "Equaliser" :subtitle {audio_state.eq} :trailing "Balanced" :command "~/.config/eww/scripts/system-action.sh audio eq balanced" :class "")
+      (system_data_row :icon "󰓃" :title "Spatial audio" :subtitle {audio_state.spatial} :trailing "FIXED" :command "~/.config/eww/scripts/system-action.sh audio spatial fixed" :class ""))))
+
+(defwidget bluetooth_device [device]
+  (system_data_row :icon {device.connected ? "󰂱" : "󰂯"} :title {device.name} :subtitle {device.mac} :trailing {device.connected ? "CONNECTED" : "CONNECT"} :command "~/.config/eww/scripts/system-action.sh bluetooth device ${device.mac}" :class {device.connected ? "is-active" : ""}))
+
+(defwidget bluetooth_preview []
+  (box :class "ui-surface ui-popup system-popup" :orientation "v" :space-evenly false
+    (ui_header :eyebrow "BLUETOOTH" :title {bluetooth_state.powered ? "Bluetooth on" : "Bluetooth off"} :subtitle "Paired devices" :meta "${bluetooth_state.connected_count} CONNECTED")
+    (box :class "ui-action-bar" :halign "center" :spacing 4 :space-evenly false
+      (ui_icon_action :icon "󰂯" :command "~/.config/eww/scripts/system-action.sh bluetooth power" :tooltip "Toggle Bluetooth" :class {bluetooth_state.powered ? "is-primary" : ""})
+      (ui_icon_action :icon "󰑐" :command "~/.config/eww/scripts/system-action.sh bluetooth scan" :tooltip "Scan for devices" :class {bluetooth_state.discovering ? "is-primary" : ""})
+      (ui_icon_action :icon "󰒓" :command "~/.config/eww/scripts/system-action.sh bluetooth settings" :tooltip "Bluetooth settings" :class ""))
+    (ui_section_header :title "DEVICES" :meta {bluetooth_state.discovering ? "SCANNING" : ""})
+    (scroll :class "ui-scroll" :vscroll true :height 220 :vexpand false
+      (box :class "ui-list" :orientation "v" :space-evenly false
+        (for device in {bluetooth_state.devices} (bluetooth_device :device device))))))
+
+(defwidget network_row [network]
+  (system_data_row :icon {network.signal > 70 ? "󰤨" : network.signal > 40 ? "󰤥" : "󰤟"} :title {network.ssid} :subtitle {network.security} :trailing {network.active ? "CONNECTED" : network.known ? "CONNECT" : "SET UP"} :command {network.active ? "~/.config/eww/scripts/system-action.sh network disconnect ${network.token}" : "~/.config/eww/scripts/system-action.sh network connect ${network.token}"} :class {network.active ? "is-active" : ""}))
+
+(defwidget network_preview []
+  (box :class "ui-surface ui-popup system-popup" :orientation "v" :space-evenly false
+    (ui_header :eyebrow "NETWORK" :title {network_state.active != "" ? network_state.active : "Not connected"} :subtitle "Wi-Fi networks" :meta {network_state.enabled ? "ON" : "OFF"})
+    (box :class "ui-action-bar" :halign "center" :spacing 4 :space-evenly false
+      (ui_icon_action :icon "󰖩" :command "~/.config/eww/scripts/system-action.sh network power" :tooltip "Toggle Wi-Fi" :class {network_state.enabled ? "is-primary" : ""})
+      (ui_icon_action :icon "󰑐" :command "~/.config/eww/scripts/system-action.sh network rescan" :tooltip "Rescan networks" :class "")
+      (ui_icon_action :icon "󰒓" :command "~/.config/eww/scripts/system-action.sh network settings" :tooltip "Network settings" :class ""))
+    (ui_section_header :title "AVAILABLE" :meta "")
+    (scroll :class "ui-scroll" :vscroll true :height 240 :vexpand false
+      (box :class "ui-list" :orientation "v" :space-evenly false
+        (for network in {network_state.networks} (network_row :network network))))))
+
+(defwidget workspace_row [workspace]
+  (system_data_row :icon {workspace.active ? "●" : "○"} :title {workspace.name} :subtitle {workspace.title} :trailing "${workspace.windows} · ${workspace.monitor}" :command "~/.config/eww/scripts/system-action.sh workspaces switch ${workspace.id}" :class {workspace.active ? "is-active" : ""}))
+
+(defwidget workspaces_preview []
+  (box :class "ui-surface ui-popup system-popup" :orientation "v" :space-evenly false
+    (ui_header :eyebrow "WORKSPACES" :title "Workspace ${workspace_state.active}" :subtitle {workspace_state.monitor} :meta "${arraylength(workspace_state.workspaces)} OPEN")
+    (box :class "ui-list" :orientation "v" :space-evenly false
+      (for workspace in {workspace_state.workspaces} (workspace_row :workspace workspace)))))
+
+(defwidget power_preview []
+  (box :class "ui-surface ui-popup system-popup" :orientation "v" :space-evenly false
+    (ui_header :eyebrow "POWER" :title "${power_state.capacity}% battery" :subtitle {power_state.status} :meta {power_state.profile})
+    (system_slider :icon "󰃠" :label "Display brightness" :value {power_state.brightness} :command "~/.config/eww/scripts/system-action.sh power brightness {}")
+    (ui_section_header :title "POWER MODE" :meta "")
+    (box :class "system-segmented" :orientation "h" :spacing 4 :space-evenly true
+      (ui_icon_action :icon "󰾆" :command "~/.config/eww/scripts/system-action.sh power profile power-saver" :tooltip "Power saver" :class {power_state.profile == "power-saver" ? "is-primary" : ""})
+      (ui_icon_action :icon "󰾅" :command "~/.config/eww/scripts/system-action.sh power profile balanced" :tooltip "Balanced" :class {power_state.profile == "balanced" ? "is-primary" : ""})
+      (ui_icon_action :icon "󰓅" :command "~/.config/eww/scripts/system-action.sh power profile performance" :tooltip "Performance" :class {power_state.profile == "performance" ? "is-primary" : ""}))
+    (ui_section_header :title "SESSION" :meta "")
+    (system_data_row :icon {power_state.idle_active ? "󰒲" : "󰅶"} :title "Idle and sleep" :subtitle {power_state.idle_active ? "Automatic idle enabled" : "Caffeine enabled"} :trailing "TOGGLE" :command "~/.config/eww/scripts/system-action.sh power idle" :class {power_state.idle_active ? "" : "is-active"})
+    (box :class "ui-action-bar" :halign "center" :spacing 4 :space-evenly false
+      (ui_icon_action :icon "󰌾" :command "~/.config/eww/scripts/system-action.sh power lock" :tooltip "Lock" :class "")
+      (ui_icon_action :icon "󰤄" :command "~/.config/eww/scripts/system-action.sh power suspend" :tooltip "Suspend" :class "")
+      (ui_icon_action :icon "󰈆" :command "~/.config/eww/scripts/system-action.sh power logout" :tooltip "Log out" :class "")
+      (ui_icon_action :icon "󰜉" :command "~/.config/eww/scripts/system-action.sh power reboot" :tooltip "Reboot" :class "")
+      (ui_icon_action :icon "󰐥" :command "~/.config/eww/scripts/system-action.sh power shutdown" :tooltip "Shut down" :class ""))))
+
+(defwidget notifications_preview []
+  (box :class "ui-surface ui-popup system-popup" :orientation "v" :space-evenly false
+    (ui_header :eyebrow "NOTIFICATIONS" :title "${notification_state.count} notifications" :subtitle {notification_state.tooltip} :meta {notification_state.dnd ? "DND" : "LIVE"})
+    (system_data_row :icon "󰂚" :title "Notification center" :subtitle "Review and dismiss notifications" :trailing "OPEN" :command "~/.config/eww/scripts/system-action.sh notifications open" :class "is-active")
+    (system_data_row :icon "󰂛" :title "Do not disturb" :subtitle {notification_state.dnd ? "Alerts are silenced" : "Alerts are enabled"} :trailing "TOGGLE" :command "~/.config/eww/scripts/system-action.sh notifications dnd" :class {notification_state.dnd ? "is-active" : ""})
+    (system_data_row :icon "󰆴" :title "Clear notifications" :subtitle "Dismiss everything in the center" :trailing "CLEAR" :command "~/.config/eww/scripts/system-action.sh notifications clear" :class "")))
+
+(defwindow preview_audio :monitor 0 :geometry (geometry :width "340px" :anchor "top left") :stacking "fg" :namespace "eww-preview-audio" :windowtype "normal" (audio_preview))
+(defwindow preview_bluetooth :monitor 0 :geometry (geometry :width "360px" :height "380px" :anchor "top left") :stacking "fg" :namespace "eww-preview-bluetooth" :windowtype "normal" (bluetooth_preview))
+(defwindow preview_network :monitor 0 :geometry (geometry :width "360px" :height "410px" :anchor "top left") :stacking "fg" :namespace "eww-preview-network" :windowtype "normal" (network_preview))
+(defwindow preview_workspaces :monitor 0 :geometry (geometry :width "360px" :anchor "top left") :stacking "fg" :namespace "eww-preview-workspaces" :windowtype "normal" (workspaces_preview))
+(defwindow preview_power :monitor 0 :geometry (geometry :width "340px" :anchor "top left") :stacking "fg" :namespace "eww-preview-power" :windowtype "normal" (power_preview))
+(defwindow preview_notifications :monitor 0 :geometry (geometry :width "340px" :anchor "top left") :stacking "fg" :namespace "eww-preview-notifications" :windowtype "normal" (notifications_preview))

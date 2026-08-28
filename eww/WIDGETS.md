@@ -56,3 +56,38 @@ popup, and opening one popup closes related popups. Content popups may also use
 a bounded `--duration` fallback. Do not add `unfocus-close` or `onhoverlost`
 unless focus and pointer entry have been verified on every output; the Waybar
 launch path can otherwise close a new layer immediately after opening it.
+
+## Inactive system-widget previews
+
+The preview suite is intentionally **not wired into Waybar**. Open one module
+at a time for review with:
+
+```bash
+~/.config/eww/scripts/widget-preview.sh audio
+~/.config/eww/scripts/widget-preview.sh bluetooth
+~/.config/eww/scripts/widget-preview.sh wifi
+~/.config/eww/scripts/widget-preview.sh workspaces
+~/.config/eww/scripts/widget-preview.sh power
+~/.config/eww/scripts/widget-preview.sh notifications
+```
+
+Every preview uses the same dynamic monitor positioning and closes competing
+Eww previews. The shared state seam is `scripts/system-state.py <domain>` and
+the action seam is `scripts/system-action.sh <domain> <action> [value]`.
+
+- **Audio:** live volume and mute controls. When Nothing Headphone (1) is
+  connected, the slider targets its PulseAudio sink instead of the default sink
+  and exposes battery, ANC/transparency, EQ, and spatial-audio controls.
+- **Bluetooth:** adapter power/scanning controls, paired-device status, direct
+  connect/disconnect, and Blueman settings.
+- **Wi-Fi:** radio and rescan controls, available/known network status, safe
+  known-profile connect/disconnect, and NetworkManager setup for new networks.
+- **Workspaces:** live Hyprland workspace/window/output state and switching.
+- **Power:** battery status, brightness slider, TLP profile selection,
+  idle/caffeine state, lock, suspend, logout, reboot, and shutdown.
+- **Notifications:** count/DND state plus notification-center, DND, and clear
+  actions through SwayNC.
+
+Spotify and calendar remain the existing active feature modules. The system
+tray is not duplicated because it is an application-owned StatusNotifier host,
+not a single control surface; notification history remains owned by SwayNC.

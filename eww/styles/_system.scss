@@ -1,0 +1,79 @@
+.system-popup {
+  min-width: 314px;
+}
+
+.system-data-row {
+  min-height: 42px;
+  margin-top: 0;
+  border-color: transparent;
+  border-bottom-color: $ui-divider;
+}
+
+.system-data-row.is-active {
+  background-color: $ui-surface-subtle;
+  border-color: rgba($ui-accent, 0.48);
+}
+
+.system-row-icon {
+  min-width: 24px;
+  color: $ui-accent;
+  font-size: 15px;
+}
+
+.system-row-title {
+  color: $ui-text;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.system-row-subtitle {
+  margin-top: 1px;
+}
+
+.system-slider {
+  padding: $ui-space-2;
+  background-color: $ui-surface-subtle;
+  border: 1px solid $ui-border;
+  border-radius: $ui-radius-control;
+}
+
+.system-slider-label {
+  padding-left: $ui-space-2;
+  color: $ui-text;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ui-scale {
+  min-height: 20px;
+  padding-top: $ui-space-1;
+}
+
+.ui-scale trough {
+  min-height: 5px;
+  background-color: rgba($ui-muted, 0.24);
+  border-radius: 3px;
+}
+
+.ui-scale highlight {
+  min-height: 5px;
+  background-color: $ui-accent;
+  border-radius: 3px;
+}
+
+.ui-scale slider {
+  min-width: 14px;
+  min-height: 14px;
+  margin: -5px 0;
+  background-color: $ui-text;
+  border: 2px solid $ui-accent;
+  border-radius: 8px;
+}
+
+.system-segmented {
+  padding: $ui-space-1 0 $ui-space-2;
+}
+
+.system-segmented .ui-action-content {
+  min-width: 72px;
+}
