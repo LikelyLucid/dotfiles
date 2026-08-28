@@ -162,13 +162,11 @@ def power() -> dict[str, Any]:
 
 
 def notifications() -> dict[str, Any]:
-    try:
-        state = json.loads(run("swaync-client", "-swb"))
-    except json.JSONDecodeError:
-        state = {}
-    text = str(state.get("text", "0"))
-    count_match = re.search(r"[0-9]+", text)
-    return {"count": int(count_match.group()) if count_match else 0, "dnd": state.get("alt") == "dnd-notification", "tooltip": state.get("tooltip", "Notifications")}
+    count_text = run("swaync-client", "-c")
+    dnd_text = run("swaync-client", "-D")
+    count_match = re.search(r"[0-9]+", count_text)
+    count = int(count_match.group()) if count_match else 0
+    return {"count": count, "dnd": dnd_text == "true", "tooltip": f"{count} Notifications"}
 
 
 PROVIDERS = {"audio": audio, "bluetooth": bluetooth, "network": network, "workspaces": workspaces, "power": power, "notifications": notifications}

@@ -15,6 +15,7 @@
     ],
     "modules-right": [
       "mpris",
+      "custom/control-center",
       "tray",
       "network",
       "bluetooth",
@@ -84,6 +85,11 @@
       },
       "ignored-players": ["firefox", "zen", "helium", "chromium"],
       "on-click": "~/.config/eww/scripts/spotify-popup.sh"
+    },
+    "custom/control-center": {
+      "format": "󰒓",
+      "tooltip-format": "Quick Settings and Activity Center",
+      "on-click": "~/.config/eww/scripts/control-center-popup.sh"
     },
     "tray": {
       "icon-size": 15,

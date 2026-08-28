@@ -40,6 +40,7 @@ button {
 button:hover,
 #network:hover,
 #bluetooth:hover,
+#custom-control-center:hover,
 #custom-audio:hover,
 #backlight:hover,
 #custom-battery:hover,
@@ -99,6 +100,10 @@ button:hover,
 
 #custom-audio {
   color: @foreground;
+}
+
+#custom-control-center {
+  color: @color7;
 }
 
 #custom-audio.anc {

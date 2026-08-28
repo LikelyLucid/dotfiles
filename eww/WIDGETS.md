@@ -103,3 +103,27 @@ Existing secondary actions remain available on right click where applicable.
 Spotify and calendar remain the existing active feature modules. The system
 tray is not duplicated because it is an application-owned StatusNotifier host,
 not a single control surface; notification history remains owned by SwayNC.
+
+## Unified desktop shell
+
+`widgets/shell.yuck` adds one `control_center_popup` behind Waybar's
+`custom/control-center` button while preserving every module-specific popup.
+Its five pages compose the existing adapters rather than duplicating them:
+
+- **Home:** unified Quick Settings, volume and brightness sliders, and an
+  at-a-glance route into the deeper surfaces.
+- **Devices:** Nothing headphones, audio mixer entry, microphone/camera privacy,
+  and Bluetooth device controls.
+- **Activity:** SwayNC, multi-player media, enhanced agenda links/progress,
+  focus sessions, downloads, and create-event actions.
+- **System:** health, monitors/appearance, night light, detailed networking,
+  Tailscale/VPN state, storage, and read-only NixOS state. Destructive NixOS and
+  power controls remain disabled pending review.
+- **Tools:** searchable-source clipboard entries, window overview, screenshot
+  history, Kubernetes/local-service status, optional weather, and OpenHue setup
+  state.
+
+The shell's deep state seam is `scripts/shell-state.py`; optional providers
+return explicit unavailable/setup states rather than breaking the popup. The
+action seam is `scripts/shell-action.sh`, with dynamic identifiers encoded
+before entering Yuck command strings.

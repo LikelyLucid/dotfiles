@@ -107,19 +107,19 @@ def event_date(event: dict[str, Any]) -> datetime | None:
     return parsed
 
 
-def format_event(event: dict[str, Any]) -> dict[str, str]:
+def format_event(event: dict[str, Any]) -> dict[str, Any]:
     parsed, all_day = parse_event_time(event.get("start"))
     if parsed is None:
         parsed = datetime.now().astimezone()
 
     title = str(event.get("summary") or "Untitled event").strip()
     location = str(event.get("location") or "").strip()
+    end, _ = parse_event_time(event.get("end"))
     if all_day:
         time_label = "ALL DAY"
         meta = parsed.strftime("%a %d %b")
     else:
         time_label = parsed.strftime("%a %d %b · %H:%M")
-        end, _ = parse_event_time(event.get("end"))
         if end is not None:
             time_label += f"–{end.strftime('%H:%M')}"
         meta = ""
@@ -127,14 +127,27 @@ def format_event(event: dict[str, Any]) -> dict[str, str]:
     if location:
         meta = f"{meta} · {location}" if meta else location
 
+    link = str(event.get("hangoutLink") or event.get("htmlLink") or "")
+    calendar_name = str(event.get("organizer", {}).get("displayName") or event.get("organizer", {}).get("email") or "Primary")
+    now = datetime.now().astimezone()
+    progress = 0
+    if not all_day and end is not None and parsed <= now <= end and end > parsed:
+        progress = round((now - parsed).total_seconds() * 100 / (end - parsed).total_seconds())
+
     return {
         "time": time_label,
         "title": title,
         "meta": meta,
+        "location": location,
+        "has_link": link.startswith("https://"),
+        "link_token": link.encode().hex() if link.startswith("https://") else "",
+        "progress": progress,
+        "calendar": calendar_name,
+        "color": str(event.get("colorId") or "default"),
     }
 
 
-def format_events(payload: Any) -> tuple[bool, str, list[dict[str, str]]]:
+def format_events(payload: Any) -> tuple[bool, str, list[dict[str, Any]]]:
     if isinstance(payload, dict):
         raw_events = payload.get("events", payload.get("items", []))
     else:
