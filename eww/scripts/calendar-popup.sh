@@ -6,6 +6,5 @@ exec "$config_dir/scripts/eww-popup-open.sh" \
   calendar_popup \
   --width 390 \
   --height 500 \
-  --open \
   --close spotify_player \
   --close spotify_playlists

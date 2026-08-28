@@ -150,7 +150,6 @@
   :geometry (geometry :width "390px" :height "500px" :anchor "top left" :y "0px")
   :stacking "fg"
   :focusable "ondemand"
-  :unfocus-close true
   :namespace "eww-calendar"
   :windowtype "normal"
   (calendar_popup))
