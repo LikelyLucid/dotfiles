@@ -2,10 +2,21 @@
 set -euo pipefail
 
 action=${1:-}
+config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/eww"
 
 lock_path="${XDG_RUNTIME_DIR:-/tmp}/eww-spotify.lock"
 exec 9>"$lock_path"
 flock -w 8 9 || exit 1
+
+previous_mode=""
+if [[ "$action" == "shuffle" || "$action" == "repeat" ]]; then
+  playback=$(timeout 2s spotify_player get key playback 2>/dev/null || printf 'null')
+  if [[ "$action" == "shuffle" ]]; then
+    previous_mode=$(jq -r '.shuffle_state? // false' <<< "$playback")
+  else
+    previous_mode=$(jq -r '.repeat_state? // "off"' <<< "$playback")
+  fi
+fi
 
 case "$action" in
   previous|next|play-pause|shuffle|repeat)
@@ -35,3 +46,39 @@ case "$action" in
     exit 2
     ;;
 esac
+
+if [[ "$action" == "previous" || "$action" == "next" || "$action" == "play-pause" || "$action" == "shuffle" || "$action" == "repeat" ]]; then
+  if [[ -n "$previous_mode" ]] && current_state=$(eww --force-wayland --config "$config_dir" get spotify_state 2>/dev/null); then
+    if [[ "$action" == "shuffle" ]]; then
+      optimistic_state=$(jq -c --argjson enabled "$([[ "$previous_mode" == "true" ]] && printf false || printf true)" '.shuffle = $enabled' <<< "$current_state")
+    else
+      case "$previous_mode" in
+        off) next_mode=track ;;
+        track) next_mode=context ;;
+        *) next_mode=off ;;
+      esac
+      optimistic_state=$(jq -c --arg mode "$next_mode" '
+        .repeat_mode = $mode
+        | .repeat_active = ($mode != "off")
+        | .repeat_icon = (if $mode == "track" then "󰑘" else "󰑖" end)
+      ' <<< "$current_state")
+    fi
+    eww --force-wayland --config "$config_dir" update "spotify_state=$optimistic_state" >/dev/null 2>&1 || true
+  fi
+  if [[ -n "$previous_mode" ]]; then
+    for _ in {1..10}; do
+      playback=$(timeout 2s spotify_player get key playback 2>/dev/null || printf 'null')
+      if [[ "$action" == "shuffle" ]]; then
+        current_mode=$(jq -r '.shuffle_state? // false' <<< "$playback")
+      else
+        current_mode=$(jq -r '.repeat_state? // "off"' <<< "$playback")
+      fi
+      [[ "$current_mode" != "$previous_mode" ]] && break
+      sleep 0.1
+    done
+  fi
+  flock -u 9
+  if spotify_state=$("$config_dir/scripts/spotify-state.sh"); then
+    eww --force-wayland --config "$config_dir" update "spotify_state=$spotify_state" >/dev/null 2>&1 || true
+  fi
+fi
