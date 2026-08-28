@@ -188,14 +188,31 @@ def mounts() -> list[dict[str, Any]]:
             visit(child)
     for device in data.get("blockdevices", []):
         visit(device)
+    seen_mountpoints = {row["mountpoint"] for row in rows if row["mountpoint"]}
+    mount_data = json_run("findmnt", "-J", "-o", "SOURCE,TARGET,FSTYPE,SIZE,USED,AVAIL", fallback={}) or {}
+    def visit_mount(item: dict[str, Any]) -> None:
+        target = str(item.get("target") or "")
+        if target.startswith("/mnt/") and target not in seen_mountpoints:
+            rows.append({"name": str(item.get("source") or target), "device": "", "size": str(item.get("size") or ""), "filesystem": str(item.get("fstype") or ""), "mounted": True, "mountpoint": target, "removable": False})
+            seen_mountpoints.add(target)
+        for child in item.get("children") or []:
+            visit_mount(child)
+    for item in mount_data.get("filesystems", []):
+        visit_mount(item)
     return rows[:10]
 
 
 def privacy() -> dict[str, Any]:
-    status = run("wpctl", "status", "-n")
-    recording = bool(re.search(r"Streams:.*(?:capture|input)", status, re.IGNORECASE | re.DOTALL))
-    camera = bool(run("fuser", "/dev/video0")) if Path("/dev/video0").exists() else False
-    return {"microphone_in_use": recording, "camera_in_use": camera, "camera_available": Path("/dev/video0").exists()}
+    nodes = json_run("pw-dump", fallback=[]) or []
+    recording = any(
+        node.get("type") == "PipeWire:Interface:Node"
+        and node.get("info", {}).get("state") == "running"
+        and node.get("info", {}).get("props", {}).get("media.class") == "Stream/Input/Audio"
+        for node in nodes
+    )
+    cameras = sorted(Path("/dev").glob("video*"))
+    camera = bool(run("lsof", "-t", *(str(device) for device in cameras), timeout=0.2)) if cameras else False
+    return {"microphone_in_use": recording, "camera_in_use": camera, "camera_available": bool(cameras)}
 
 
 def development() -> dict[str, Any]:
@@ -215,7 +232,7 @@ def clipboard() -> dict[str, Any]:
     items = []
     for line in run("cliphist", "list").splitlines()[:12]:
         identifier, separator, text = line.partition("\t")
-        if separator:
+        if separator and not text.startswith("[[ binary data"):
             items.append({"id": identifier, "text": text.replace("\n", " ")[:80]})
     return {"available": True, "items": items}
 
