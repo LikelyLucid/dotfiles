@@ -48,6 +48,7 @@ check_contrast = true
 
 obsidian = { template = 'wallust-basic.css', target = '~/Documents/Vault/.obsidian/snippets/wallust-basic.css' }
 waybar = { template = 'colors-wallust.css', target = '~/dotfiles/waybar/colors-wallust.css' }
+eww = { template = 'eww-colors.scss', target = '~/dotfiles/eww/colors-wallust.scss' }
 kitty = { template = 'kitty.conf', target = '~/dotfiles/kitty/colors.conf' }
 ghostty = { template = 'ghostty.conf', target = '~/.config/ghostty/colors.conf' }
 neovim_vim = { template = 'colors_neopywal.vim', target = '~/.cache/wal/colors-wal.vim' }

@@ -53,7 +53,8 @@
     "clock": {
       "format": "{:%H:%M}",
       "format-alt": "{:%A, %d %B}",
-      "tooltip-format": "<big>{:%A, %d %B %Y}</big>\n<tt><small>{calendar}</small></tt>"
+      "tooltip": false,
+      "on-click": "~/.config/eww/scripts/calendar-popup.sh"
     },
     "mpris": {
       "format": "{status_icon} {dynamic}",
@@ -66,7 +67,8 @@
         "paused": "󰏤",
         "stopped": ""
       },
-      "ignored-players": ["firefox", "zen", "helium", "chromium"]
+      "ignored-players": ["firefox", "zen", "helium", "chromium"],
+      "on-click": "~/.config/eww/scripts/spotify-popup.sh"
     },
     "tray": {
       "icon-size": 15,
