@@ -51,11 +51,14 @@ poll, device-specific controls, and any unique battery/ANC presentation. The
 shell, header, action buttons, settings rows, status labels, scroll behavior,
 monitor selection, and Wallust styling are already provided.
 
-Waybar popups use one interaction contract: click the module to toggle its
-popup, and opening one popup closes related popups. Content popups may also use
-a bounded `--duration` fallback. Do not add `unfocus-close` or `onhoverlost`
-unless focus and pointer entry have been verified on every output; the Waybar
-launch path can otherwise close a new layer immediately after opening it.
+Waybar popups use one interaction contract: click the module to open it, move
+into the popup, and it closes automatically after the pointer leaves for a
+short grace period. Opening one popup closes related popups; clicking the module
+again still toggles it closed. The shared watcher waits for pointer entry before
+arming leave dismissal, avoiding the immediate-close race caused by Eww's
+`unfocus-close` and `onhoverlost`. A popup that is never entered closes after a
+short fallback timeout, and content popups may also retain a bounded
+`--duration` fallback.
 
 ## System-widget launchers
 

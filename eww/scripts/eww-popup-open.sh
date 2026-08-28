@@ -5,7 +5,7 @@ set -euo pipefail
 # Usage: eww-popup-open.sh WINDOW [options]
 
 if (($# == 0)); then
-  printf 'Usage: %s WINDOW [--width N] [--height N] [--gap N] [--align center|left|right] [--duration DURATION] [--fixed-screen N --fixed-x N [--fixed-y N]] [--open] [--close WINDOW]\n' "$0" >&2
+  printf 'Usage: %s WINDOW [--width N] [--height N] [--gap N] [--align center|left|right] [--duration DURATION] [--dismiss-namespace NAME] [--fixed-screen N --fixed-x N [--fixed-y N]] [--open] [--close WINDOW]\n' "$0" >&2
   exit 2
 fi
 
@@ -21,11 +21,12 @@ fixed_screen=""
 fixed_x=""
 fixed_y=""
 duration=""
+dismiss_namespace=""
 close_windows=()
 toggle=true
 
 action_usage() {
-  printf 'Usage: %s WINDOW [--width N] [--height N] [--gap N] [--align center|left|right] [--duration DURATION] [--fixed-screen N --fixed-x N [--fixed-y N]] [--open] [--close WINDOW]\n' "$0" >&2
+  printf 'Usage: %s WINDOW [--width N] [--height N] [--gap N] [--align center|left|right] [--duration DURATION] [--dismiss-namespace NAME] [--fixed-screen N --fixed-x N [--fixed-y N]] [--open] [--close WINDOW]\n' "$0" >&2
 }
 
 while (($# > 0)); do
@@ -43,6 +44,11 @@ while (($# > 0)); do
     --duration)
       (($# >= 2)) || { action_usage; exit 2; }
       duration=$2
+      shift 2
+      ;;
+    --dismiss-namespace)
+      (($# >= 2)) || { action_usage; exit 2; }
+      dismiss_namespace=$2
       shift 2
       ;;
     --fixed-screen)
@@ -129,3 +135,11 @@ fi
 open_args+=("$window")
 
 "${eww_cmd[@]}" "${open_args[@]}"
+
+if [[ -n $dismiss_namespace ]] && "${eww_cmd[@]}" active-windows 2>/dev/null | grep -Fq "$window:"; then
+  runtime_dir=${XDG_RUNTIME_DIR:-/tmp}
+  token=$(date +%s%N)
+  token_file=$runtime_dir/eww-popup-${window}.token
+  printf '%s\n' "$token" >"$token_file"
+  "$config_dir/scripts/eww-popup-dismiss.sh" "$window" "$dismiss_namespace" "$token" >/dev/null 2>&1 &
+fi
