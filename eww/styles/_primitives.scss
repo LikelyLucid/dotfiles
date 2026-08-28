@@ -1,0 +1,174 @@
+* {
+  min-height: 0;
+  border: none;
+  font-family: "JetBrains Mono", "JetBrains Mono Nerd Font";
+  font-size: 12px;
+  font-weight: 500;
+}
+
+window {
+  background-color: transparent;
+}
+
+button,
+button:hover,
+button:active,
+button:checked,
+button:focus,
+eventbox.ui-action,
+eventbox.ui-row {
+  color: $ui-text;
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.ui-surface {
+  color: $ui-text;
+  background-color: $ui-surface;
+  border: 1px solid $ui-border-strong;
+  border-radius: $ui-radius-shell;
+}
+
+.ui-popup {
+  padding: $ui-space-3;
+}
+
+.ui-header {
+  padding: 1px 2px $ui-space-3;
+}
+
+.ui-header-copy {
+  min-width: 0;
+}
+
+.ui-eyebrow,
+.ui-meta {
+  color: $ui-muted;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.ui-title {
+  margin-top: 2px;
+  color: $ui-text;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ui-muted,
+.ui-empty {
+  color: $ui-muted;
+  font-size: 10px;
+}
+
+.ui-muted {
+  margin-top: 2px;
+}
+
+.ui-inset {
+  background-color: $ui-surface-subtle;
+  border: 1px solid $ui-border;
+  border-radius: $ui-radius-control;
+}
+
+.ui-section-header {
+  margin-top: $ui-space-3;
+  padding: $ui-space-2 2px $ui-space-1;
+  border-top: 1px solid $ui-divider;
+}
+
+.ui-action-bar {
+  padding: 6px 0;
+  border-top: 1px solid $ui-divider;
+  border-bottom: 1px solid $ui-divider;
+}
+
+.ui-action {
+  margin: 0 1px;
+}
+
+.ui-action-content,
+.ui-row-content {
+  min-height: $ui-control-height;
+  padding: 0 $ui-space-2;
+  color: $ui-text;
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: $ui-radius-control;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.ui-action-content {
+  min-width: $ui-control-height;
+}
+
+.ui-action:hover .ui-action-content,
+.ui-row:hover .ui-row-content {
+  color: $ui-text;
+  background-color: $ui-surface-hover;
+  border-color: rgba($ui-accent, 0.62);
+}
+
+.ui-action-content.is-primary,
+.ui-action:hover .ui-action-content.is-primary {
+  color: $ui-on-accent;
+  background-color: $ui-accent;
+  border-color: $ui-accent;
+}
+
+.ui-action-content.is-primary:active {
+  background-color: rgba($ui-accent, 0.82);
+}
+
+.ui-row {
+  min-height: $ui-control-height;
+}
+
+.ui-row-content {
+  margin-top: $ui-space-2;
+  border-color: $ui-border;
+}
+
+.ui-row-icon {
+  color: $ui-accent;
+}
+
+.ui-list .ui-row-content {
+  margin-top: 0;
+  border-color: transparent;
+  border-bottom-color: $ui-divider;
+}
+
+.ui-scroll scrollbar {
+  background-color: transparent;
+}
+
+.ui-scroll slider {
+  min-width: 3px;
+  min-height: 24px;
+  background-color: rgba($ui-muted, 0.46);
+  border-radius: 3px;
+}
+
+.ui-empty {
+  padding: $ui-space-3 $ui-space-2;
+}
+
+.ui-media {
+  min-width: 60px;
+  min-height: 60px;
+  color: $ui-accent;
+  background-color: $ui-surface-subtle;
+  border: 1px solid $ui-border;
+  border-radius: $ui-radius-control;
+}
+
+.ui-media-placeholder {
+  font-size: 22px;
+}

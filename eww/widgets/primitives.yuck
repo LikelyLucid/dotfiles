@@ -1,0 +1,31 @@
+; Shared widget interfaces. New popups should compose these before adding custom chrome.
+
+(defwidget ui_header [eyebrow title subtitle meta]
+  (box :class "ui-header" :orientation "h" :space-evenly false :vexpand false
+    (box :class "ui-header-copy" :orientation "v" :space-evenly false :hexpand true
+      (label :class "ui-eyebrow" :text eyebrow :xalign 0.0 :visible {eyebrow != ""})
+      (label :class "ui-title" :text title :xalign 0.0 :visible {title != ""})
+      (label :class "ui-muted" :text subtitle :xalign 0.0 :visible {subtitle != ""}))
+    (label :class "ui-meta" :text meta :halign "end" :valign "start" :visible {meta != ""})))
+
+(defwidget ui_section_header [title meta]
+  (box :class "ui-section-header" :orientation "h" :space-evenly false :vexpand false
+    (label :class "ui-eyebrow" :text title :xalign 0.0 :hexpand true)
+    (label :class "ui-meta" :text meta :halign "end" :visible {meta != ""})))
+
+(defwidget ui_icon_action [icon command tooltip class]
+  (eventbox
+    :class "ui-action"
+    :vexpand false
+    :tooltip tooltip
+    :onclick command
+    (box :class "ui-action-content ${class}" :halign "center" :valign "center"
+      (label :text icon))))
+
+(defwidget ui_link_row [label icon command]
+  (eventbox
+    :class "ui-row"
+    :onclick command
+    (box :class "ui-row-content" :orientation "h" :space-evenly false :hexpand true
+      (label :text label :xalign 0.0 :hexpand true)
+      (label :class "ui-row-icon" :text icon :halign "end"))))

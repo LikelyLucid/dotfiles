@@ -1,0 +1,22 @@
+// Semantic Eww design tokens. Wallust remains the palette authority.
+$ui-canvas: $background;
+$ui-surface: rgba($color0, 0.97);
+$ui-surface-subtle: rgba($color8, 0.08);
+$ui-surface-hover: rgba($color8, 0.18);
+$ui-text: $foreground;
+$ui-muted: $color8;
+$ui-accent: $color7;
+$ui-on-accent: $color0;
+$ui-urgent: $color1;
+$ui-border: rgba($color8, 0.34);
+$ui-border-strong: rgba($color8, 0.52);
+$ui-divider: rgba($color8, 0.20);
+
+$ui-space-1: 4px;
+$ui-space-2: 8px;
+$ui-space-3: 12px;
+$ui-space-4: 16px;
+
+$ui-radius-control: 7px;
+$ui-radius-shell: 10px;
+$ui-control-height: 28px;

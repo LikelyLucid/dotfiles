@@ -1,0 +1,34 @@
+.player-popup {
+  min-width: 294px;
+}
+
+.player-summary {
+  padding: 0 0 $ui-space-3;
+}
+
+.player-copy {
+  min-width: 0;
+}
+
+.player-title {
+  margin-top: 0;
+  font-size: 13px;
+}
+
+.player-artist {
+  margin-top: 2px;
+  color: $ui-text;
+  font-size: 11px;
+}
+
+.player-album {
+  margin-top: 1px;
+}
+
+.track-cover {
+  border-radius: 6px;
+}
+
+.playlists-popup .ui-header {
+  padding-bottom: $ui-space-2;
+}

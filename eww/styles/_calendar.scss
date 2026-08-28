@@ -1,0 +1,96 @@
+.calendar-popup {
+  min-width: 366px;
+}
+
+.calendar-card {
+  padding: 3px;
+}
+
+calendar.eww-calendar {
+  padding: 6px;
+  color: $ui-text;
+  background-color: transparent;
+}
+
+calendar.eww-calendar header {
+  padding: 2px 3px 6px;
+  color: $ui-text;
+}
+
+calendar.eww-calendar button {
+  min-height: 22px;
+  min-width: 22px;
+  padding: 0 5px;
+  color: $ui-muted;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+calendar.eww-calendar button:hover {
+  color: $ui-on-accent;
+  background-color: rgba($ui-accent, 0.82);
+  border-color: $ui-accent;
+}
+
+calendar.eww-calendar grid {
+  padding: 2px;
+}
+
+calendar.eww-calendar label {
+  min-width: 26px;
+  min-height: 24px;
+  padding: 2px;
+  color: $ui-text;
+  border-radius: 5px;
+}
+
+calendar.eww-calendar label.day-name,
+calendar.eww-calendar label.week-number {
+  color: $ui-muted;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+calendar.eww-calendar label.other-month {
+  color: rgba($ui-muted, 0.42);
+}
+
+calendar.eww-calendar label.today,
+calendar.eww-calendar label:selected {
+  color: $ui-on-accent;
+  background-color: $ui-accent;
+  font-weight: 700;
+}
+
+.calendar-events {
+  padding: 2px 0;
+}
+
+.calendar-event {
+  min-height: 36px;
+  padding: 6px $ui-space-1;
+  border-bottom: 1px solid $ui-divider;
+}
+
+.calendar-event:hover {
+  background-color: $ui-surface-subtle;
+  border-radius: $ui-radius-control;
+}
+
+.calendar-event-time {
+  color: $ui-accent;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.calendar-event-title {
+  color: $ui-text;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.calendar-event-meta {
+  margin-top: 1px;
+}

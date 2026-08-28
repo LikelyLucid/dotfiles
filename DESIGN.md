@@ -22,6 +22,8 @@ contain literal palette hex values.
 The mappings are translated per toolkit by templates in `wallust/templates/`:
 
 - Waybar: `colors-wallust.css`
+- Eww: `colors-wallust.scss`, translated again into semantic widget roles in
+  `eww/styles/_tokens.scss`
 - Rofi: `colors-rofi.rasi`
 - SwayNC: `swaync.css.tmpl`
 - Hyprland and Hyprlock: `hyprland-colors.conf` and
@@ -71,6 +73,15 @@ Motion explains state; it does not decorate it.
 - Labels describe what the user controls, not the daemon or package involved.
 - A feature must have one owner and one lifecycle. Prefer systemd services over
   compositor-spawned background processes.
+
+## Desktop widgets
+
+Eww popups are one design system, not individually themed cards. Every popup
+uses the shared semantic tokens and composes the interfaces in
+`eww/widgets/primitives.yuck`. Feature modules own only their state, unique
+layout, and unique states; shared shells, headers, sections, actions, rows,
+lists, media, empty states, scrollbars, positioning, and lifecycle stay in the
+widget system. See `eww/WIDGETS.md` for the extension contract.
 
 ## Quality gate
 

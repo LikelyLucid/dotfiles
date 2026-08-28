@@ -82,10 +82,10 @@ done
 
 eww_cmd=(eww --force-wayland --config "$config_dir")
 
-if ! "${eww_cmd[@]}" ping >/dev/null 2>&1; then
+if [[ $("${eww_cmd[@]}" ping 2>/dev/null) != "pong" ]]; then
   "${eww_cmd[@]}" daemon >/dev/null 2>&1 &
   for _ in {1..20}; do
-    "${eww_cmd[@]}" ping >/dev/null 2>&1 && break
+    [[ $("${eww_cmd[@]}" ping 2>/dev/null) == "pong" ]] && break
     sleep 0.05
   done
 fi

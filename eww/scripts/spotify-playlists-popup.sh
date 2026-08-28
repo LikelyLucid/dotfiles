@@ -6,5 +6,4 @@ exec "$config_dir/scripts/eww-popup-open.sh" \
   spotify_playlists \
   --width 320 \
   --height 320 \
-  --duration 30s \
   --close spotify_player

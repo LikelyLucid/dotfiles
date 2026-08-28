@@ -1,0 +1,44 @@
+(defpoll calendar_state
+  :interval "5m"
+  :initial "{\"today\":\"\",\"month\":\"\",\"connected\":false,\"status\":\"Calendar unavailable\",\"events\":[]}"
+  `/home/lucid/.config/eww/scripts/calendar-state.py`)
+
+(defwidget calendar_event [event]
+  (box :class "calendar-event" :orientation "h" :spacing 12 :hexpand true
+    (label :class "calendar-event-time" :text {event.time} :width 112 :xalign 0.0)
+    (box :class "calendar-event-copy" :orientation "v" :space-evenly false :hexpand true
+      (label :class "calendar-event-title" :text {event.title} :limit-width 32 :xalign 0.0)
+      (label :class "ui-muted calendar-event-meta" :text {event.meta} :limit-width 32 :xalign 0.0 :visible {event.meta != ""}))))
+
+(defwidget calendar_popup_content []
+  (box :class "ui-surface ui-popup calendar-popup" :orientation "v" :space-evenly false
+    (ui_header
+      :eyebrow "CALENDAR"
+      :title {calendar_state.month}
+      :subtitle {calendar_state.today}
+      :meta {calendar_state.connected ? "SYNCED" : "LOCAL"})
+    (box :class "ui-inset calendar-card" :orientation "v" :space-evenly false
+      (calendar
+        :class "eww-calendar"
+        :show-details true
+        :show-heading true
+        :show-day-names true
+        :show-week-numbers true))
+    (ui_section_header :title "UPCOMING" :meta {calendar_state.status})
+    (scroll :class "ui-scroll" :vscroll true :height 120 :vexpand false :valign "start"
+      (box :class "calendar-events" :orientation "v" :space-evenly false :vexpand false
+        (for event in {calendar_state.events}
+          (calendar_event :event event))
+        (label
+          :class "ui-empty"
+          :text {calendar_state.connected ? "No upcoming events" : "Connect Google Calendar to show events"}
+          :visible {arraylength(calendar_state.events) == 0})))))
+
+(defwindow calendar_popup
+  :monitor 0
+  :geometry (geometry :width "390px" :anchor "top left" :y "0px")
+  :stacking "fg"
+  :focusable "ondemand"
+  :namespace "eww-calendar"
+  :windowtype "normal"
+  (calendar_popup_content))

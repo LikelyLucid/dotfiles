@@ -4,7 +4,7 @@ set -euo pipefail
 lock_path="${XDG_RUNTIME_DIR:-/tmp}/eww-spotify.lock"
 exec 9>"$lock_path"
 if ! flock -w 8 9; then
-  printf '%s\n' '{"track":"Nothing playing","artist":"","album":"","status":"Paused","icon":"󰐊","has_track":false,"has_art":false,"cover_path":"","playlists":[]}'
+  printf '%s\n' '{"track":"Nothing playing","artist":"","album":"","status":"Paused","icon":"󰐊","has_track":false,"has_art":false,"cover_path":"/home/lucid/.config/eww/assets/transparent.svg","playlists":[]}'
   exit 0
 fi
 
@@ -29,7 +29,7 @@ playlists=$(jq -R -s -c '
 track="Nothing playing"
 artist=""
 album=""
-cover_path=""
+cover_path="${XDG_CONFIG_HOME:-$HOME/.config}/eww/assets/transparent.svg"
 has_track=false
 has_art=false
 
