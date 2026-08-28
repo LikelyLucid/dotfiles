@@ -10,8 +10,8 @@
     (box :class "ui-row-content system-data-row ${class}" :orientation "h" :spacing 10 :space-evenly false :hexpand true
       (label :class "system-row-icon" :text icon :valign "center")
       (box :orientation "v" :space-evenly false :hexpand true :valign "center"
-        (label :class "system-row-title" :text title :xalign 0.0)
-        (label :class "ui-muted system-row-subtitle" :text subtitle :xalign 0.0 :visible {subtitle != ""}))
+        (label :class "system-row-title" :text title :xalign 0.0 :limit-width 34 :show-truncated true)
+        (label :class "ui-muted system-row-subtitle" :text subtitle :xalign 0.0 :limit-width 34 :show-truncated true :visible {subtitle != ""}))
       (label :class "ui-meta" :text trailing :halign "end" :valign "center" :visible {trailing != ""}))))
 
 (defwidget system_slider [icon label value command]
