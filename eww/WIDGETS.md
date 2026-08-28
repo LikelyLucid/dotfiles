@@ -73,6 +73,8 @@ Open one module directly with:
 Every preview uses the same dynamic monitor positioning and closes competing
 Eww previews. The shared state seam is `scripts/system-state.py <domain>` and
 the action seam is `scripts/system-action.sh <domain> <action> [value]`.
+The shared position helper clamps every popup inside its click monitor with a
+20px horizontal safety inset, including modules at either end of Waybar.
 
 Waybar now opens these launchers from audio, Wi-Fi, Bluetooth, backlight,
 battery, caffeine, and notifications. Workspace buttons retain their normal

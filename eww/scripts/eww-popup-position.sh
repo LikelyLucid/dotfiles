@@ -8,6 +8,9 @@ set -euo pipefail
 popup_width=320
 popup_height=155
 gap=${EWW_POPUP_GAP:-8}
+# Keep extra horizontal breathing room for GTK borders, shadows, and rounded
+# corners. This is deliberately independent from the vertical Waybar gap.
+edge_gap=${EWW_POPUP_EDGE_GAP:-20}
 align="center"
 fixed_screen=""
 fixed_x=""
@@ -72,6 +75,7 @@ is_non_negative_integer() {
 is_non_negative_integer "$popup_width" || { usage; exit 2; }
 is_non_negative_integer "$popup_height" || { usage; exit 2; }
 is_non_negative_integer "$gap" || { usage; exit 2; }
+is_non_negative_integer "$edge_gap" || { usage; exit 2; }
 if [[ -n "$fixed_screen" ]]; then
   is_non_negative_integer "$fixed_screen" || { usage; exit 2; }
 fi
@@ -147,11 +151,11 @@ else
   esac
 fi
 
-if (( popup_width + 2 * gap >= monitor_width )); then
+if (( popup_width + 2 * edge_gap >= monitor_width )); then
   popup_x=0
 else
-  (( popup_x < gap )) && popup_x=$gap
-  max_x=$((monitor_width - popup_width - gap))
+  (( popup_x < edge_gap )) && popup_x=$edge_gap
+  max_x=$((monitor_width - popup_width - edge_gap))
   (( popup_x > max_x )) && popup_x=$max_x
 fi
 
