@@ -1,162 +1,62 @@
-(defvar shell_page "home")
-(defpoll shell_state :interval "15s" :initial "{\"audio\":{\"volume\":0,\"muted\":false,\"device\":\"System output\",\"nothing_connected\":false},\"bluetooth\":{\"powered\":false,\"connected_count\":0,\"devices\":[]},\"network\":{\"enabled\":false,\"active\":\"\",\"networks\":[]},\"power\":{\"capacity\":0,\"status\":\"Unavailable\",\"brightness\":0,\"profile\":\"balanced\",\"idle_active\":true},\"notifications\":{\"count\":0,\"dnd\":false},\"health\":{\"load\":\"0\",\"memory\":0,\"disk\":0,\"temperature\":0,\"failed_services\":0,\"processes\":[]},\"network_details\":{\"ips\":[],\"gateway\":\"Unavailable\",\"dns\":[],\"rx_rate\":0,\"tx_rate\":0,\"vpn\":[],\"tailscale\":false,\"tailscale_name\":\"\"},\"display\":{\"monitors\":[],\"night_light\":false,\"wallpaper\":\"\"},\"media\":{\"players\":[],\"available\":false},\"focus\":{\"active\":false,\"minutes\":0},\"clipboard\":{\"available\":false,\"items\":[]},\"downloads\":[],\"screenshots\":[],\"windows\":[],\"mounts\":[],\"privacy\":{\"microphone_in_use\":false,\"camera_in_use\":false,\"camera_available\":false},\"development\":{\"kubectl\":false,\"context\":\"Not configured\",\"ports\":[],\"docker\":false,\"podman\":false},\"nixos\":{\"generation\":\"Unavailable\",\"dirty\":false,\"revision\":\"\",\"generations\":0,\"closure_size\":\"Unavailable\",\"controls_enabled\":false},\"weather\":{\"available\":false,\"summary\":\"Not configured\",\"location\":\"Not configured\"},\"smart_home\":{\"available\":false,\"summary\":\"Not configured\"}}" `/home/lucid/.config/eww/scripts/shell-state.py`)
+;; Quick-settings panel. Per-domain preview popups are the primary UI; the
+;; status cards here launch them instead of duplicating their content.
 
-(defwidget shell_nav_button [page icon label]
-  (eventbox :class "shell-nav-button" :onclick "~/.config/eww/scripts/shell-action.sh shell page ${page}"
-    (box :class {shell_page == page ? "shell-nav-content is-active" : "shell-nav-content"} :orientation "v" :spacing 2
-      (label :text icon)
-      (label :text label))))
+(defpoll shell_state :interval "15s" :initial "{\"health\":{\"load\":\"0\",\"memory\":0,\"disk\":0,\"temperature\":0,\"failed_services\":0,\"processes\":[]},\"network_details\":{\"ips\":[],\"gateway\":\"Unavailable\",\"dns\":[],\"rx_rate\":0,\"tx_rate\":0,\"vpn\":[],\"tailscale\":false,\"tailscale_name\":\"\"},\"display\":{\"monitors\":[],\"night_light\":false,\"wallpaper\":\"\"},\"media\":{\"players\":[],\"available\":false},\"focus\":{\"active\":false,\"minutes\":0},\"clipboard\":{\"available\":false,\"items\":[]},\"downloads\":[],\"screenshots\":[],\"windows\":[],\"mounts\":[],\"privacy\":{\"microphone_in_use\":false,\"camera_in_use\":false,\"camera_available\":false},\"development\":{\"kubectl\":false,\"context\":\"Not configured\",\"ports\":[],\"docker\":false,\"podman\":false},\"nixos\":{\"generation\":\"Unavailable\",\"dirty\":false,\"revision\":\"\",\"generations\":0,\"closure_size\":\"Unavailable\"},\"weather\":{\"available\":false,\"summary\":\"Not configured\",\"location\":\"Not configured\"},\"smart_home\":{\"available\":false,\"summary\":\"Not configured\"}}" `/home/lucid/.config/eww/scripts/shell-state.py`)
 
-(defwidget shell_nav []
-  (box :class "shell-nav" :orientation "h" :space-evenly true
-    (shell_nav_button :page "home" :icon "󰋜" :label "Home")
-    (shell_nav_button :page "devices" :icon "󰂯" :label "Devices")
-    (shell_nav_button :page "activity" :icon "󰂚" :label "Activity")
-    (shell_nav_button :page "system" :icon "󰒓" :label "System")
-    (shell_nav_button :page "tools" :icon "󰆍" :label "Tools")))
+(defwidget shell_toggle_grid []
+  (box :class "shell-toggle-grid" :orientation "h" :space-evenly true
+    (ui_icon_action :icon {network_state.enabled ? "󰖩" : "󰖪"} :command "~/.config/eww/scripts/system-action.sh network power" :tooltip "Toggle Wi-Fi" :class {network_state.enabled ? "is-primary" : ""})
+    (ui_icon_action :icon {bluetooth_state.powered ? "󰂯" : "󰂲"} :command "~/.config/eww/scripts/system-action.sh bluetooth power" :tooltip "Toggle Bluetooth" :class {bluetooth_state.powered ? "is-primary" : ""})
+    (ui_icon_action :icon {audio_state.muted ? "󰝟" : "󰕾"} :command "~/.config/eww/scripts/system-action.sh audio mute" :tooltip "Toggle mute" :class {audio_state.muted ? "" : "is-primary"})
+    (ui_icon_action :icon {notification_state.dnd ? "󰂛" : "󰂚"} :command "~/.config/eww/scripts/system-action.sh notifications dnd" :tooltip "Do not disturb" :class {notification_state.dnd ? "is-primary" : ""})
+    (ui_icon_action :icon {power_state.idle_active ? "󰒲" : "󰅶"} :command "~/.config/eww/scripts/system-action.sh power idle" :tooltip "Caffeine" :class {power_state.idle_active ? "" : "is-primary"})
+    (ui_icon_action :icon "󰖔" :command "~/.config/eww/scripts/shell-action.sh display night-light" :tooltip "Night light" :class {shell_state.display.night_light ? "is-primary" : ""})))
 
-(defwidget shell_status_card [icon title value subtitle command class]
-  (system_data_row :icon icon :title title :subtitle subtitle :trailing value :command command :class class))
-
-(defwidget shell_home []
-  (box :orientation "v" :space-evenly false
-    (ui_header :eyebrow "QUICK SETTINGS" :title "Desktop control center" :subtitle "${shell_state.health.memory}% memory · ${shell_state.health.disk}% disk · load ${shell_state.health.load}" :meta "${shell_state.power.capacity}%")
-    (box :class "shell-toggle-grid" :orientation "h" :space-evenly true
-      (ui_icon_action :icon {shell_state.network.enabled ? "󰖩" : "󰖪"} :command "~/.config/eww/scripts/system-action.sh network power" :tooltip "Toggle Wi-Fi" :class {shell_state.network.enabled ? "is-primary" : ""})
-      (ui_icon_action :icon {shell_state.bluetooth.powered ? "󰂯" : "󰂲"} :command "~/.config/eww/scripts/system-action.sh bluetooth power" :tooltip "Toggle Bluetooth" :class {shell_state.bluetooth.powered ? "is-primary" : ""})
-      (ui_icon_action :icon {shell_state.audio.muted ? "󰝟" : "󰕾"} :command "~/.config/eww/scripts/system-action.sh audio mute" :tooltip "Toggle mute" :class {shell_state.audio.muted ? "" : "is-primary"})
-      (ui_icon_action :icon {shell_state.notifications.dnd ? "󰂛" : "󰂚"} :command "~/.config/eww/scripts/system-action.sh notifications dnd" :tooltip "Do not disturb" :class {shell_state.notifications.dnd ? "is-primary" : ""})
-      (ui_icon_action :icon {shell_state.power.idle_active ? "󰒲" : "󰅶"} :command "~/.config/eww/scripts/system-action.sh power idle" :tooltip "Caffeine" :class {shell_state.power.idle_active ? "" : "is-primary"})
-      (ui_icon_action :icon "󰖔" :command "~/.config/eww/scripts/shell-action.sh display night-light" :tooltip "Night light" :class {shell_state.display.night_light ? "is-primary" : ""}))
-    (system_slider :icon "󰕾" :label {shell_state.audio.device} :value {shell_state.audio.volume} :command "~/.config/eww/scripts/system-action.sh audio volume {}")
-    (system_slider :icon "󰃠" :label "Display brightness" :value {shell_state.power.brightness} :command "~/.config/eww/scripts/system-action.sh power brightness {}")
-    (ui_section_header :title "AT A GLANCE" :meta "")
-    (shell_status_card :icon "󰂚" :title "Activity center" :subtitle "Media, meetings, downloads and notifications" :value "${shell_state.notifications.count}" :command "~/.config/eww/scripts/shell-action.sh shell page activity" :class "")
-    (shell_status_card :icon "󰂯" :title "Connected devices" :subtitle {shell_state.audio.nothing_connected ? "Nothing headphones connected" : "Audio, Bluetooth and microphone"} :value "${shell_state.bluetooth.connected_count}" :command "~/.config/eww/scripts/shell-action.sh shell page devices" :class "")
-    (shell_status_card :icon "󰒓" :title "System status" :subtitle "Display, network, health, storage and NixOS" :value {shell_state.health.failed_services > 0 ? "WARN" : "OK"} :command "~/.config/eww/scripts/shell-action.sh shell page system" :class {shell_state.health.failed_services > 0 ? "is-active" : ""})
-    (shell_status_card :icon "󰆍" :title "Desktop tools" :subtitle "Clipboard, windows, screenshots and development" :value "OPEN" :command "~/.config/eww/scripts/shell-action.sh shell page tools" :class "")))
-
-(defwidget shell_bluetooth_row [device]
-  (system_data_row :icon {device.connected ? "󰂱" : "󰂯"} :title {device.name} :subtitle {device.mac} :trailing {device.connected ? "CONNECTED" : "CONNECT"} :command "~/.config/eww/scripts/system-action.sh bluetooth device ${device.mac}" :class {device.connected ? "is-active" : ""}))
-
-(defwidget shell_devices []
-  (box :orientation "v" :space-evenly false
-    (ui_header :eyebrow "CONNECTED DEVICES" :title {shell_state.audio.device} :subtitle {shell_state.audio.nothing_connected ? "Nothing Headphone controls available" : "Default audio output"} :meta "${shell_state.audio.volume}%")
-    (system_slider :icon "󰕾" :label "Output volume" :value {shell_state.audio.volume} :command "~/.config/eww/scripts/system-action.sh audio volume {}")
-    (box :class "ui-action-bar" :halign "center" :spacing 4
-      (ui_icon_action :icon "󰋋" :command "~/.config/eww/scripts/system-action.sh audio anc smart-1" :tooltip "ANC" :class "")
-      (ui_icon_action :icon "󰖝" :command "~/.config/eww/scripts/system-action.sh audio anc transparency" :tooltip "Transparency" :class "")
-      (ui_icon_action :icon "󰎇" :command "~/.config/eww/scripts/system-action.sh audio eq balanced" :tooltip "Balanced EQ" :class "")
-      (ui_icon_action :icon "󰓃" :command "~/.config/eww/scripts/system-action.sh audio spatial fixed" :tooltip "Spatial audio" :class "")
-      (ui_icon_action :icon "󰒓" :command "~/.config/eww/scripts/shell-action.sh settings audio" :tooltip "Volume mixer" :class ""))
-    (ui_section_header :title "PRIVACY" :meta {shell_state.privacy.microphone_in_use || shell_state.privacy.camera_in_use ? "IN USE" : "CLEAR"})
-    (shell_status_card :icon "󰍬" :title "Microphone" :subtitle "Input and recording activity" :value {shell_state.privacy.microphone_in_use ? "ACTIVE" : "IDLE"} :command "~/.config/eww/scripts/shell-action.sh settings audio" :class {shell_state.privacy.microphone_in_use ? "is-active" : ""})
-    (shell_status_card :icon "󰄀" :title "Camera" :subtitle {shell_state.privacy.camera_available ? "Camera available" : "No camera provider"} :value {shell_state.privacy.camera_in_use ? "ACTIVE" : "IDLE"} :command "true" :class {shell_state.privacy.camera_in_use ? "is-active" : ""})
-    (ui_section_header :title "BLUETOOTH DEVICES" :meta "${shell_state.bluetooth.connected_count} CONNECTED")
-    (box :class "ui-list" :orientation "v" :space-evenly false
-      (for device in {shell_state.bluetooth.devices} (shell_bluetooth_row :device device)))))
+(defwidget shell_popup_link [icon title subtitle value command active]
+  (eventbox :class "ui-row" :onclick command
+    (box :class "ui-row-content shell-popup-link ${active ? "is-active" : ""}" :orientation "h" :spacing 10 :space-evenly false :hexpand true
+      (label :class "system-row-icon" :text icon :valign "center")
+      (box :orientation "v" :space-evenly false :hexpand true :valign "center"
+        (label :class "system-row-title" :text title :xalign 0.0 :limit-width 34 :show-truncated true)
+        (label :class "ui-muted system-row-subtitle" :text subtitle :xalign 0.0 :limit-width 34 :show-truncated true :visible {subtitle != ""}))
+      (label :class "ui-meta" :text value :halign "end" :valign "center" :visible {value != ""}))))
 
 (defwidget shell_media_row [player]
-  (system_data_row :icon {player.status == "Playing" ? "󰐊" : "󰏤"} :title {player.title} :subtitle {player.artist != "" ? player.artist : player.name} :trailing {player.status} :command "~/.config/eww/scripts/shell-action.sh media play-pause ${player.token}" :class {player.status == "Playing" ? "is-active" : ""}))
-(defwidget shell_event_row [event]
-  (system_data_row :icon "󰃭" :title {event.title} :subtitle {event.meta != "" ? "${event.time} · ${event.meta}" : event.time} :trailing {event.progress > 0 ? "${event.progress}%" : event.has_link ? "JOIN" : ""} :command {event.has_link ? "~/.config/eww/scripts/shell-action.sh calendar open ${event.link_token}" : "true"} :class {event.progress > 0 ? "is-active" : ""}))
-(defwidget shell_file_row [file icon]
-  (system_data_row :icon icon :title {file.name} :subtitle "Recent item" :trailing "OPEN" :command "~/.config/eww/scripts/shell-action.sh file open ${file.path_token}" :class ""))
+  (system_data_row :icon {player.status == "Playing" ? "󰐊" : "󰏤"} :title {player.title} :subtitle {player.artist != "" ? player.artist : player.name} :trailing {player.status} :command {player.status == "Playing" ? "~/.config/eww/scripts/shell-action.sh media play-pause ${player.token}" : "true"} :class {player.status == "Playing" ? "is-active" : ""}))
 
-(defwidget shell_activity []
+(defwidget shell_controls []
   (box :orientation "v" :space-evenly false
-    (ui_header :eyebrow "ACTIVITY CENTER" :title "${shell_state.notifications.count} notifications" :subtitle "Meetings, media, focus and recent activity" :meta {shell_state.focus.active ? "FOCUS ${shell_state.focus.minutes}M" : "LIVE"})
-    (box :class "ui-action-bar" :halign "center" :spacing 4
-      (ui_icon_action :icon "󰂚" :command "~/.config/eww/scripts/shell-action.sh notifications open" :tooltip "Notification center" :class "")
-      (ui_icon_action :icon "󰃭" :command "~/.config/eww/scripts/shell-action.sh calendar create" :tooltip "Create event" :class "")
-      (ui_icon_action :icon "󰔟" :command "~/.config/eww/scripts/shell-action.sh focus start 25" :tooltip "Start 25-minute focus" :class {shell_state.focus.active ? "is-primary" : ""})
-      (ui_icon_action :icon "󰅖" :command "~/.config/eww/scripts/shell-action.sh focus stop" :tooltip "Stop focus" :class ""))
+    (ui_header :eyebrow "QUICK SETTINGS" :title "Desktop control center" :subtitle "${shell_state.health.memory}% memory · ${shell_state.health.disk}% disk · load ${shell_state.health.load}" :meta "${power_state.capacity}%")
+    (shell_toggle_grid)
+    (system_slider :icon "󰕾" :label {audio_state.device} :value {audio_state.volume} :command "~/.config/eww/scripts/system-action.sh audio volume {}")
+    (system_slider :icon "󰃠" :label "Display brightness" :value {power_state.brightness} :command "~/.config/eww/scripts/system-action.sh power brightness {}")
+    (ui_section_header :title "OPEN PANELS" :meta "")
+    (shell_popup_link :icon "󰂚" :title "Notifications" :subtitle {notification_state.dnd ? "Do not disturb on" : "Live alerts"} :value "${notification_state.count}" :command "~/.config/eww/scripts/widget-preview.sh notifications" :active false)
+    (shell_popup_link :icon "󰂯" :title "Connected devices" :subtitle {audio_state.nothing_connected ? "Nothing Headphones controls" : "Audio, Bluetooth and privacy"} :value "${bluetooth_state.connected_count}" :command "~/.config/eww/scripts/widget-preview.sh audio" :active {shell_state.privacy.microphone_in_use || shell_state.privacy.camera_in_use})
+    (shell_popup_link :icon "󰖩" :title "Network" :subtitle {network_state.active != "" ? network_state.active : "Not connected"} :value {network_state.enabled ? "ON" : "OFF"} :command "~/.config/eww/scripts/widget-preview.sh wifi" :active false)
+    (shell_popup_link :icon "󰒓" :title "Power and session" :subtitle "${power_state.capacity}% · ${power_state.profile}" :value {power_state.idle_active ? "IDLE ON" : "CAFFEINE"} :command "~/.config/eww/scripts/widget-preview.sh power" :active {!power_state.idle_active})
+    (shell_popup_link :icon "󰆍" :title "Desktop tools" :subtitle "Clipboard, windows, screenshots and development" :value "OPEN" :command "~/.config/eww/scripts/tools-popup.sh" :active false)
     (ui_section_header :title "NOW PLAYING" :meta "${arraylength(shell_state.media.players)} PLAYERS")
     (box :class "ui-list" :orientation "v" :space-evenly false
-      (for player in {shell_state.media.players} (shell_media_row :player player)))
-    (ui_section_header :title "AGENDA" :meta {calendar_state.status})
-    (box :class "ui-list" :orientation "v" :space-evenly false
-      (for event in {calendar_state.events} (shell_event_row :event event)))
-    (ui_section_header :title "DOWNLOADS" :meta "${arraylength(shell_state.downloads)} RECENT")
-    (box :class "ui-list" :orientation "v" :space-evenly false
-      (for file in {shell_state.downloads} (shell_file_row :file file :icon "󰇚")))))
-
-(defwidget shell_ip_row [item]
-  (system_data_row :icon "󰩟" :title {item.address} :subtitle {item.interface} :trailing {item.family} :command "true" :class ""))
-(defwidget shell_monitor_row [monitor]
-  (system_data_row :icon "󰍹" :title {monitor.name} :subtitle "${monitor.resolution} · ${monitor.refresh}Hz" :trailing "${monitor.scale}×" :command "true" :class {monitor.focused ? "is-active" : ""}))
-(defwidget shell_mount_row [mount]
-  (system_data_row :icon {mount.removable ? "󰕓" : "󰋊"} :title {mount.name} :subtitle "${mount.filesystem} · ${mount.size}" :trailing {mount.mounted ? "MOUNTED" : ""} :command {mount.removable && mount.mounted ? "~/.config/eww/scripts/shell-action.sh storage unmount ${mount.device}" : "true"} :class ""))
-(defwidget shell_process_row [process]
-  (system_data_row :icon "󰍛" :title {process.name} :subtitle "${process.memory}% memory" :trailing "${process.cpu}% CPU" :command "true" :class ""))
-
-(defwidget shell_system []
-  (box :orientation "v" :space-evenly false
-    (ui_header :eyebrow "SYSTEM" :title "${shell_state.health.temperature}° · ${shell_state.health.memory}% memory" :subtitle "${shell_state.health.disk}% disk · load ${shell_state.health.load}" :meta {shell_state.health.failed_services > 0 ? "${shell_state.health.failed_services} FAILED" : "HEALTHY"})
-    (ui_section_header :title "TOP PROCESSES" :meta "")
-    (box :class "ui-list" :orientation "v" :space-evenly false
-      (for process in {shell_state.health.processes} (shell_process_row :process process)))
-    (ui_section_header :title "DISPLAY & APPEARANCE" :meta {shell_state.display.wallpaper})
-    (box :class "ui-list" :orientation "v" :space-evenly false
-      (for monitor in {shell_state.display.monitors} (shell_monitor_row :monitor monitor)))
+      (for player in {shell_state.media.players} (shell_media_row :player player))
+      (label :class "ui-empty" :text "No media players running" :visible {arraylength(shell_state.media.players) == 0}))
+    (box :visible {shell_state.media.has_players} :class "ui-action-bar" :halign "center" :spacing 4
+      (ui_icon_action :icon "󰒮" :command "~/.config/eww/scripts/shell-action.sh media previous ${shell_state.media.first_token}" :tooltip "Previous track" :class "")
+      (ui_icon_action :icon {shell_state.media.first_playing ? "󰏤" : "󰐊"} :command "~/.config/eww/scripts/shell-action.sh media play-pause ${shell_state.media.first_token}" :tooltip "Play or pause" :class "is-primary")
+      (ui_icon_action :icon "󰒭" :command "~/.config/eww/scripts/shell-action.sh media next ${shell_state.media.first_token}" :tooltip "Next track" :class ""))
     (box :class "ui-action-bar" :halign "center" :spacing 4
-      (ui_icon_action :icon "󰖔" :command "~/.config/eww/scripts/shell-action.sh display night-light" :tooltip "Night light" :class {shell_state.display.night_light ? "is-primary" : ""})
-      (ui_icon_action :icon "󰸉" :command "~/.config/eww/scripts/shell-action.sh display appearance" :tooltip "Regenerate Wallust palette" :class ""))
-    (ui_section_header :title "NETWORK DETAILS" :meta {shell_state.network_details.tailscale ? "TAILSCALE" : "LOCAL"})
-    (shell_status_card :icon "󰒍" :title "Gateway" :subtitle {shell_state.network_details.tailscale_name} :value {shell_state.network_details.gateway} :command "~/.config/eww/scripts/shell-action.sh network diagnostics" :class "")
-    (shell_status_card :icon "󰓅" :title "Network throughput" :subtitle "Live aggregate transfer rate" :value "↓${shell_state.network_details.rx_rate} · ↑${shell_state.network_details.tx_rate} B/s" :command "~/.config/eww/scripts/shell-action.sh network diagnostics" :class "")
-    (box :class "ui-list" :orientation "v" :space-evenly false
-      (for item in {shell_state.network_details.ips} (shell_ip_row :item item)))
-    (ui_section_header :title "NIXOS" :meta "CONTROLS DISABLED")
-    (shell_status_card :icon "󱄅" :title {shell_state.nixos.generation} :subtitle "${shell_state.nixos.generations} generations · ${shell_state.nixos.closure_size}" :value {shell_state.nixos.dirty ? "DIRTY" : "${shell_state.nixos.revision}"} :command "true" :class {shell_state.nixos.dirty ? "is-active" : ""})
-    (box :class "ui-action-bar shell-disabled-actions" :halign "center" :spacing 4
-      (ui_icon_action :icon "󰚰" :command "~/.config/eww/scripts/shell-action.sh nixos update" :tooltip "Updates disabled pending review" :class "")
-      (ui_icon_action :icon "󰑐" :command "~/.config/eww/scripts/shell-action.sh nixos rebuild" :tooltip "Rebuild disabled pending review" :class "")
-      (ui_icon_action :icon "󰁯" :command "~/.config/eww/scripts/shell-action.sh nixos rollback" :tooltip "Rollback disabled pending review" :class "")
-      (ui_icon_action :icon "󰃢" :command "~/.config/eww/scripts/shell-action.sh nixos gc" :tooltip "Garbage collection disabled pending review" :class ""))
-    (ui_section_header :title "STORAGE" :meta "")
-    (box :class "ui-list" :orientation "v" :space-evenly false
-      (for mount in {shell_state.mounts} (shell_mount_row :mount mount)))))
-
-(defwidget shell_clipboard_row [item]
-  (system_data_row :icon "󰅍" :title {item.text} :subtitle "Clipboard item ${item.id}" :trailing "COPY" :command "~/.config/eww/scripts/shell-action.sh clipboard copy ${item.id}" :class ""))
-(defwidget shell_window_row [window]
-  (system_data_row :icon "󰖯" :title {window.title} :subtitle "${window.class} · ${window.workspace}" :trailing {window.focused ? "ACTIVE" : "FOCUS"} :command "~/.config/eww/scripts/shell-action.sh window focus ${window.address}" :class {window.focused ? "is-active" : ""}))
-
-(defwidget shell_tools []
-  (box :orientation "v" :space-evenly false
-    (ui_header :eyebrow "DESKTOP TOOLS" :title "Recent content and development" :subtitle "Clipboard, windows, screenshots, services and integrations" :meta "")
-    (ui_section_header :title "CLIPBOARD" :meta {shell_state.clipboard.available ? "READY" : "CLIPHIST UNAVAILABLE"})
-    (box :class "ui-action-bar" :halign "center" :spacing 4
+      (ui_icon_action :icon "󰃭" :command "~/.config/eww/scripts/shell-action.sh calendar create" :tooltip "Create calendar event" :class "")
+      (ui_icon_action :icon "󰔟" :command "~/.config/eww/scripts/shell-action.sh focus start 25" :tooltip "Start 25-minute focus" :class {shell_state.focus.active ? "is-primary" : ""})
+      (ui_icon_action :icon "󰅖" :command "~/.config/eww/scripts/shell-action.sh focus stop" :tooltip "Stop focus" :class {shell_state.focus.active ? "" : ""})
       (ui_icon_action :icon "󰍉" :command "~/.config/eww/scripts/shell-action.sh clipboard search" :tooltip "Search clipboard" :class "")
-      (ui_icon_action :icon "󰆴" :command "~/.config/eww/scripts/shell-action.sh clipboard clear" :tooltip "Clear clipboard history" :class ""))
-    (box :class "ui-list" :orientation "v" :space-evenly false
-      (for item in {shell_state.clipboard.items} (shell_clipboard_row :item item)))
-    (ui_section_header :title "WINDOW OVERVIEW" :meta "${arraylength(shell_state.windows)} WINDOWS")
-    (box :class "ui-list" :orientation "v" :space-evenly false
-      (for window in {shell_state.windows} (shell_window_row :window window)))
-    (ui_section_header :title "SCREENSHOTS" :meta "${arraylength(shell_state.screenshots)} RECENT")
-    (box :class "ui-list" :orientation "v" :space-evenly false
-      (for file in {shell_state.screenshots} (shell_file_row :file file :icon "󰄀")))
-    (ui_section_header :title "DEVELOPMENT" :meta {shell_state.development.kubectl ? shell_state.development.context : "KUBECTL UNAVAILABLE"})
-    (shell_status_card :icon "󱃾" :title "Kubernetes and local services" :subtitle "${arraylength(shell_state.development.ports)} listening endpoints" :value {shell_state.development.docker ? "DOCKER" : shell_state.development.podman ? "PODMAN" : "LOCAL"} :command "true" :class "")
-    (ui_section_header :title "WEATHER & SMART HOME" :meta "OPTIONAL PROVIDERS")
-    (shell_status_card :icon "󰖐" :title "Weather" :subtitle {shell_state.weather.location} :value {shell_state.weather.available ? shell_state.weather.summary : "SETUP"} :command "true" :class "")
-    (shell_status_card :icon "󰟐" :title "Smart home" :subtitle {shell_state.smart_home.summary} :value {shell_state.smart_home.available ? "READY" : "SETUP"} :command "true" :class "")))
-
-(defwidget shell_content []
-  (box :orientation "v" :space-evenly false
-    (box :visible {shell_page == "home"} (shell_home))
-    (box :visible {shell_page == "devices"} (shell_devices))
-    (box :visible {shell_page == "activity"} (shell_activity))
-    (box :visible {shell_page == "system"} (shell_system))
-    (box :visible {shell_page == "tools"} (shell_tools))))
+      (ui_icon_action :icon "󰒍" :command "~/.config/eww/scripts/shell-action.sh network diagnostics" :tooltip "Network diagnostics" :class ""))
+    (ui_section_header :title "SYSTEM HEALTH" :meta {shell_state.health.failed_services > 0 ? "${shell_state.health.failed_services} FAILED" : "HEALTHY"})
+    (shell_popup_link :icon "󱄅" :title {shell_state.nixos.generation} :subtitle "${shell_state.nixos.generations} generations · ${shell_state.nixos.closure_size}" :value {shell_state.nixos.dirty ? "DIRTY" : shell_state.nixos.revision} :command "true" :active {shell_state.nixos.dirty})))
 
 (defwidget control_center []
   (box :class "ui-surface ui-popup shell-popup" :orientation "v" :space-evenly false
-    (shell_nav)
     (scroll :class "ui-scroll shell-scroll" :vscroll true :height 570 :vexpand false
-      (shell_content))))
+      (shell_controls))))
 
 (defwindow control_center_popup
   :monitor 0

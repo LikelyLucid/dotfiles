@@ -3,3 +3,4 @@
 (include "widgets/spotify.yuck")
 (include "widgets/system.yuck")
 (include "widgets/shell.yuck")
+(include "widgets/tools.yuck")

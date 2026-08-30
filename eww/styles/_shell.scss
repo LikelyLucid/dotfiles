@@ -2,39 +2,6 @@
   min-width: 680px;
 }
 
-.shell-nav {
-  margin-bottom: $ui-space-2;
-  padding: $ui-space-1;
-  background-color: $ui-surface-subtle;
-  border: 1px solid $ui-border;
-  border-radius: $ui-radius-control;
-}
-
-.shell-nav-button {
-  border-radius: $ui-radius-control;
-}
-
-.shell-nav-content {
-  min-width: 104px;
-  min-height: 38px;
-  padding: $ui-space-1 $ui-space-2;
-  color: $ui-muted;
-  border-radius: $ui-radius-control;
-}
-
-.shell-nav-content label:first-child {
-  font-size: 15px;
-}
-
-.shell-nav-content.is-active {
-  background-color: $ui-accent;
-  color: $ui-on-accent;
-}
-
-.shell-scroll {
-  min-height: 570px;
-}
-
 .shell-toggle-grid {
   margin-bottom: $ui-space-2;
   padding: $ui-space-2;
@@ -47,15 +14,20 @@
   min-width: 64px;
 }
 
-.shell-popup .system-data-row {
-  min-height: 40px;
+.shell-scroll {
+  min-height: 570px;
 }
 
-.shell-popup .ui-section-header {
-  margin-top: $ui-space-2;
+.tools-popup {
+  min-width: 336px;
 }
 
-.shell-popup .ui-list {
+.tools-scroll {
+  min-height: 430px;
+}
+
+.shell-popup .ui-list,
+.tools-popup .ui-list {
   background-color: rgba($ui-surface-subtle, 0.35);
   border-radius: $ui-radius-control;
 }
@@ -64,6 +36,7 @@
   margin-bottom: $ui-space-2;
 }
 
-.shell-disabled-actions {
-  opacity: 0.42;
+.shell-popup-link.is-active {
+  background-color: $ui-surface-subtle;
+  border-color: rgba($ui-accent, 0.48);
 }

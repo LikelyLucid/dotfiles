@@ -17,8 +17,27 @@ case "$widget" in
 esac
 
 close_args=()
-for competing in preview_audio preview_bluetooth preview_network preview_workspaces preview_power preview_notifications calendar_popup spotify_player spotify_playlists; do
+for competing in preview_audio preview_bluetooth preview_network preview_workspaces preview_power preview_notifications calendar_popup spotify_player spotify_playlists tools_popup; do
   [[ $competing == "$window" ]] || close_args+=(--close "$competing")
+done
+
+# Refresh the matching domain state in the background so the popup shows
+# current values immediately instead of waiting for the next defpoll tick.
+refresh_domains=(audio bluetooth network workspaces power notifications)
+for domain in "${refresh_domains[@]}"; do
+  (
+    payload=$("$config_dir/scripts/system-state.py" "$domain" 2>/dev/null) || exit 0
+    [[ -n $payload ]] || exit 0
+    case "$domain" in
+      audio) variable=audio_state ;;
+      bluetooth) variable=bluetooth_state ;;
+      network) variable=network_state ;;
+      workspaces) variable=workspace_state ;;
+      power) variable=power_state ;;
+      notifications) variable=notification_state ;;
+    esac
+    eww --force-wayland --config "$config_dir" update "${variable}=$payload" >/dev/null 2>&1 || true
+  ) &
 done
 
 exec "$config_dir/scripts/eww-popup-open.sh" "$window" \

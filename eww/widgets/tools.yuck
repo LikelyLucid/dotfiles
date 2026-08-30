@@ -1,0 +1,46 @@
+;; Desktop tools popup: clipboard, windows, screenshots and development.
+
+(defwidget tools_clipboard_row [item]
+  (system_data_row :icon "󰅍" :title {item.text} :subtitle "Clipboard item ${item.id}" :trailing "COPY" :command "~/.config/eww/scripts/shell-action.sh clipboard copy ${item.id}" :class ""))
+
+(defwidget tools_window_row [window]
+  (system_data_row :icon "󰖯" :title {window.title} :subtitle "${window.class} · ${window.workspace}" :trailing {window.focused ? "ACTIVE" : "FOCUS"} :command "~/.config/eww/scripts/shell-action.sh window focus ${window.address}" :class {window.focused ? "is-active" : ""}))
+
+(defwidget tools_file_row [file icon]
+  (system_data_row :icon icon :title {file.name} :subtitle "Recent item" :trailing "OPEN" :command "~/.config/eww/scripts/shell-action.sh file open ${file.path_token}" :class ""))
+
+(defwidget tools_content []
+  (box :orientation "v" :space-evenly false
+    (ui_header :eyebrow "DESKTOP TOOLS" :title "Recent content and development" :subtitle {shell_state.clipboard.available ? "Clipboard ready" : "Cliphist unavailable"} :meta "")
+    (box :class "ui-action-bar" :halign "center" :spacing 4
+      (ui_icon_action :icon "󰍉" :command "~/.config/eww/scripts/shell-action.sh clipboard search" :tooltip "Search clipboard" :class "")
+      (ui_icon_action :icon "󰆴" :command "~/.config/eww/scripts/shell-action.sh clipboard clear" :tooltip "Clear clipboard history" :class ""))
+    (ui_section_header :title "CLIPBOARD" :meta {shell_state.clipboard.available ? "READY" : "UNAVAILABLE"})
+    (box :class "ui-list" :orientation "v" :space-evenly false
+      (for item in {shell_state.clipboard.items} (tools_clipboard_row :item item))
+      (label :class "ui-empty" :text "Clipboard history is empty" :visible {arraylength(shell_state.clipboard.items) == 0}))
+    (ui_section_header :title "WINDOWS" :meta "${arraylength(shell_state.windows)} OPEN")
+    (box :class "ui-list" :orientation "v" :space-evenly false
+      (for window in {shell_state.windows} (tools_window_row :window window))
+      (label :class "ui-empty" :text "No open windows" :visible {arraylength(shell_state.windows) == 0}))
+    (ui_section_header :title "SCREENSHOTS" :meta "${arraylength(shell_state.screenshots)} RECENT")
+    (box :class "ui-list" :orientation "v" :space-evenly false
+      (for file in {shell_state.screenshots} (tools_file_row :file file :icon "󰄀"))
+      (label :class "ui-empty" :text "No recent screenshots" :visible {arraylength(shell_state.screenshots) == 0}))
+    (ui_section_header :title "DEVELOPMENT" :meta {shell_state.development.kubectl ? shell_state.development.context : "KUBECTL UNAVAILABLE"})
+    (system_data_row :icon "󱃾" :title "Kubernetes and local services" :subtitle "${arraylength(shell_state.development.ports)} listening endpoints" :trailing {shell_state.development.docker ? "DOCKER" : shell_state.development.podman ? "PODMAN" : "LOCAL"} :command "true" :class "")
+    (ui_section_header :title "WEATHER" :meta "OPTIONAL PROVIDER")
+    (system_data_row :icon "󰖐" :title "Weather" :subtitle {shell_state.weather.location} :value {shell_state.weather.available ? shell_state.weather.summary : "SETUP"} :command "true" :class "")))
+
+(defwidget tools_popup_content []
+  (box :class "ui-surface ui-popup tools-popup" :orientation "v" :space-evenly false
+    (scroll :class "ui-scroll tools-scroll" :vscroll true :height 430 :vexpand false
+      (tools_content))))
+
+(defwindow tools_popup
+  :monitor 0
+  :geometry (geometry :width "360px" :height "480px" :anchor "top left")
+  :stacking "fg"
+  :namespace "eww-tools"
+  :windowtype "normal"
+  (tools_popup_content))

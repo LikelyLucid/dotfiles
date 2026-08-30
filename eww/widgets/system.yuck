@@ -49,7 +49,8 @@
     (ui_section_header :title "DEVICES" :meta {bluetooth_state.discovering ? "SCANNING" : ""})
     (scroll :class "ui-scroll" :vscroll true :height 220 :vexpand false
       (box :class "ui-list" :orientation "v" :space-evenly false
-        (for device in {bluetooth_state.devices} (bluetooth_device :device device))))))
+        (for device in {bluetooth_state.devices} (bluetooth_device :device device))
+        (label :class "ui-empty" :text {bluetooth_state.powered ? "No paired devices" : "Bluetooth is off"} :visible {arraylength(bluetooth_state.devices) == 0})))))
 
 (defwidget network_row [network]
   (system_data_row :icon {network.signal > 70 ? "󰤨" : network.signal > 40 ? "󰤥" : "󰤟"} :title {network.ssid} :subtitle {network.security} :trailing {network.active ? "CONNECTED" : network.known ? "CONNECT" : "SET UP"} :command {network.active ? "~/.config/eww/scripts/system-action.sh network disconnect ${network.token}" : "~/.config/eww/scripts/system-action.sh network connect ${network.token}"} :class {network.active ? "is-active" : ""}))
@@ -61,10 +62,11 @@
       (ui_icon_action :icon "󰖩" :command "~/.config/eww/scripts/system-action.sh network power" :tooltip "Toggle Wi-Fi" :class {network_state.enabled ? "is-primary" : ""})
       (ui_icon_action :icon "󰑐" :command "~/.config/eww/scripts/system-action.sh network rescan" :tooltip "Rescan networks" :class "")
       (ui_icon_action :icon "󰒓" :command "~/.config/eww/scripts/system-action.sh network settings" :tooltip "Network settings" :class ""))
-    (ui_section_header :title "AVAILABLE" :meta "")
+    (ui_section_header :title "AVAILABLE" :meta {network_state.enabled ? "" : "WI-FI OFF"})
     (scroll :class "ui-scroll" :vscroll true :height 240 :vexpand false
       (box :class "ui-list" :orientation "v" :space-evenly false
-        (for network in {network_state.networks} (network_row :network network))))))
+        (for network in {network_state.networks} (network_row :network network))
+        (label :class "ui-empty" :text {network_state.enabled ? "Scanning for networks…" : "Enable Wi-Fi to see networks"} :visible {arraylength(network_state.networks) == 0})))))
 
 (defwidget workspace_row [workspace]
   (system_data_row :icon {workspace.active ? "●" : "○"} :title {workspace.name} :subtitle {workspace.title} :trailing "${workspace.windows} · ${workspace.monitor}" :command "~/.config/eww/scripts/system-action.sh workspaces switch ${workspace.id}" :class {workspace.active ? "is-active" : ""}))

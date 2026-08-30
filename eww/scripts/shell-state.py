@@ -33,14 +33,6 @@ def json_run(*args: str, timeout: float = 2, fallback: Any = None) -> Any:
         return fallback
 
 
-def system_domain(name: str) -> dict[str, Any]:
-    script = Path(__file__).with_name("system-state.py")
-    try:
-        return json.loads(run(str(script), name, timeout=6))
-    except json.JSONDecodeError:
-        return {}
-
-
 def file_rows(paths: list[Path], limit: int = 6) -> list[dict[str, Any]]:
     rows = []
     seen: set[Path] = set()
@@ -165,7 +157,14 @@ def media() -> dict[str, Any]:
         artist = run("playerctl", "-p", player, "metadata", "--format", "{{artist}}", timeout=1)
         status = run("playerctl", "-p", player, "status", timeout=1) or "Stopped"
         rows.append({"name": player, "token": player.encode().hex(), "title": title, "artist": artist, "status": status})
-    return {"players": rows, "available": bool(shutil.which("playerctl"))}
+    first = rows[0] if rows else {}
+    return {
+        "players": rows,
+        "available": bool(shutil.which("playerctl")),
+        "has_players": bool(rows),
+        "first_token": first.get("token", ""),
+        "first_playing": bool(rows) and rows[0]["status"] == "Playing",
+    }
 
 
 def windows() -> list[dict[str, Any]]:
@@ -244,7 +243,7 @@ def nixos() -> dict[str, Any]:
     revision = run("git", "rev-parse", "--short", "HEAD", timeout=2) if (repo / ".git").exists() else ""
     generations = len(list(Path("/nix/var/nix/profiles").glob("system-*-link")))
     closure_size = run("nix", "path-info", "-Sh", "/run/current-system", timeout=4).split()
-    return {"generation": generation, "dirty": dirty, "revision": revision, "generations": generations, "closure_size": closure_size[-1] if closure_size else "Unavailable", "controls_enabled": False}
+    return {"generation": generation, "dirty": dirty, "revision": revision, "generations": generations, "closure_size": closure_size[-1] if closure_size else "Unavailable"}
 
 
 def weather() -> dict[str, Any]:
@@ -271,12 +270,10 @@ def weather() -> dict[str, Any]:
 
 
 def main() -> dict[str, Any]:
+    # Audio, bluetooth, network, power and notifications live in the
+    # per-domain defpolls (system-state.py); this adapter only carries the
+    # extras the quick-settings panel needs.
     providers = {
-        "audio": lambda: system_domain("audio"),
-        "bluetooth": lambda: system_domain("bluetooth"),
-        "network": lambda: system_domain("network"),
-        "power": lambda: system_domain("power"),
-        "notifications": lambda: system_domain("notifications"),
         "health": health,
         "network_details": network_details,
         "display": displays,

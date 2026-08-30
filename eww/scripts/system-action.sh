@@ -32,7 +32,7 @@ decode_hex() {
 }
 
 refresh_widget_state() {
-  local provider variable payload config_dir
+  local provider variable payload config_dir last_refresh now
   config_dir=${XDG_CONFIG_HOME:-$HOME/.config}/eww
   case "$domain" in
     audio) provider=audio; variable=audio_state ;;
@@ -43,6 +43,18 @@ refresh_widget_state() {
     notifications) provider=notifications; variable=notification_state ;;
     *) return ;;
   esac
+  # Slider drags fire onchange rapidly; skip the expensive state refresh
+  # while they are in flight and let the defpoll settle the value.
+  last_refresh_file=${XDG_RUNTIME_DIR:-/tmp}/eww-refresh-${domain}.stamp
+  now=$(date +%s%N)
+  if [[ -r $last_refresh_file ]]; then
+    last_refresh=$(<"$last_refresh_file")
+    if [[ $last_refresh =~ ^[0-9]+$ ]] && (( now - last_refresh < 400000000 )); then
+      printf '%s\n' "$now" >"$last_refresh_file"
+      return
+    fi
+  fi
+  printf '%s\n' "$now" >"$last_refresh_file"
   payload=$("$config_dir/scripts/system-state.py" "$provider")
   eww --force-wayland --config "$config_dir" update "$variable=$payload" >/dev/null 2>&1 || true
   if [[ $domain == audio ]]; then
