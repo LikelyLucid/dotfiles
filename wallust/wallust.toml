@@ -61,6 +61,7 @@ hyprlock = { template = 'hyprlock-colors.conf', target = '~/.config/hypr/wallust
 tmux = { template = 'tmux.conf', target = '~/.config/tmux/wallust.conf' }
 yazi = { template = 'yazi.toml', target = '~/.config/yazi/theme.toml' }
 spotify_player = { template = 'spotify-player-theme.toml', target = '~/dotfiles/spotify-player/theme.toml' }
+hermes = { template = 'hermes.yaml', target = '/var/lib/hermes/.hermes/skins/wallust.yaml' }
 flameshot = { template = 'flameshot.ini', target = '~/dotfiles/flameshot/flameshot.ini' }
 gtk3 = { template = 'gtk-colors.css', target = '~/.config/gtk-3.0/colors.css' }
 gtk4 = { template = 'gtk-colors.css', target = '~/.config/gtk-4.0/colors.css' }
