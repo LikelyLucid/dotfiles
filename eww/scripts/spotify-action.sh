@@ -65,20 +65,8 @@ if [[ "$action" == "previous" || "$action" == "next" || "$action" == "play-pause
     fi
     eww --force-wayland --config "$config_dir" update "spotify_state=$optimistic_state" >/dev/null 2>&1 || true
   fi
-  if [[ -n "$previous_mode" ]]; then
-    for _ in {1..10}; do
-      playback=$(timeout 2s spotify_player get key playback 2>/dev/null || printf 'null')
-      if [[ "$action" == "shuffle" ]]; then
-        current_mode=$(jq -r '.shuffle_state? // false' <<< "$playback")
-      else
-        current_mode=$(jq -r '.repeat_state? // "off"' <<< "$playback")
-      fi
-      [[ "$current_mode" != "$previous_mode" ]] && break
-      sleep 0.1
-    done
-  fi
   flock -u 9
-  if spotify_state=$("$config_dir/scripts/spotify-state.sh"); then
+  if [[ -z "$previous_mode" ]] && spotify_state=$("$config_dir/scripts/spotify-state.sh"); then
     eww --force-wayland --config "$config_dir" update "spotify_state=$spotify_state" >/dev/null 2>&1 || true
   fi
 fi

@@ -1,7 +1,12 @@
 (defpoll spotify_state
-  :interval "5s"
-  :initial "{\"track\":\"Nothing playing\",\"artist\":\"\",\"album\":\"\",\"status\":\"Paused\",\"icon\":\"󰐊\",\"has_track\":false,\"has_art\":false,\"cover_path\":\"/home/lucid/.config/eww/assets/transparent.svg\",\"shuffle\":false,\"repeat_mode\":\"off\",\"repeat_active\":false,\"repeat_icon\":\"󰑖\",\"playlists\":[]}"
+  :interval "1s"
+  :initial "{\"track\":\"Nothing playing\",\"artist\":\"\",\"album\":\"\",\"status\":\"Paused\",\"icon\":\"󰐊\",\"has_track\":false,\"has_art\":false,\"cover_path\":\"/home/lucid/.config/eww/assets/transparent.svg\",\"shuffle\":false,\"repeat_mode\":\"off\",\"repeat_active\":false,\"repeat_icon\":\"󰑖\"}"
   `/home/lucid/.config/eww/scripts/spotify-state.sh`)
+
+(defpoll spotify_playlists_state
+  :interval "10m"
+  :initial "[]"
+  `/home/lucid/.config/eww/scripts/spotify-playlists-state.sh`)
 
 (defwidget playlist_row [playlist]
   (ui_link_row
@@ -50,7 +55,7 @@
     (ui_header :eyebrow "SPOTIFY" :title "Playlists" :subtitle "Choose what plays next" :meta "")
     (scroll :class "ui-scroll" :vscroll true :height 220 :vexpand false :valign "start"
       (box :class "ui-list" :orientation "v" :space-evenly false :vexpand false
-        (for playlist in {spotify_state.playlists}
+        (for playlist in {spotify_playlists_state}
           (playlist_row :playlist playlist))))))
 
 (defwindow spotify_player

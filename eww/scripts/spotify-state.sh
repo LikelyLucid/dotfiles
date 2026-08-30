@@ -3,8 +3,8 @@ set -euo pipefail
 
 lock_path="${XDG_RUNTIME_DIR:-/tmp}/eww-spotify.lock"
 exec 9>"$lock_path"
-if ! flock -w 8 9; then
-  printf '%s\n' '{"track":"Nothing playing","artist":"","album":"","status":"Paused","icon":"󰐊","has_track":false,"has_art":false,"cover_path":"/home/lucid/.config/eww/assets/transparent.svg","shuffle":false,"repeat_mode":"off","repeat_active":false,"repeat_icon":"󰑖","playlists":[]}'
+if ! flock -w 2 9; then
+  printf '%s\n' '{"track":"Nothing playing","artist":"","album":"","status":"Paused","icon":"󰐊","has_track":false,"has_art":false,"cover_path":"/home/lucid/.config/eww/assets/transparent.svg","shuffle":false,"repeat_mode":"off","repeat_active":false,"repeat_icon":"󰑖"}'
   exit 0
 fi
 
@@ -16,15 +16,6 @@ fi
 if ! jq -e . >/dev/null 2>&1 <<< "$playback"; then
   playback=null
 fi
-
-if ! playlist_output=$(timeout 5s spotify_player playlist list 2>/dev/null); then
-  playlist_output=
-fi
-
-playlists=$(jq -R -s -c '
-  split("\n")
-  | map(select(length > 0) | sub("^[^:]+: "; ""))
-' <<< "$playlist_output")
 
 track="Nothing playing"
 artist=""
@@ -62,7 +53,6 @@ jq -c \
   --arg cover_path "$cover_path" \
   --argjson has_track "$has_track" \
   --argjson has_art "$has_art" \
-  --argjson playlists "$playlists" \
   '{
     track: $track,
     artist: $artist,
@@ -75,6 +65,5 @@ jq -c \
     shuffle: (.shuffle_state? // false),
     repeat_mode: (if ((.repeat_state? // "off") | IN("off", "context", "track")) then (.repeat_state // "off") else "off" end),
     repeat_active: ((.repeat_state? // "off") != "off"),
-    repeat_icon: (if (.repeat_state? // "off") == "track" then "󰑘" else "󰑖" end),
-    playlists: $playlists
+    repeat_icon: (if (.repeat_state? // "off") == "track" then "󰑘" else "󰑖" end)
   }' <<< "$playback"
