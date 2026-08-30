@@ -1,0 +1,71 @@
+/* SwayOSD — Wallust workstation theme. Matches waybar/eww surfaces. */
+
+@define-color bg {{background}};
+@define-color color0 {{color0}};
+@define-color fg {{foreground}};
+@define-color muted {{color8}};
+@define-color accent {{color7}};
+
+window#osd {
+  background: alpha(@color0, 0.92);
+  color: @fg;
+  border: 1px solid alpha(@muted, 0.32);
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+window#osd #container {
+  margin: 14px 16px;
+}
+
+window#osd image,
+window#osd label {
+  color: @fg;
+  font-family: "JetBrains Mono", "JetBrains Mono Nerd Font";
+  font-weight: 500;
+}
+
+window#osd label {
+  font-size: 13px;
+}
+
+window#osd image {
+  -gtk-icon-size: 22px;
+}
+
+window#osd progressbar:disabled,
+window#osd image:disabled {
+  opacity: 0.45;
+}
+
+window#osd progressbar,
+window#osd segmentedprogress {
+  min-height: 5px;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+}
+
+window#osd trough,
+window#osd segment {
+  min-height: inherit;
+  border-radius: inherit;
+  border: none;
+  background: alpha(@muted, 0.42);
+}
+
+window#osd progress,
+window#osd segment.active {
+  min-height: inherit;
+  border-radius: inherit;
+  border: none;
+  background: @accent;
+}
+
+window#osd segment {
+  margin-left: 8px;
+}
+
+window#osd segment:first-child {
+  margin-left: 0;
+}
