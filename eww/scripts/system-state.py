@@ -97,7 +97,14 @@ def bluetooth() -> dict[str, Any]:
     for line in run("bluetoothctl", "devices", "Paired").splitlines():
         parts = line.split(maxsplit=2)
         if len(parts) == 3:
-            devices.append({"mac": parts[1], "name": parts[2], "connected": parts[1] in connected_macs})
+            mac = parts[1]
+            connected = mac in connected_macs
+            battery_percent = -1
+            if connected:
+                battery_match = re.search(r"Battery Percentage:\s+0x[0-9a-f]+\s+\(([0-9]+)\)", run("bluetoothctl", "info", mac), re.IGNORECASE)
+                if battery_match:
+                    battery_percent = int(battery_match.group(1))
+            devices.append({"mac": mac, "name": parts[2], "connected": connected, "battery_percent": battery_percent})
     devices.sort(key=lambda device: (not device["connected"], device["name"].lower()))
     return {"powered": powered, "discovering": discovering, "connected_count": len(connected_macs), "devices": devices}
 

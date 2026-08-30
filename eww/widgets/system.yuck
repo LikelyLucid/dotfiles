@@ -5,7 +5,7 @@
 (defpoll power_state :interval "5s" :initial "{\"capacity\":0,\"status\":\"Unavailable\",\"brightness\":0,\"profile\":\"balanced\",\"idle_active\":true,\"icon\":\"󰁹\"}" `/home/lucid/.config/eww/scripts/system-state.py power`)
 (defpoll notification_state :interval "3s" :initial "{\"count\":0,\"dnd\":false,\"tooltip\":\"Notifications\"}" `/home/lucid/.config/eww/scripts/system-state.py notifications`)
 
-(defwidget system_data_row [icon title subtitle trailing command class tooltip]
+(defwidget system_data_row [icon title subtitle trailing command class ?tooltip]
   (eventbox :class "ui-row" :onclick command :tooltip {tooltip != "" ? tooltip : title}
     (box :class "ui-row-content system-data-row ${class}" :orientation "h" :spacing 10 :space-evenly false :hexpand true
       (label :class "system-row-icon" :text icon :valign "center")
@@ -37,7 +37,7 @@
       (system_data_row :icon "󰓃" :title "Spatial audio" :subtitle {audio_state.spatial} :trailing "FIXED" :command "~/.config/eww/scripts/system-action.sh audio spatial fixed" :class ""))))
 
 (defwidget bluetooth_device [device]
-  (system_data_row :icon {device.connected ? "󰂱" : "󰂯"} :title {device.name} :subtitle {device.mac} :trailing {device.connected ? "CONNECTED" : "CONNECT"} :command "~/.config/eww/scripts/system-action.sh bluetooth device ${device.mac}" :class {device.connected ? "is-active" : ""}))
+  (system_data_row :icon {device.connected ? "󰂱" : "󰂯"} :title {device.name} :subtitle {device.mac} :trailing {device.battery_percent >= 0 ? "${device.battery_percent}%" : device.connected ? "CONNECTED" : "CONNECT"} :command "~/.config/eww/scripts/system-action.sh bluetooth device ${device.mac}" :class {device.connected ? "is-active" : ""}))
 
 (defwidget bluetooth_preview []
   (box :class "ui-surface ui-popup system-popup" :orientation "v" :space-evenly false

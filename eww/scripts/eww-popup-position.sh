@@ -171,4 +171,4 @@ else
   (( popup_y > max_y )) && popup_y=$max_y
 fi
 
-printf '%s %s %s %s %s\n' "$screen" "$popup_x" "$popup_y" "$popup_width" "$popup_height"
+printf '%s %s %s\n' "$screen" "$popup_x" "$popup_y"

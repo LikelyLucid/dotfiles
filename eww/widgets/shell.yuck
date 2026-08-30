@@ -41,7 +41,7 @@
       (for player in {shell_state.media.players} (shell_media_row :player player))
       (label :class "ui-empty" :text "No media players running" :visible {arraylength(shell_state.media.players) == 0}))
     (box :class "shell-progress" :visible {shell_state.media.first_length > 0}
-      (box :class "shell-progress-fill" :halign "begin" :hexpand false :width "${(shell_state.media.first_position * 100) / shell_state.media.first_length}%")))
+      (box :class "shell-progress-fill" :halign "begin" :hexpand false :width "${(shell_state.media.first_position * 100) / shell_state.media.first_length}%"))
     (box :visible {shell_state.media.has_players} :class "ui-action-bar" :halign "center" :spacing 4
       (ui_icon_action :icon "󰒮" :command "~/.config/eww/scripts/shell-action.sh media previous ${shell_state.media.first_token}" :tooltip "Previous track" :class "")
       (ui_icon_action :icon {shell_state.media.first_playing ? "󰏤" : "󰐊"} :command "~/.config/eww/scripts/shell-action.sh media play-pause ${shell_state.media.first_token}" :tooltip "Play or pause" :class "is-primary")
@@ -53,7 +53,7 @@
       (ui_icon_action :icon "󰍉" :command "~/.config/eww/scripts/shell-action.sh clipboard search" :tooltip "Search clipboard" :class "")
       (ui_icon_action :icon "󰒍" :command "~/.config/eww/scripts/shell-action.sh network diagnostics" :tooltip "Network diagnostics" :class ""))
     (ui_section_header :title "SYSTEM HEALTH" :meta {shell_state.health.failed_services > 0 ? "${shell_state.health.failed_services} FAILED" : "HEALTHY"})
-    (shell_popup_link :icon "󱄅" :title {shell_state.nixos.generation} :subtitle "${shell_state.nixos.generations} generations · ${shell_state.nixos.closure_size}" :value {shell_state.nixos.dirty ? "DIRTY" : shell_state.nixos.revision} :command "true" :active {shell_state.nixos.dirty}))
+    (shell_popup_link :icon "󱄅" :title {shell_state.nixos.generation} :subtitle "${shell_state.nixos.generations} generations · ${shell_state.nixos.closure_size}" :value {shell_state.nixos.dirty ? "DIRTY" : shell_state.nixos.revision} :command "true" :active {shell_state.nixos.dirty})))
 
 (defwidget control_center []
   (box :class "ui-surface ui-popup shell-popup" :orientation "v" :space-evenly false

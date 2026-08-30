@@ -30,7 +30,7 @@
     (ui_section_header :title "DEVELOPMENT" :meta {shell_state.development.kubectl ? shell_state.development.context : "KUBECTL UNAVAILABLE"})
     (system_data_row :icon "󱃾" :title "Kubernetes and local services" :subtitle "${arraylength(shell_state.development.ports)} listening endpoints" :trailing {shell_state.development.docker ? "DOCKER" : shell_state.development.podman ? "PODMAN" : "LOCAL"} :command "true" :class "")
     (ui_section_header :title "WEATHER" :meta "OPTIONAL PROVIDER")
-    (system_data_row :icon "󰖐" :title "Weather" :subtitle {shell_state.weather.location} :value {shell_state.weather.available ? shell_state.weather.summary : "SETUP"} :command "true" :class "")))
+    (system_data_row :icon "󰖐" :title "Weather" :subtitle {shell_state.weather.location} :trailing {shell_state.weather.available ? shell_state.weather.summary : "SETUP"} :command "true" :class "")))
 
 (defwidget tools_popup_content []
   (box :class "ui-surface ui-popup tools-popup" :orientation "v" :space-evenly false

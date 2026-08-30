@@ -90,8 +90,9 @@ Existing secondary actions remain available on right click where applicable.
 - **Audio:** live volume and mute controls. When Nothing Headphone (1) is
   connected, the slider targets its PipeWire sink instead of the default sink
   and exposes battery, ANC/transparency, EQ, and spatial-audio controls.
-- **Bluetooth:** adapter power/scanning controls, paired-device status, direct
-  connect/disconnect, and Blueman settings.
+- **Bluetooth:** adapter power/scanning controls, paired-device status and
+  individual battery levels when BlueZ reports them, direct connect/disconnect,
+  and Blueman settings.
 - **Wi-Fi:** radio and rescan controls, available/known network status, safe
   known-profile connect/disconnect, and NetworkManager setup for new networks.
 - **Workspaces:** live Hyprland workspace/window/output state and switching.
