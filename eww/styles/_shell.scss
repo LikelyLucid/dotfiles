@@ -36,6 +36,19 @@
   margin-bottom: $ui-space-2;
 }
 
+.shell-progress {
+  min-height: 3px;
+  margin-bottom: $ui-space-2;
+  background-color: rgba($ui-muted, 0.24);
+  border-radius: 2px;
+}
+
+.shell-progress-fill {
+  min-height: 3px;
+  background-color: $ui-accent;
+  border-radius: 2px;
+}
+
 .shell-popup-link.is-active {
   background-color: $ui-surface-subtle;
   border-color: rgba($ui-accent, 0.48);

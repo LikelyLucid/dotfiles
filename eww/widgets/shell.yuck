@@ -1,7 +1,7 @@
 ;; Quick-settings panel. Per-domain preview popups are the primary UI; the
 ;; status cards here launch them instead of duplicating their content.
 
-(defpoll shell_state :interval "15s" :initial "{\"health\":{\"load\":\"0\",\"memory\":0,\"disk\":0,\"temperature\":0,\"failed_services\":0,\"processes\":[]},\"network_details\":{\"ips\":[],\"gateway\":\"Unavailable\",\"dns\":[],\"rx_rate\":0,\"tx_rate\":0,\"vpn\":[],\"tailscale\":false,\"tailscale_name\":\"\"},\"display\":{\"monitors\":[],\"night_light\":false,\"wallpaper\":\"\"},\"media\":{\"players\":[],\"available\":false},\"focus\":{\"active\":false,\"minutes\":0},\"clipboard\":{\"available\":false,\"items\":[]},\"downloads\":[],\"screenshots\":[],\"windows\":[],\"mounts\":[],\"privacy\":{\"microphone_in_use\":false,\"camera_in_use\":false,\"camera_available\":false},\"development\":{\"kubectl\":false,\"context\":\"Not configured\",\"ports\":[],\"docker\":false,\"podman\":false},\"nixos\":{\"generation\":\"Unavailable\",\"dirty\":false,\"revision\":\"\",\"generations\":0,\"closure_size\":\"Unavailable\"},\"weather\":{\"available\":false,\"summary\":\"Not configured\",\"location\":\"Not configured\"},\"smart_home\":{\"available\":false,\"summary\":\"Not configured\"}}" `/home/lucid/.config/eww/scripts/shell-state.py`)
+(defpoll shell_state :interval "15s" :initial "{\"health\":{\"load\":\"0\",\"memory\":0,\"disk\":0,\"temperature\":0,\"failed_services\":0,\"processes\":[]},\"network_details\":{\"ips\":[],\"gateway\":\"Unavailable\",\"dns\":[],\"rx_rate\":0,\"tx_rate\":0,\"vpn\":[],\"tailscale\":false,\"tailscale_name\":\"\"},\"display\":{\"monitors\":[],\"night_light\":false,\"wallpaper\":\"\"},\"media\":{\"players\":[],\"available\":false,\"has_players\":false,\"first_token\":\"\",\"first_playing\":false,\"first_position\":0,\"first_length\":0},\"focus\":{\"active\":false,\"minutes\":0,\"remaining\":0,\"remaining_text\":\"00:00\"},\"clipboard\":{\"available\":false,\"items\":[]},\"downloads\":[],\"screenshots\":[],\"windows\":[],\"mounts\":[],\"privacy\":{\"microphone_in_use\":false,\"camera_in_use\":false,\"camera_available\":false},\"development\":{\"kubectl\":false,\"context\":\"Not configured\",\"ports\":[],\"docker\":false,\"podman\":false},\"nixos\":{\"generation\":\"Unavailable\",\"dirty\":false,\"revision\":\"\",\"generations\":0,\"closure_size\":\"Unavailable\"},\"weather\":{\"available\":false,\"summary\":\"Not configured\",\"location\":\"Not configured\"},\"smart_home\":{\"available\":false,\"summary\":\"Not configured\"}}" `/home/lucid/.config/eww/scripts/shell-state.py`)
 
 (defwidget shell_toggle_grid []
   (box :class "shell-toggle-grid" :orientation "h" :space-evenly true
@@ -36,10 +36,12 @@
     (shell_popup_link :icon "󰖩" :title "Network" :subtitle {network_state.active != "" ? network_state.active : "Not connected"} :value {network_state.enabled ? "ON" : "OFF"} :command "~/.config/eww/scripts/widget-preview.sh wifi" :active false)
     (shell_popup_link :icon "󰒓" :title "Power and session" :subtitle "${power_state.capacity}% · ${power_state.profile}" :value {power_state.idle_active ? "IDLE ON" : "CAFFEINE"} :command "~/.config/eww/scripts/widget-preview.sh power" :active {!power_state.idle_active})
     (shell_popup_link :icon "󰆍" :title "Desktop tools" :subtitle "Clipboard, windows, screenshots and development" :value "OPEN" :command "~/.config/eww/scripts/tools-popup.sh" :active false)
-    (ui_section_header :title "NOW PLAYING" :meta "${arraylength(shell_state.media.players)} PLAYERS")
+    (ui_section_header :title "NOW PLAYING" :meta {shell_state.focus.active ? "FOCUS ${shell_state.focus.remaining_text}" : "${arraylength(shell_state.media.players)} PLAYERS"})
     (box :class "ui-list" :orientation "v" :space-evenly false
       (for player in {shell_state.media.players} (shell_media_row :player player))
       (label :class "ui-empty" :text "No media players running" :visible {arraylength(shell_state.media.players) == 0}))
+    (box :class "shell-progress" :visible {shell_state.media.first_length > 0}
+      (box :class "shell-progress-fill" :halign "begin" :hexpand false :width "${(shell_state.media.first_position * 100) / shell_state.media.first_length}%")))
     (box :visible {shell_state.media.has_players} :class "ui-action-bar" :halign "center" :spacing 4
       (ui_icon_action :icon "󰒮" :command "~/.config/eww/scripts/shell-action.sh media previous ${shell_state.media.first_token}" :tooltip "Previous track" :class "")
       (ui_icon_action :icon {shell_state.media.first_playing ? "󰏤" : "󰐊"} :command "~/.config/eww/scripts/shell-action.sh media play-pause ${shell_state.media.first_token}" :tooltip "Play or pause" :class "is-primary")
@@ -51,7 +53,7 @@
       (ui_icon_action :icon "󰍉" :command "~/.config/eww/scripts/shell-action.sh clipboard search" :tooltip "Search clipboard" :class "")
       (ui_icon_action :icon "󰒍" :command "~/.config/eww/scripts/shell-action.sh network diagnostics" :tooltip "Network diagnostics" :class ""))
     (ui_section_header :title "SYSTEM HEALTH" :meta {shell_state.health.failed_services > 0 ? "${shell_state.health.failed_services} FAILED" : "HEALTHY"})
-    (shell_popup_link :icon "󱄅" :title {shell_state.nixos.generation} :subtitle "${shell_state.nixos.generations} generations · ${shell_state.nixos.closure_size}" :value {shell_state.nixos.dirty ? "DIRTY" : shell_state.nixos.revision} :command "true" :active {shell_state.nixos.dirty})))
+    (shell_popup_link :icon "󱄅" :title {shell_state.nixos.generation} :subtitle "${shell_state.nixos.generations} generations · ${shell_state.nixos.closure_size}" :value {shell_state.nixos.dirty ? "DIRTY" : shell_state.nixos.revision} :command "true" :active {shell_state.nixos.dirty}))
 
 (defwidget control_center []
   (box :class "ui-surface ui-popup shell-popup" :orientation "v" :space-evenly false

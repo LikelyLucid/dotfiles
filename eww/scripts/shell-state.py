@@ -64,7 +64,12 @@ def focus_state() -> dict[str, Any]:
         state = {}
     ends = int(state.get("ends", 0))
     remaining = max(0, ends - int(time.time()))
-    return {"active": remaining > 0, "remaining": remaining, "minutes": (remaining + 59) // 60}
+    return {
+        "active": remaining > 0,
+        "remaining": remaining,
+        "minutes": (remaining + 59) // 60,
+        "remaining_text": f"{remaining // 60:02d}:{remaining % 60:02d}",
+    }
 
 
 def health() -> dict[str, Any]:
@@ -158,12 +163,25 @@ def media() -> dict[str, Any]:
         status = run("playerctl", "-p", player, "status", timeout=1) or "Stopped"
         rows.append({"name": player, "token": player.encode().hex(), "title": title, "artist": artist, "status": status})
     first = rows[0] if rows else {}
+    position = 0
+    length = 0
+    if first:
+        try:
+            position = int(float(run("playerctl", "-p", first["name"], "position", timeout=1)))
+        except ValueError:
+            pass
+        try:
+            length = int(run("playerctl", "-p", first["name"], "metadata", "--format", "{{mpris:length}}", timeout=1)) // 1_000_000
+        except ValueError:
+            pass
     return {
         "players": rows,
         "available": bool(shutil.which("playerctl")),
         "has_players": bool(rows),
         "first_token": first.get("token", ""),
         "first_playing": bool(rows) and rows[0]["status"] == "Playing",
+        "first_position": position,
+        "first_length": length,
     }
 
 

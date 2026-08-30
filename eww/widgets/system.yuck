@@ -5,8 +5,8 @@
 (defpoll power_state :interval "5s" :initial "{\"capacity\":0,\"status\":\"Unavailable\",\"brightness\":0,\"profile\":\"balanced\",\"idle_active\":true,\"icon\":\"󰁹\"}" `/home/lucid/.config/eww/scripts/system-state.py power`)
 (defpoll notification_state :interval "3s" :initial "{\"count\":0,\"dnd\":false,\"tooltip\":\"Notifications\"}" `/home/lucid/.config/eww/scripts/system-state.py notifications`)
 
-(defwidget system_data_row [icon title subtitle trailing command class]
-  (eventbox :class "ui-row" :onclick command
+(defwidget system_data_row [icon title subtitle trailing command class tooltip]
+  (eventbox :class "ui-row" :onclick command :tooltip {tooltip != "" ? tooltip : title}
     (box :class "ui-row-content system-data-row ${class}" :orientation "h" :spacing 10 :space-evenly false :hexpand true
       (label :class "system-row-icon" :text icon :valign "center")
       (box :orientation "v" :space-evenly false :hexpand true :valign "center"
