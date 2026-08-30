@@ -46,6 +46,7 @@ def audio() -> dict[str, Any]:
         "nothing_connected": connected,
         "device": description,
         "mode": "Speaker",
+        "noise_mode": "off",
         "battery": "",
         "eq": "",
         "spatial": "",
@@ -79,8 +80,10 @@ def audio() -> dict[str, Any]:
         except json.JSONDecodeError:
             state = {}
         mode = state.get("noise_control", {}).get("mode", "Connected")
+        noise_mode = mode if mode in {"off", "transparency"} else "anc"
         result.update(
             mode="ANC" if mode == "smart-1" else str(mode).replace("-", " ").title(),
+            noise_mode=noise_mode,
             battery=(f"{state.get('battery', {}).get('percent')}%" if state.get("battery", {}).get("percent") is not None else ""),
             eq=str(state.get("eq", {}).get("value", "")).replace("-", " ").title(),
             spatial=str(state.get("spatial_audio", {}).get("mode", "")).replace("-", " ").title(),

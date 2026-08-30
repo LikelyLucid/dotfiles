@@ -1,4 +1,4 @@
-(defpoll audio_state :interval "5s" :initial "{\"volume\":0,\"muted\":false,\"icon\":\"󰕿\",\"nothing_connected\":false,\"device\":\"System output\",\"mode\":\"Speaker\",\"battery\":\"\",\"eq\":\"\",\"spatial\":\"\"}" `/home/lucid/.config/eww/scripts/system-state.py audio`)
+(defpoll audio_state :interval "5s" :initial "{\"volume\":0,\"muted\":false,\"icon\":\"󰕿\",\"nothing_connected\":false,\"device\":\"System output\",\"mode\":\"Speaker\",\"noise_mode\":\"off\",\"battery\":\"\",\"eq\":\"\",\"spatial\":\"\"}" `/home/lucid/.config/eww/scripts/system-state.py audio`)
 (defpoll bluetooth_state :interval "3s" :initial "{\"powered\":false,\"discovering\":false,\"connected_count\":0,\"devices\":[]}" `/home/lucid/.config/eww/scripts/system-state.py bluetooth`)
 (defpoll network_state :interval "5s" :initial "{\"enabled\":false,\"active\":\"\",\"networks\":[]}" `/home/lucid/.config/eww/scripts/system-state.py network`)
 (defpoll workspace_state :interval "2s" :initial "{\"active\":\"\",\"monitor\":\"\",\"workspaces\":[]}" `/home/lucid/.config/eww/scripts/system-state.py workspaces`)
@@ -22,6 +22,12 @@
       (label :class "ui-meta" :text "${value}%" :halign "end"))
     (scale :class "ui-scale" :round-digits 0 :min 0 :max 100 :value value :onchange command)))
 
+(defwidget system_mode_option [icon label command active]
+  (eventbox :class "system-mode-option" :hexpand true :onclick command :tooltip label
+    (box :class "system-mode-option-content ${active ? "is-active" : ""}" :orientation "v" :space-evenly false :halign "fill" :valign "center"
+      (label :class "system-mode-option-icon" :text icon)
+      (label :class "system-mode-option-label" :text label))))
+
 (defwidget audio_preview []
   (box :class "ui-surface ui-popup system-popup" :orientation "v" :space-evenly false
     (ui_header :eyebrow "AUDIO" :title {audio_state.device} :subtitle {audio_state.nothing_connected ? "Headphones connected" : "Default audio output"} :meta {audio_state.muted ? "MUTED" : "${audio_state.volume}%"})
@@ -30,9 +36,11 @@
       (ui_icon_action :icon {audio_state.muted ? "󰝟" : "󰕾"} :command "~/.config/eww/scripts/system-action.sh audio mute" :tooltip "Mute or unmute" :class {audio_state.muted ? "is-primary" : ""})
       (ui_icon_action :icon "󰒓" :command "~/.config/eww/scripts/system-action.sh audio settings" :tooltip "Open audio settings" :class ""))
     (box :visible {audio_state.nothing_connected} :orientation "v" :space-evenly false
-      (ui_section_header :title "NOTHING HEADPHONES" :meta {audio_state.battery})
-      (system_data_row :icon "󰋋" :title "Noise control" :subtitle {audio_state.mode} :trailing "ANC" :command "~/.config/eww/scripts/system-action.sh audio anc smart-1" :class "")
-      (system_data_row :icon "󰕾" :title "Transparency" :subtitle "Hear your surroundings" :trailing "Set" :command "~/.config/eww/scripts/system-action.sh audio anc transparency" :class "")
+      (ui_section_header :title "NOISE CONTROL" :meta "${audio_state.mode} · ${audio_state.battery}")
+      (box :class "system-mode-selector" :orientation "h" :spacing 3 :space-evenly true
+        (system_mode_option :icon "󰖁" :label "Off" :command "~/.config/eww/scripts/system-action.sh audio anc off" :active {audio_state.noise_mode == "off"})
+        (system_mode_option :icon "󰖝" :label "Transparency" :command "~/.config/eww/scripts/system-action.sh audio anc transparency" :active {audio_state.noise_mode == "transparency"})
+        (system_mode_option :icon "󰋋" :label "ANC" :command "~/.config/eww/scripts/system-action.sh audio anc smart-1" :active {audio_state.noise_mode == "anc"}))
       (system_data_row :icon "󰎇" :title "Equaliser" :subtitle {audio_state.eq} :trailing "Balanced" :command "~/.config/eww/scripts/system-action.sh audio eq balanced" :class "")
       (system_data_row :icon "󰓃" :title "Spatial audio" :subtitle {audio_state.spatial} :trailing "FIXED" :command "~/.config/eww/scripts/system-action.sh audio spatial fixed" :class ""))))
 

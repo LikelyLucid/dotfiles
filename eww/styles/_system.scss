@@ -77,3 +77,43 @@
 .system-segmented .ui-action-content {
   min-width: 72px;
 }
+
+.system-mode-selector {
+  padding: 3px;
+  background-color: $ui-surface-subtle;
+  border: 1px solid $ui-border;
+  border-radius: $ui-radius-control;
+}
+
+.system-mode-option-content {
+  min-width: 82px;
+  min-height: 42px;
+  padding: 3px $ui-space-1;
+  color: $ui-muted;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: $ui-radius-control;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.system-mode-option:hover .system-mode-option-content {
+  color: $ui-text;
+  background-color: $ui-surface-hover;
+}
+
+.system-mode-option-content.is-active,
+.system-mode-option:hover .system-mode-option-content.is-active {
+  color: $ui-on-accent;
+  background-color: $ui-accent;
+  border-color: $ui-accent;
+}
+
+.system-mode-option-icon {
+  font-size: 15px;
+}
+
+.system-mode-option-label {
+  margin-top: 2px;
+  font-size: 9px;
+  font-weight: 700;
+}

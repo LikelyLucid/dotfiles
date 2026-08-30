@@ -6,7 +6,7 @@ action=${2:-}
 shift 2 2>/dev/null || true
 
 nothing_cli() {
-  local cli
+  local attempt cli
   if command -v nothing-cli >/dev/null 2>&1; then
     cli=$(command -v nothing-cli)
   elif [[ -x $HOME/Projects/Nothing-cli/.release-venv/bin/nothing-cli ]]; then
@@ -14,7 +14,13 @@ nothing_cli() {
   else
     return 127
   fi
-  flock -w 8 "${XDG_RUNTIME_DIR:-/tmp}/nothing-headphones-cli.lock" "$cli" "$@"
+  for attempt in {1..8}; do
+    if flock -w 8 "${XDG_RUNTIME_DIR:-/tmp}/nothing-headphones-cli.lock" "$cli" "$@" >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 0.75
+  done
+  return 1
 }
 
 audio_target() {
@@ -22,7 +28,7 @@ audio_target() {
   mac=$(bluetoothctl devices Connected | awk 'tolower($0) ~ /nothing headphone/ { print $2; exit }')
   [[ -n $mac ]] || { printf '@DEFAULT_AUDIO_SINK@\n'; return; }
   needle=${mac//:/_}
-  target=$(wpctl status -n | awk -v needle="$needle" 'index(tolower($0), tolower(needle)) { for (i = 1; i <= NF; i++) if ($i ~ /^[0-9]+\.$/) { sub(/\.$/, "", $i); print $i; exit } }')
+  target=$(wpctl status -n | awk -v needle="bluez_output.$needle" 'index(tolower($0), tolower(needle)) { for (i = 1; i <= NF; i++) if ($i ~ /^[0-9]+\.$/) { sub(/\.$/, "", $i); print $i; exit } }')
   printf '%s\n' "${target:-@DEFAULT_AUDIO_SINK@}"
 }
 

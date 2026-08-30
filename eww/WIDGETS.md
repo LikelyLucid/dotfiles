@@ -89,7 +89,8 @@ Existing secondary actions remain available on right click where applicable.
 
 - **Audio:** live volume and mute controls. When Nothing Headphone (1) is
   connected, the slider targets its PipeWire sink instead of the default sink
-  and exposes battery, ANC/transparency, EQ, and spatial-audio controls.
+  and exposes battery, a three-state Off/Transparency/ANC selector, EQ, and
+  spatial-audio controls.
 - **Bluetooth:** adapter power/scanning controls, paired-device status and
   individual battery levels when BlueZ reports them, direct connect/disconnect,
   and Blueman settings.
