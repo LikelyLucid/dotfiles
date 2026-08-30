@@ -10,7 +10,7 @@ window#osd {
   background: alpha(@color0, 0.92);
   color: @fg;
   border: 1px solid alpha(@muted, 0.32);
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: none;
 }
 

@@ -83,3 +83,18 @@
 @define-color warning_color_breeze {{color7}};
 @define-color warning_color_insensitive_backdrop_breeze {{color0}};
 @define-color warning_color_insensitive_breeze {{color0}};
+
+/* Libadwaita / GTK4 accent mapping — makes swappy, pavucontrol, etc. use wallust */
+@define-color accent_color {{color7}};
+@define-color accent_bg_color {{color7}};
+@define-color accent_fg_color {{background}};
+@define-color window_bg_color {{color0}};
+@define-color window_fg_color {{foreground}};
+@define-color view_bg_color {{background}};
+@define-color view_fg_color {{foreground}};
+@define-color headerbar_bg_color {{color0}};
+@define-color headerbar_fg_color {{foreground}};
+@define-color card_bg_color alpha({{color0}}, 0.92);
+@define-color card_fg_color {{foreground}};
+@define-color popover_bg_color alpha({{color0}}, 0.96);
+@define-color popover_fg_color {{foreground}};
