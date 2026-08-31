@@ -78,7 +78,10 @@ Eww previews. The shared state seam is `scripts/system-state.py <domain>` and
 the action seam is `scripts/system-action.sh <domain> <action> [value]`.
 Successful actions push fresh provider data directly into Eww, so controls do
 not wait for their fallback polling interval. Nothing-headphone actions also
-invalidate the shared status cache before refreshing.
+invalidate the shared status cache before refreshing. When `nothing-headphonesd`
+is available, Eww and Waybar share its single persistent RFCOMM connection;
+the serialized one-shot CLI path remains as a fallback when the broker is not
+running.
 The shared position helper clamps every popup inside its click monitor with a
 20px horizontal safety inset, including modules at either end of Waybar.
 

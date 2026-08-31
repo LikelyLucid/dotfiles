@@ -6,7 +6,7 @@ action=${2:-}
 shift 2 2>/dev/null || true
 
 nothing_cli() {
-  local attempt cli
+  local attempt broker_status cli
   if command -v nothing-cli >/dev/null 2>&1; then
     cli=$(command -v nothing-cli)
   elif [[ -x $HOME/Projects/Nothing-cli/.release-venv/bin/nothing-cli ]]; then
@@ -14,6 +14,12 @@ nothing_cli() {
   else
     return 127
   fi
+  if "$cli" broker set "$@" >/dev/null 2>&1; then
+    return 0
+  else
+    broker_status=$?
+  fi
+  (( broker_status == 2 )) || return "$broker_status"
   for attempt in {1..8}; do
     if flock -w 8 "${XDG_RUNTIME_DIR:-/tmp}/nothing-headphones-cli.lock" "$cli" "$@" >/dev/null 2>&1; then
       return 0

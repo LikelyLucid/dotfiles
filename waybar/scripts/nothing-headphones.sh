@@ -28,9 +28,18 @@ show_menu() {
 }
 
 set_setting() {
-  local attempt
+  local attempt broker_status
+  if "$cli_command" broker set "$@" >/dev/null 2>&1; then
+    rm -f "$status_cache"
+    refresh_waybar
+    return 0
+  else
+    broker_status=$?
+  fi
+  (( broker_status == 2 )) || return "$broker_status"
   for attempt in 1 2 3 4 5 6 7 8; do
     if run_cli "$@" >/dev/null 2>&1; then
+      rm -f "$status_cache"
       refresh_waybar
       return 0
     fi
@@ -129,12 +138,23 @@ if ! headphones_connected; then
 fi
 
 status=''
-if status_cache_is_valid && status_cache_is_fresh; then
+broker_status=0
+if candidate=$("$cli_command" --json broker status 2>/dev/null); then
+  if jq -e '.noise_control.mode' >/dev/null <<<"$candidate"; then
+    status=$candidate
+    printf '%s\n' "$status" >"$status_cache"
+  fi
+else
+  broker_status=$?
+fi
+if [[ -z "$status" ]] && (( broker_status != 2 )) && status_cache_is_valid; then
   status=$(<"$status_cache")
-elif candidate=$(run_cli --json status 2>/dev/null) && jq -e '.noise_control.mode' >/dev/null <<<"$candidate"; then
+elif [[ -z "$status" ]] && (( broker_status == 2 )) && status_cache_is_valid && status_cache_is_fresh; then
+  status=$(<"$status_cache")
+elif [[ -z "$status" ]] && (( broker_status == 2 )) && candidate=$(run_cli --json status 2>/dev/null) && jq -e '.noise_control.mode' >/dev/null <<<"$candidate"; then
   status=$candidate
   printf '%s\n' "$status" >"$status_cache"
-elif status_cache_is_valid; then
+elif [[ -z "$status" ]] && status_cache_is_valid; then
   status=$(<"$status_cache")
 fi
 

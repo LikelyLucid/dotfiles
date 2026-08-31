@@ -14,12 +14,16 @@ from pathlib import Path
 from typing import Any
 
 
-def run(*args: str, timeout: float = 3) -> str:
+def run_result(*args: str, timeout: float = 3) -> tuple[int, str]:
     try:
         result = subprocess.run(args, capture_output=True, text=True, timeout=timeout, check=False)
     except (OSError, subprocess.TimeoutExpired):
-        return ""
-    return result.stdout.strip()
+        return 1, ""
+    return result.returncode, result.stdout.strip()
+
+
+def run(*args: str, timeout: float = 3) -> str:
+    return run_result(*args, timeout=timeout)[1]
 
 
 def audio() -> dict[str, Any]:
@@ -62,19 +66,24 @@ def audio() -> dict[str, Any]:
         runtime = Path(os.environ.get("XDG_RUNTIME_DIR", "/tmp"))
         cache = runtime / "nothing-headphones-status.json"
         lock = runtime / "nothing-headphones-cli.lock"
-        raw = ""
-        try:
-            if time.time() - cache.stat().st_mtime <= 10:
-                raw = cache.read_text()
-        except OSError:
-            pass
+        broker_code, raw = run_result(cli, "--json", "broker", "status", timeout=2)
+        cacheable = broker_code == 0 and bool(raw)
+        broker_running = broker_code != 2
         if not raw:
+            try:
+                cache_fresh = time.time() - cache.stat().st_mtime <= 10
+                if broker_running or cache_fresh:
+                    raw = cache.read_text()
+            except OSError:
+                pass
+        if not raw and not broker_running:
             raw = run("flock", "-w", "4", str(lock), cli, "--json", "status", timeout=5)
-            if raw:
-                try:
-                    cache.write_text(raw)
-                except OSError:
-                    pass
+            cacheable = bool(raw)
+        if raw and cacheable:
+            try:
+                cache.write_text(raw)
+            except OSError:
+                pass
         try:
             state = json.loads(raw)
         except json.JSONDecodeError:
