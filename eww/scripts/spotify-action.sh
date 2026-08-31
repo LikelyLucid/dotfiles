@@ -60,7 +60,7 @@ if [[ "$action" == "previous" || "$action" == "next" || "$action" == "play-pause
       optimistic_state=$(jq -c --arg mode "$next_mode" '
         .repeat_mode = $mode
         | .repeat_active = ($mode != "off")
-        | .repeat_icon = (if $mode == "track" then "󰑘" else "󰑖" end)
+        | .repeat_icon = (if $mode == "track" then "󰑘" elif $mode == "context" then "󰑖" else "󰑗" end)
       ' <<< "$current_state")
     fi
     eww --force-wayland --config "$config_dir" update "spotify_state=$optimistic_state" >/dev/null 2>&1 || true

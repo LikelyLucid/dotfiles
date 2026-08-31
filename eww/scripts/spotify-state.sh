@@ -4,7 +4,7 @@ set -euo pipefail
 lock_path="${XDG_RUNTIME_DIR:-/tmp}/eww-spotify.lock"
 exec 9>"$lock_path"
 if ! flock -w 2 9; then
-  printf '%s\n' '{"track":"Nothing playing","artist":"","album":"","status":"Paused","icon":"󰐊","has_track":false,"has_art":false,"cover_path":"/home/lucid/.config/eww/assets/transparent.svg","shuffle":false,"repeat_mode":"off","repeat_active":false,"repeat_icon":"󰑖"}'
+  printf '%s\n' '{"track":"Nothing playing","artist":"","album":"","status":"Paused","icon":"󰐊","has_track":false,"has_art":false,"cover_path":"/home/lucid/.config/eww/assets/transparent.svg","shuffle":false,"repeat_mode":"off","repeat_active":false,"repeat_icon":"󰑗"}'
   exit 0
 fi
 
@@ -65,5 +65,5 @@ jq -c \
     shuffle: (.shuffle_state? // false),
     repeat_mode: (if ((.repeat_state? // "off") | IN("off", "context", "track")) then (.repeat_state // "off") else "off" end),
     repeat_active: ((.repeat_state? // "off") != "off"),
-    repeat_icon: (if (.repeat_state? // "off") == "track" then "󰑘" else "󰑖" end)
+    repeat_icon: (if (.repeat_state? // "off") == "track" then "󰑘" elif (.repeat_state? // "off") == "context" then "󰑖" else "󰑗" end)
   }' <<< "$playback"

@@ -1,6 +1,6 @@
 (defpoll spotify_state
   :interval "1s"
-  :initial "{\"track\":\"Nothing playing\",\"artist\":\"\",\"album\":\"\",\"status\":\"Paused\",\"icon\":\"󰐊\",\"has_track\":false,\"has_art\":false,\"cover_path\":\"/home/lucid/.config/eww/assets/transparent.svg\",\"shuffle\":false,\"repeat_mode\":\"off\",\"repeat_active\":false,\"repeat_icon\":\"󰑖\"}"
+  :initial "{\"track\":\"Nothing playing\",\"artist\":\"\",\"album\":\"\",\"status\":\"Paused\",\"icon\":\"󰐊\",\"has_track\":false,\"has_art\":false,\"cover_path\":\"/home/lucid/.config/eww/assets/transparent.svg\",\"shuffle\":false,\"repeat_mode\":\"off\",\"repeat_active\":false,\"repeat_icon\":\"󰑗\"}"
   `/home/lucid/.config/eww/scripts/spotify-state.sh`)
 
 (defpoll spotify_playlists_state
