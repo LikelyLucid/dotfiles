@@ -43,11 +43,8 @@
       (ui_icon_action :icon "󰒮" :command "~/.config/eww/scripts/spotify-action.sh previous" :tooltip "Previous track" :class "")
       (ui_icon_action :icon {spotify_state.icon} :command "~/.config/eww/scripts/spotify-action.sh play-pause" :tooltip "Play or pause" :class "is-primary")
       (ui_icon_action :icon "󰒭" :command "~/.config/eww/scripts/spotify-action.sh next" :tooltip "Next track" :class "")
-      (ui_icon_action :icon "󰒟" :command "~/.config/eww/scripts/spotify-action.sh shuffle" :tooltip {spotify_state.shuffle ? "Shuffle on" : "Shuffle off"} :class {spotify_state.shuffle ? "is-active" : ""})
+      (ui_icon_action :icon {spotify_state.shuffle ? "󰒟" : "󰒞"} :command "~/.config/eww/scripts/spotify-action.sh shuffle" :tooltip {spotify_state.shuffle ? "Shuffle on" : "Shuffle off"} :class {spotify_state.shuffle ? "is-active" : ""})
       (ui_icon_action :icon {spotify_state.repeat_icon} :command "~/.config/eww/scripts/spotify-action.sh repeat" :tooltip {spotify_state.repeat_mode == "track" ? "Repeat track" : spotify_state.repeat_mode == "context" ? "Repeat playlist" : "Repeat off"} :class {spotify_state.repeat_mode == "track" ? "is-active is-track" : spotify_state.repeat_active ? "is-active" : ""}))
-    (box :class "player-modes" :halign "center" :spacing 6 :space-evenly false :vexpand false
-      (label :class {"player-mode " + (spotify_state.shuffle ? "is-active" : "")} :text {spotify_state.shuffle ? "SHUFFLE ON" : "SHUFFLE OFF"})
-      (label :class {"player-mode " + (spotify_state.repeat_active ? "is-active" : "")} :text {spotify_state.repeat_mode == "track" ? "REPEAT ONE" : spotify_state.repeat_mode == "context" ? "REPEAT ALL" : "REPEAT OFF"}))
     (ui_link_row :label "PLAYLISTS" :icon "󰅂" :command "~/.config/eww/scripts/spotify-playlists-popup.sh")))
 
 (defwidget spotify_playlists_popup_content []

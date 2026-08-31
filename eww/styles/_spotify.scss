@@ -40,27 +40,6 @@
   box-shadow: inset 0 -2px rgba($ui-accent, 0.82);
 }
 
-.player-modes {
-  margin-top: $ui-space-1;
-  margin-bottom: $ui-space-1;
-}
-
-.player-mode {
-  padding: 2px $ui-space-2;
-  color: $ui-muted;
-  background-color: transparent;
-  border: 1px solid $ui-divider;
-  border-radius: $ui-radius-control;
-  font-size: 8px;
-  font-weight: 700;
-}
-
-.player-mode.is-active {
-  color: $ui-accent;
-  background-color: $ui-surface-subtle;
-  border-color: rgba($ui-accent, 0.62);
-}
-
 .playlists-popup .ui-header {
   padding-bottom: $ui-space-2;
 }
